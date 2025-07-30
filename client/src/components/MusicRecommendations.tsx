@@ -10,7 +10,7 @@ interface MusicRecommendationsProps {
 
 export function MusicRecommendations({ moodType }: MusicRecommendationsProps) {
   const { data: recommendations, isLoading } = useQuery<MusicRecommendation[]>({
-    queryKey: ['/api/music/recommendations', moodType],
+    queryKey: [`/api/music/recommendations?moodType=${moodType}`],
     staleTime: 300000, // 5 minutes
   });
 

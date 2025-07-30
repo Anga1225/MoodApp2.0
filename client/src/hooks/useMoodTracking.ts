@@ -69,7 +69,9 @@ export function useMoodTracking() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/mood/entries'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/mood/entries/recent'] });
+      queryClient.invalidateQueries({ predicate: (query) => 
+        Boolean(query.queryKey[0]?.toString().startsWith('/api/mood/entries'))
+      });
       queryClient.invalidateQueries({ queryKey: ['/api/mood/analytics/trends'] });
       toast({
         title: "Mood Saved!",
@@ -105,14 +107,14 @@ export function useMoodTracking() {
 
 export function useMoodHistory(limit = 50) {
   return useQuery<MoodEntry[]>({
-    queryKey: ['/api/mood/entries', limit],
+    queryKey: [`/api/mood/entries?limit=${limit}`],
     staleTime: 30000, // 30 seconds
   });
 }
 
 export function useRecentMoods(limit = 10) {
   return useQuery<MoodEntry[]>({
-    queryKey: ['/api/mood/entries/recent', limit],
+    queryKey: [`/api/mood/entries/recent?limit=${limit}`],
     staleTime: 10000, // 10 seconds
   });
 }
