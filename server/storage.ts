@@ -35,10 +35,14 @@ export interface IStorage {
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private moodEntries: Map<string, MoodEntry>;
+  private emotionMessages: Map<string, EmotionMessage>;
+  private musicRecommendations: Map<string, MusicRecommendation>;
 
   constructor() {
     this.users = new Map();
     this.moodEntries = new Map();
+    this.emotionMessages = new Map();
+    this.musicRecommendations = new Map();
   }
 
   async getUser(id: string): Promise<User | undefined> {
@@ -73,6 +77,9 @@ export class MemStorage implements IStorage {
       saturation: insertEntry.saturation,
       lightness: insertEntry.lightness,
       notes: insertEntry.notes || null,
+      isAnonymous: insertEntry.isAnonymous || 0,
+      country: insertEntry.country || null,
+      city: insertEntry.city || null,
       timestamp: now,
       createdAt: now,
     };
@@ -111,6 +118,72 @@ export class MemStorage implements IStorage {
 
   async getRecentMoodEntries(userId?: string, limit = 10): Promise<MoodEntry[]> {
     return this.getMoodEntries(userId, limit, 0);
+  }
+
+  async getGlobalMoodEntries(limit = 50): Promise<MoodEntry[]> {
+    const entries = Array.from(this.moodEntries.values())
+      .filter(entry => entry.isAnonymous === 1)
+      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())
+      .slice(0, limit);
+    return entries;
+  }
+
+  async createEmotionMessage(insertMessage: InsertEmotionMessage): Promise<EmotionMessage> {
+    const id = randomUUID();
+    const now = new Date();
+    const message: EmotionMessage = {
+      id,
+      moodEntryId: insertMessage.moodEntryId || null,
+      message: insertMessage.message,
+      isAnonymous: insertMessage.isAnonymous || 1,
+      supportCount: 0,
+      timestamp: now,
+    };
+    this.emotionMessages.set(id, message);
+    return message;
+  }
+
+  async getEmotionMessages(moodEntryId?: string, limit = 20): Promise<EmotionMessage[]> {
+    let messages = Array.from(this.emotionMessages.values());
+    
+    if (moodEntryId) {
+      messages = messages.filter(message => message.moodEntryId === moodEntryId);
+    }
+    
+    messages.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+    return messages.slice(0, limit);
+  }
+
+  async supportEmotionMessage(id: string): Promise<boolean> {
+    const message = this.emotionMessages.get(id);
+    if (!message) return false;
+    
+    message.supportCount += 1;
+    this.emotionMessages.set(id, message);
+    return true;
+  }
+
+  async getMusicRecommendations(moodType: string): Promise<MusicRecommendation[]> {
+    const recommendations = Array.from(this.musicRecommendations.values())
+      .filter(rec => rec.moodType === moodType && rec.isActive === 1)
+      .slice(0, 10);
+    return recommendations;
+  }
+
+  async createMusicRecommendation(insertRecommendation: InsertMusicRecommendation): Promise<MusicRecommendation> {
+    const id = randomUUID();
+    const recommendation: MusicRecommendation = {
+      id,
+      title: insertRecommendation.title,
+      artist: insertRecommendation.artist,
+      genre: insertRecommendation.genre || null,
+      moodType: insertRecommendation.moodType,
+      spotifyUrl: insertRecommendation.spotifyUrl || null,
+      youtubeUrl: insertRecommendation.youtubeUrl || null,
+      isActive: insertRecommendation.isActive || 1,
+    };
+    this.musicRecommendations.set(id, recommendation);
+    return recommendation;
   }
 }
 
