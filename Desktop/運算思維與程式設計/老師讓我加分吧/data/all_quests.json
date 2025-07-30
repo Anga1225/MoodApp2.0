@@ -1,0 +1,146 @@
+[
+  {
+    "qid": "Q1",
+    "name": "在凌晨 3 點成功上傳期中專案 zip 檔到 iLearning",
+    "success_rate": 65,
+    "reward": 350,
+    "type": "課業",
+    "flavor_text": "眼睛紅了，但 zip 檔有交。",
+    "fatigue_cost": 2
+  },
+  {
+    "qid": "Q2",
+    "name": "掃到 QR Code 並悄悄離開教室沒被教授發現",
+    "success_rate": 80,
+    "reward": 150,
+    "type": "生活",
+    "flavor_text": "大概以為你只是去廁所。",
+    "fatigue_cost": 0
+  },
+  {
+    "qid": "Q3",
+    "name": "熬夜做完三門課的 Project 初稿（還沒 Debug）",
+    "success_rate": 50,
+    "reward": 400,
+    "type": "課業",
+    "flavor_text": "目前 compile 是成功的就好。",
+    "fatigue_cost": 2
+  },
+  {
+    "qid": "Q4",
+    "name": "在組員已讀不回的情況下獨自完成報告並準時繳交",
+    "success_rate": 70,
+    "reward": 300,
+    "type": "社交",
+    "flavor_text": "你就是整組的 hope。",
+    "fatigue_cost": 2
+  },
+  {
+    "qid": "Q5",
+    "name": "一天內完成三份 iLearning 作業提交",
+    "success_rate": 45,
+    "reward": 450,
+    "type": "課業",
+    "flavor_text": "三份作業都剛好壓線成功，完全靠第六感。",
+    "fatigue_cost": 2
+  },
+  {
+    "qid": "Q6",
+    "name": "記得把 Google Meet 開會紀錄檔傳給沒來的組員",
+    "success_rate": 85,
+    "reward": 200,
+    "type": "社交",
+    "flavor_text": "你不說他們根本不會知道。",
+    "fatigue_cost": 1
+  },
+  {
+    "qid": "Q7",
+    "name": "在 11:59 成功提交作業",
+    "success_rate": 50,
+    "reward": 280,
+    "type": "課業",
+    "flavor_text": "你跟 iLearning 的時間差打了場心理戰。",
+    "fatigue_cost": 1
+  },
+  {
+    "qid": "Q8",
+    "name": "幫同學 Debug code 並順便抄回來",
+    "success_rate": 75,
+    "reward": 250,
+    "type": "社交",
+    "flavor_text": "雙贏局面，但你還是比較累。",
+    "fatigue_cost": 1
+  },
+  {
+    "qid": "Q9",
+    "name": "Lab 教材完全看不懂但仍然成功跑過測資",
+    "success_rate": 60,
+    "reward": 300,
+    "type": "課業",
+    "flavor_text": "強者我朋友",
+    "fatigue_cost": 1
+  },
+  {
+    "qid": "Q10",
+    "name": "同時處理三組專案的 Git pull request 沒出錯",
+    "success_rate": 40,
+    "reward": 500,
+    "type": "課業",
+    "flavor_text": "你開始質疑為什麼要當 Git master。",
+    "fatigue_cost": 2
+  },
+  {
+    "qid": "Q11",
+    "name": "期中週連續三晚睡不到 4 小時仍準時交作業",
+    "success_rate": 35,
+    "reward": 520,
+    "type": "生活",
+    "flavor_text": "你的人是醒著的，但心靈已經登出。",
+    "fatigue_cost": 3
+  },
+  {
+    "qid": "Q12",
+    "name": "偷偷躲過系上活動",
+    "success_rate": 90,
+    "reward": 100,
+    "type": "生活",
+    "flavor_text": "抓到系邊一枚。",
+    "fatigue_cost": 0
+  },
+  {
+    "qid": "Q13",
+    "name": "在報告死線前 1 小時壓線產出 10 頁 PPT",
+    "success_rate": 80,
+    "reward": 270,
+    "type": "課業",
+    "flavor_text": "DL 戰神。",
+    "fatigue_cost": 1
+  },
+  {
+    "qid": "Q14",
+    "name": "答應幫別組測試 code 結果意外變成主程式寫手",
+    "success_rate": 50,
+    "reward": 350,
+    "type": "社交",
+    "flavor_text": "你學會了下一次不要太熱心。",
+    "fatigue_cost": 2
+  },
+  {
+    "qid": "Q15",
+    "name": "使用 ChatGPT Claude Genimi 生出看起來像自己寫的心得文",
+    "success_rate": 70,
+    "reward": 220,
+    "type": "課業",
+    "flavor_text": "改改改，改成自己的語氣。",
+    "fatigue_cost": 0
+  },
+  {
+    "qid": "Q16",
+    "name": "通識分組抽到願意做事的同學",
+    "success_rate": 0.0001,
+    "reward": 400,
+    "type": "社交",
+    "flavor_text": "傳說中的神隊友，但你可能在作夢。",
+    "fatigue_cost": 0
+  }
+]
