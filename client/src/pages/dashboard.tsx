@@ -27,8 +27,8 @@ export default function Dashboard() {
 
   const handleStartColorTherapy = () => {
     toast({
-      title: "Color Therapy",
-      description: "Color therapy feature coming soon! For now, enjoy the breathing animation.",
+      title: "色彩療法",
+      description: "色彩療法功能即將推出！目前請享受呼吸動畫。",
     });
   };
 

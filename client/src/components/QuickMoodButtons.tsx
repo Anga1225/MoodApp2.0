@@ -49,19 +49,19 @@ export function QuickMoodButtons({
   onSaveAnonymous
 }: QuickMoodButtonsProps) {
   const moods = [
-    { id: 'happy' as const, emoji: '😊', label: 'Happy', chinese: '快樂', gradient: 'bg-gradient-to-br from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300' },
-    { id: 'sad' as const, emoji: '😢', label: 'Sad', chinese: '悲傷', gradient: 'bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300' },
-    { id: 'anxious' as const, emoji: '😰', label: 'Anxious', chinese: '焦慮', gradient: 'bg-gradient-to-br from-red-100 to-red-200 hover:from-red-200 hover:to-red-300' },
-    { id: 'calm' as const, emoji: '😌', label: 'Calm', chinese: '平靜', gradient: 'bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300' },
-    { id: 'excited' as const, emoji: '🤩', label: 'Excited', chinese: '興奮', gradient: 'bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300' },
-    { id: 'tired' as const, emoji: '😴', label: 'Tired', chinese: '疲憊', gradient: 'bg-gradient-to-br from-indigo-100 to-indigo-200 hover:from-indigo-200 hover:to-indigo-300' },
-    { id: 'angry' as const, emoji: '😠', label: 'Angry', chinese: '憤怒', gradient: 'bg-gradient-to-br from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300' },
-    { id: 'peaceful' as const, emoji: '🧘', label: 'Peaceful', chinese: '寧靜', gradient: 'bg-gradient-to-br from-teal-100 to-teal-200 hover:from-teal-200 hover:to-teal-300' }
+    { id: 'happy' as const, emoji: '😊', label: '快樂', chinese: '快樂', gradient: 'bg-gradient-to-br from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300' },
+    { id: 'sad' as const, emoji: '😢', label: '悲傷', chinese: '悲傷', gradient: 'bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300' },
+    { id: 'anxious' as const, emoji: '😰', label: '焦慮', chinese: '焦慮', gradient: 'bg-gradient-to-br from-red-100 to-red-200 hover:from-red-200 hover:to-red-300' },
+    { id: 'calm' as const, emoji: '😌', label: '平靜', chinese: '平靜', gradient: 'bg-gradient-to-br from-green-100 to-green-200 hover:from-green-200 hover:to-green-300' },
+    { id: 'excited' as const, emoji: '🤩', label: '興奮', chinese: '興奮', gradient: 'bg-gradient-to-br from-purple-100 to-purple-200 hover:from-purple-200 hover:to-purple-300' },
+    { id: 'tired' as const, emoji: '😴', label: '疲憊', chinese: '疲憊', gradient: 'bg-gradient-to-br from-indigo-100 to-indigo-200 hover:from-indigo-200 hover:to-indigo-300' },
+    { id: 'angry' as const, emoji: '😠', label: '憤怒', chinese: '憤怒', gradient: 'bg-gradient-to-br from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300' },
+    { id: 'peaceful' as const, emoji: '🧘', label: '寧靜', chinese: '寧靜', gradient: 'bg-gradient-to-br from-teal-100 to-teal-200 hover:from-teal-200 hover:to-teal-300' }
   ];
 
   return (
     <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-      <h3 className="text-xl font-bold text-gray-900 mb-6">Quick Mood Selection</h3>
+      <h3 className="text-xl font-bold text-gray-900 mb-6">快速心情選擇</h3>
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {moods.map((mood) => (
@@ -80,12 +80,12 @@ export function QuickMoodButtons({
       <div className="space-y-4">
         <div>
           <label className="text-sm font-medium text-gray-700 mb-2 block">
-            Notes (optional)
+            備註 (可選)
           </label>
           <Textarea
             value={notes}
             onChange={(e) => onNotesChange(e.target.value)}
-            placeholder="How are you feeling? What's on your mind?"
+            placeholder="您現在感覺如何？您在想什麼？"
             className="min-h-[80px]"
             disabled={disabled || isSaving}
           />

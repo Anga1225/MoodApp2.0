@@ -80,48 +80,48 @@ export function MoodSliders({
   return (
     <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">How are you feeling?</h2>
-        <p className="text-gray-600">Adjust the sliders to express your current mood</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">您現在感覺如何？</h2>
+        <p className="text-gray-600">調整滑塊來表達您當前的心情</p>
       </div>
       
       <div className="space-y-8">
         <MoodSlider
-          label="Happiness"
+          label="快樂度"
           value={happiness}
           onChange={onHappinessChange}
           icon="😊"
           color="yellow"
-          min="😢 Sad"
-          neutral="😐 Neutral"
-          max="😊 Happy"
+          min="😢 悲傷"
+          neutral="😐 普通"
+          max="😊 快樂"
           disabled={disabled}
         />
         
         <MoodSlider
-          label="Calmness"
+          label="平靜度"
           value={calmness}
           onChange={onCalmnessChange}
           icon="🧘"
           color="green"
-          min="🌪️ Anxious"
-          neutral="😑 Neutral"
-          max="🧘 Calm"
+          min="🌪️ 焦慮"
+          neutral="😑 普通"
+          max="🧘 平靜"
           disabled={disabled}
         />
       </div>
       
       <div className="mt-8 p-6 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-xl">
         <div className="text-center">
-          <p className="text-sm text-gray-600 mb-2">Current Mood</p>
+          <p className="text-sm text-gray-600 mb-2">當前心情</p>
           <p className="text-2xl font-bold text-gray-900">{currentMoodLabel}</p>
           <div className="mt-4 flex justify-center space-x-4">
             <div className="text-center">
               <div className="w-4 h-4 rounded-full bg-yellow-400 mx-auto mb-1"></div>
-              <p className="text-xs text-gray-600">Happiness: {happiness}%</p>
+              <p className="text-xs text-gray-600">快樂度: {happiness}%</p>
             </div>
             <div className="text-center">
               <div className="w-4 h-4 rounded-full bg-blue-400 mx-auto mb-1"></div>
-              <p className="text-xs text-gray-600">Calmness: {calmness}%</p>
+              <p className="text-xs text-gray-600">平靜度: {calmness}%</p>
             </div>
           </div>
         </div>

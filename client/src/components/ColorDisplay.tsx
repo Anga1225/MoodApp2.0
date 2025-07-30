@@ -11,7 +11,7 @@ interface ColorDisplayProps {
 export function ColorDisplay({ color, gradient, onStartTherapy }: ColorDisplayProps) {
   return (
     <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-      <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Your Mood Color</h3>
+      <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">您的心情色彩</h3>
       
       <div className="relative mb-6">
         <div 
@@ -38,7 +38,7 @@ export function ColorDisplay({ color, gradient, onStartTherapy }: ColorDisplayPr
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.01M15 10h1.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Start Color Therapy
+            開始色彩療法
           </Button>
         )}
       </div>

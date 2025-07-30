@@ -17,7 +17,7 @@ function MoodEntryItem({ entry }: MoodEntryItemProps) {
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-gray-900 truncate">
-          {entry.quickMood ? entry.quickMood.charAt(0).toUpperCase() + entry.quickMood.slice(1) : 'Custom Mood'}
+          {entry.quickMood ? entry.quickMood.charAt(0).toUpperCase() + entry.quickMood.slice(1) : '自定義心情'}
         </p>
         <p className="text-xs text-gray-600">
           {formatDistanceToNow(new Date(entry.timestamp), { addSuffix: true })}
@@ -44,11 +44,11 @@ export function MoodHistory({ onViewAll }: MoodHistoryProps) {
     return (
       <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Recent Moods</h3>
+          <h3 className="text-xl font-bold text-gray-900">最近的心情記錄</h3>
         </div>
         <div className="text-center py-8">
-          <p className="text-red-600 mb-2">Failed to load mood history</p>
-          <p className="text-sm text-gray-500">Please try again later</p>
+          <p className="text-red-600 mb-2">無法加載心情歷史記錄</p>
+          <p className="text-sm text-gray-500">請稍後重試</p>
         </div>
       </Card>
     );
@@ -57,14 +57,14 @@ export function MoodHistory({ onViewAll }: MoodHistoryProps) {
   return (
     <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-bold text-gray-900">Recent Moods</h3>
+        <h3 className="text-xl font-bold text-gray-900">最近的心情記錄</h3>
         {onViewAll && (
           <Button
             variant="ghost"
             onClick={onViewAll}
             className="text-primary hover:text-primary/80 font-medium text-sm"
           >
-            View All
+            查看全部
           </Button>
         )}
       </div>
@@ -84,8 +84,8 @@ export function MoodHistory({ onViewAll }: MoodHistoryProps) {
       ) : !recentMoods || recentMoods.length === 0 ? (
         <div className="text-center py-8">
           <div className="text-6xl mb-4">🎨</div>
-          <p className="text-gray-600 mb-2">No mood entries yet</p>
-          <p className="text-sm text-gray-500">Start tracking your mood to see your history here</p>
+          <p className="text-gray-600 mb-2">還沒有心情記錄</p>
+          <p className="text-sm text-gray-500">開始追蹤您的心情，記錄將顯示在這裡</p>
         </div>
       ) : (
         <div className="space-y-4">
