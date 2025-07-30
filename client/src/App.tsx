@@ -7,6 +7,7 @@ import Dashboard from "./pages/dashboard";
 import { HistoryPage } from "./pages/history";
 import { AnalyticsPage } from "./pages/analytics";
 import { ColorTherapyPage } from "./pages/color-therapy";
+import { TestPage } from "./pages/test";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/color-therapy">
         {() => <ColorTherapyPage onBack={() => window.history.back()} />}
       </Route>
+      <Route path="/test" component={TestPage} />
       <Route component={NotFound} />
     </Switch>
   );

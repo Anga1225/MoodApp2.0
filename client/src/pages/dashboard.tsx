@@ -28,14 +28,17 @@ export default function Dashboard() {
   const [, setLocation] = useLocation();
 
   const handleStartColorTherapy = () => {
-    setLocation('/color-therapy');
+    console.log('Navigating to color therapy...');
+    setLocation('/test');
   };
 
   const handleViewHistory = () => {
+    console.log('Navigating to history...');
     setLocation('/history');
   };
 
   const handleViewAnalytics = () => {
+    console.log('Navigating to analytics...');
     setLocation('/analytics');
   };
 
