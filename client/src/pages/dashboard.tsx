@@ -25,18 +25,18 @@ export default function Dashboard() {
   } = useMoodTracking();
 
   const { toast } = useToast();
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
 
   const handleStartColorTherapy = () => {
-    navigate('/color-therapy');
+    setLocation('/color-therapy');
   };
 
   const handleViewHistory = () => {
-    navigate('/history');
+    setLocation('/history');
   };
 
   const handleViewAnalytics = () => {
-    navigate('/analytics');
+    setLocation('/analytics');
   };
 
   const handleQuickMoodEntry = () => {
