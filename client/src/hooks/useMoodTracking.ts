@@ -102,14 +102,14 @@ export function useMoodTracking() {
 
 export function useMoodHistory(limit = 50) {
   return useQuery<MoodEntry[]>({
-    queryKey: ['/api/mood/entries', { limit }],
+    queryKey: ['/api/mood/entries', limit],
     staleTime: 30000, // 30 seconds
   });
 }
 
 export function useRecentMoods(limit = 10) {
   return useQuery<MoodEntry[]>({
-    queryKey: ['/api/mood/entries/recent', { limit }],
+    queryKey: ['/api/mood/entries/recent', limit],
     staleTime: 10000, // 10 seconds
   });
 }

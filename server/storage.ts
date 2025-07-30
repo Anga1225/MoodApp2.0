@@ -45,8 +45,17 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const now = new Date();
     const entry: MoodEntry = {
-      ...insertEntry,
       id,
+      userId: insertEntry.userId || null,
+      happiness: insertEntry.happiness,
+      calmness: insertEntry.calmness,
+      quickMood: insertEntry.quickMood || null,
+      colorHex: insertEntry.colorHex,
+      colorHsl: insertEntry.colorHsl,
+      hue: insertEntry.hue,
+      saturation: insertEntry.saturation,
+      lightness: insertEntry.lightness,
+      notes: insertEntry.notes || null,
       timestamp: now,
       createdAt: now,
     };
