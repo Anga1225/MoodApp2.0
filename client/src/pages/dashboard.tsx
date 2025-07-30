@@ -146,7 +146,7 @@ export default function Dashboard() {
             
             <MoodHistory onViewAll={handleViewHistory} />
             
-            <MusicRecommendations moodType={getCurrentMoodType()} />
+            <MusicRecommendations happiness={happiness} calmness={calmness} />
           </div>
         </div>
         

@@ -5,12 +5,14 @@ import { Play, ExternalLink, Music } from 'lucide-react';
 import type { MusicRecommendation } from '@shared/schema';
 
 interface MusicRecommendationsProps {
-  moodType: string;
+  happiness?: number;
+  calmness?: number;
+  moodType?: string;
 }
 
-export function MusicRecommendations({ moodType }: MusicRecommendationsProps) {
+export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }: MusicRecommendationsProps) {
   const { data: recommendations, isLoading } = useQuery<MusicRecommendation[]>({
-    queryKey: [`/api/music/recommendations?moodType=${moodType}`],
+    queryKey: [`/api/music/recommendations?happiness=${happiness}&calmness=${calmness}`],
     staleTime: 300000, // 5 minutes
   });
 
@@ -42,14 +44,16 @@ export function MusicRecommendations({ moodType }: MusicRecommendationsProps) {
       <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
         <Music className="w-5 h-5 text-primary" />
         音樂回音
-        <span className="text-sm font-normal text-gray-500 ml-2">發現相似心情的音樂</span>
+        <span className="text-sm font-normal text-gray-500 ml-2">
+          為您推薦 {happiness >= 70 ? '快樂' : happiness >= 40 ? '平和' : '舒緩'}心情音樂
+        </span>
       </h3>
       
       {!recommendations || recommendations.length === 0 ? (
         <div className="text-center py-8">
           <div className="text-6xl mb-4">🎵</div>
-          <p className="text-gray-600 mb-2">暫無音樂推薦</p>
-          <p className="text-sm text-gray-500">根據您的心情，我們會推薦合適的音樂</p>
+          <p className="text-gray-600 mb-2">正在為您尋找合適的音樂...</p>
+          <p className="text-sm text-gray-500">調整心情滑桿來獲得更精準的音樂推薦</p>
         </div>
       ) : (
         <div className="space-y-4">

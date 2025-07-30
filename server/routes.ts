@@ -179,9 +179,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Music recommendation routes
   app.get("/api/music/recommendations", async (req, res) => {
     try {
-      const moodType = req.query.moodType as string || "happy";
+      const happiness = parseFloat(req.query.happiness as string) || 50;
+      const calmness = parseFloat(req.query.calmness as string) || 50;
+      
+      // Smart mood type determination based on happiness and calmness levels
+      let moodType = "happy";
+      if (happiness >= 70 && calmness >= 70) {
+        moodType = "peaceful";
+      } else if (happiness >= 60) {
+        moodType = "happy";
+      } else if (happiness < 40 && calmness < 40) {
+        moodType = "anxious";
+      } else if (happiness < 40) {
+        moodType = "sad";
+      } else if (calmness >= 70) {
+        moodType = "calm";
+      }
+      
       const recommendations = await storage.getMusicRecommendations(moodType);
-      res.json(recommendations);
+      
+      // If no specific recommendations found, get mixed recommendations
+      if (recommendations.length === 0) {
+        const fallbackTypes = ["happy", "calm", "peaceful"];
+        const allRecommendations = await Promise.all(
+          fallbackTypes.map(type => storage.getMusicRecommendations(type))
+        );
+        const mixed = allRecommendations.flat().slice(0, 5);
+        res.json(mixed);
+      } else {
+        res.json(recommendations);
+      }
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch music recommendations" });
     }

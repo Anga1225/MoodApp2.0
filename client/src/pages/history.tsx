@@ -97,10 +97,10 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {/* Filters Sidebar */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="p-6">
+          <div className="xl:col-span-1 space-y-6">
+            <Card className="p-4 lg:p-6">
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Filter className="w-4 h-4" />
                 篩選條件
@@ -109,18 +109,20 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
               {/* Date Filter */}
               <div className="space-y-3">
                 <label className="text-sm font-medium text-gray-700">選擇日期</label>
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  className="rounded-md border"
-                />
+                <div className="w-full overflow-hidden">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    className="w-full scale-90 origin-top-left"
+                  />
+                </div>
                 {selectedDate && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setSelectedDate(undefined)}
-                    className="w-full"
+                    className="w-full mt-2"
                   >
                     清除日期篩選
                   </Button>
@@ -188,7 +190,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
           </div>
 
           {/* Mood History List */}
-          <div className="lg:col-span-3">
+          <div className="xl:col-span-3">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-bold text-gray-900">心情記錄</h3>
