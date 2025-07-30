@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   const handleStartColorTherapy = () => {
     console.log('Navigating to color therapy...');
-    setLocation('/test');
+    setLocation('/color-therapy');
   };
 
   const handleViewHistory = () => {
@@ -78,10 +78,25 @@ export default function Dashboard() {
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#dashboard" className="text-primary font-medium border-b-2 border-primary pb-1">Dashboard</a>
-              <a href="#history" className="text-gray-600 hover:text-primary transition-colors">History</a>
-              <a href="#analytics" className="text-gray-600 hover:text-primary transition-colors">Analytics</a>
-              <a href="#therapy" className="text-gray-600 hover:text-primary transition-colors">Color Therapy</a>
+              <button className="text-primary font-medium border-b-2 border-primary pb-1">Dashboard</button>
+              <button 
+                onClick={handleViewHistory}
+                className="text-gray-600 hover:text-primary transition-colors"
+              >
+                History
+              </button>
+              <button 
+                onClick={handleViewAnalytics}
+                className="text-gray-600 hover:text-primary transition-colors"
+              >
+                Analytics
+              </button>
+              <button 
+                onClick={handleStartColorTherapy}
+                className="text-gray-600 hover:text-primary transition-colors"
+              >
+                Color Therapy
+              </button>
             </nav>
             
             <div className="flex items-center space-x-4">
