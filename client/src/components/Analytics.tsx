@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useMoodAnalytics } from '@/hooks/useMoodTracking';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 interface TrendChartProps {
   data?: any;
@@ -19,21 +20,62 @@ function TrendChart({ data, isLoading }: TrendChartProps) {
     );
   }
 
+  if (!data || !data.trends || data.trends.length === 0) {
+    return (
+      <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center relative overflow-hidden">
+        <div className="text-center z-10">
+          <svg className="w-16 h-16 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          <p className="text-gray-600 font-medium">暫無趨勢數據</p>
+          <p className="text-xs text-gray-500">記錄更多心情來查看趨勢圖表</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="h-64 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20">
-        <svg viewBox="0 0 400 200" className="w-full h-full">
-          <path d="M0,150 Q100,120 200,100 T400,80" stroke="hsl(247, 84%, 75%)" strokeWidth="3" fill="none" className="opacity-60"/>
-          <path d="M0,180 Q100,160 200,140 T400,120" stroke="hsl(267, 47%, 65%)" strokeWidth="3" fill="none" className="opacity-60"/>
-        </svg>
-      </div>
-      <div className="text-center z-10">
-        <svg className="w-16 h-16 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-        </svg>
-        <p className="text-gray-600 font-medium">心情趨勢圖表</p>
-        <p className="text-xs text-gray-500">互動式視覺化</p>
-      </div>
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data.trends} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+          <XAxis 
+            dataKey="date" 
+            tick={{ fontSize: 12 }} 
+            tickLine={{ stroke: '#6B7280' }}
+          />
+          <YAxis 
+            domain={[0, 100]} 
+            tick={{ fontSize: 12 }}
+            tickLine={{ stroke: '#6B7280' }}
+          />
+          <Tooltip 
+            contentStyle={{
+              backgroundColor: 'white',
+              border: '1px solid #E5E7EB',
+              borderRadius: '8px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}
+            labelStyle={{ color: '#374151', fontWeight: 'bold' }}
+          />
+          <Line 
+            type="monotone" 
+            dataKey="happiness" 
+            stroke="#8B5CF6" 
+            strokeWidth={3}
+            dot={{ fill: '#8B5CF6', strokeWidth: 2, r: 4 }}
+            name="快樂度"
+          />
+          <Line 
+            type="monotone" 
+            dataKey="calmness" 
+            stroke="#06B6D4" 
+            strokeWidth={3}
+            dot={{ fill: '#06B6D4', strokeWidth: 2, r: 4 }}
+            name="平靜度"
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 }

@@ -17,32 +17,46 @@ export function AnalyticsPage({ onBack }: AnalyticsPageProps) {
   const { data: moodHistory = [], isLoading: historyLoading } = useMoodHistory(100);
   const { data: analytics, isLoading: analyticsLoading } = useMoodAnalytics();
 
-  // Prepare trend data for the last 30 days
-  const last30Days = eachDayOfInterval({
-    start: subDays(new Date(), 29),
-    end: new Date()
-  });
+  // Use analytics data trends if available, otherwise prepare from mood history
+  let trendData = [];
+  
+  if (analytics && typeof analytics === 'object' && 'trends' in analytics && (analytics as any).trends) {
+    // Format analytics trends data for display
+    trendData = (analytics as any).trends.slice(0, 30).map((trend: any, index: number) => ({
+      date: format(new Date(trend.date), 'MM/dd'),
+      fullDate: format(new Date(trend.date), 'yyyy-MM-dd'),
+      happiness: trend.happiness,
+      calmness: trend.calmness,
+      count: 1
+    })).reverse(); // Reverse to show oldest first
+  } else {
+    // Fallback: prepare trend data from mood history for the last 30 days
+    const last30Days = eachDayOfInterval({
+      start: subDays(new Date(), 29),
+      end: new Date()
+    });
 
-  const trendData = last30Days.map(date => {
-    const dayMoods = moodHistory.filter(mood => 
-      isSameDay(new Date(mood.timestamp), date)
-    );
-    
-    const avgHappiness = dayMoods.length > 0 
-      ? dayMoods.reduce((sum, mood) => sum + mood.happiness, 0) / dayMoods.length 
-      : null;
-    const avgCalmness = dayMoods.length > 0 
-      ? dayMoods.reduce((sum, mood) => sum + mood.calmness, 0) / dayMoods.length 
-      : null;
+    trendData = last30Days.map(date => {
+      const dayMoods = moodHistory.filter(mood => 
+        isSameDay(new Date(mood.timestamp), date)
+      );
+      
+      const avgHappiness = dayMoods.length > 0 
+        ? dayMoods.reduce((sum, mood) => sum + mood.happiness, 0) / dayMoods.length 
+        : null;
+      const avgCalmness = dayMoods.length > 0 
+        ? dayMoods.reduce((sum, mood) => sum + mood.calmness, 0) / dayMoods.length 
+        : null;
 
-    return {
-      date: format(date, 'MM/dd'),
-      fullDate: format(date, 'yyyy-MM-dd'),
-      happiness: avgHappiness ? Math.round(avgHappiness) : null,
-      calmness: avgCalmness ? Math.round(avgCalmness) : null,
-      count: dayMoods.length
-    };
-  });
+      return {
+        date: format(date, 'MM/dd'),
+        fullDate: format(date, 'yyyy-MM-dd'),
+        happiness: avgHappiness ? Math.round(avgHappiness) : null,
+        calmness: avgCalmness ? Math.round(avgCalmness) : null,
+        count: dayMoods.length
+      };
+    });
+  }
 
   // Prepare mood distribution data
   const moodDistribution = moodHistory.reduce((acc: Record<string, number>, mood) => {
@@ -180,41 +194,66 @@ export function AnalyticsPage({ onBack }: AnalyticsPageProps) {
 
           <TabsContent value="trends">
             <Card className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">30天心情趨勢</h3>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={trendData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip 
-                      labelFormatter={(label) => `日期: ${label}`}
-                      formatter={(value: number, name: string) => [
-                        value ? `${value}分` : '無數據', 
-                        name === 'happiness' ? '快樂度' : '平靜度'
-                      ]}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="happiness" 
-                      stackId="1" 
-                      stroke="#8884d8" 
-                      fill="#8884d8" 
-                      fillOpacity={0.6}
-                      connectNulls={false}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="calmness" 
-                      stackId="2" 
-                      stroke="#82ca9d" 
-                      fill="#82ca9d" 
-                      fillOpacity={0.6}
-                      connectNulls={false}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-6">心情趨勢分析</h3>
+              {trendData.length === 0 ? (
+                <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
+                  <div className="text-center">
+                    <div className="text-4xl mb-4 text-gray-400">📊</div>
+                    <p className="text-gray-600 font-medium">暫無趨勢數據</p>
+                    <p className="text-sm text-gray-500 mt-2">記錄更多心情來查看趨勢圖表</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={trendData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                      <XAxis 
+                        dataKey="date" 
+                        tick={{ fontSize: 12 }} 
+                        tickLine={{ stroke: '#6B7280' }}
+                      />
+                      <YAxis 
+                        domain={[0, 100]} 
+                        tick={{ fontSize: 12 }}
+                        tickLine={{ stroke: '#6B7280' }}
+                      />
+                      <Tooltip 
+                        contentStyle={{
+                          backgroundColor: 'white',
+                          border: '1px solid #E5E7EB',
+                          borderRadius: '8px',
+                          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                        }}
+                        labelStyle={{ color: '#374151', fontWeight: 'bold' }}
+                        labelFormatter={(label) => `日期: ${label}`}
+                        formatter={(value: number, name: string) => [
+                          value ? `${value}分` : '無數據', 
+                          name === 'happiness' ? '快樂度' : '平靜度'
+                        ]}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="happiness" 
+                        stroke="#8B5CF6" 
+                        strokeWidth={3}
+                        dot={{ fill: '#8B5CF6', strokeWidth: 2, r: 4 }}
+                        name="happiness"
+                        connectNulls={false}
+                      />
+                      <Line 
+                        type="monotone" 
+                        dataKey="calmness" 
+                        stroke="#06B6D4" 
+                        strokeWidth={3}
+                        dot={{ fill: '#06B6D4', strokeWidth: 2, r: 4 }}
+                        name="calmness"
+                        connectNulls={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
             </Card>
           </TabsContent>
 
