@@ -1,7 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertMoodEntrySchema, type MoodEntry } from "@shared/schema";
+import { 
+  insertMoodEntrySchema, insertEmotionMessageSchema, insertMusicRecommendationSchema,
+  type MoodEntry, type EmotionMessage, type MusicRecommendation 
+} from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -120,6 +123,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       res.status(500).json({ message: "Failed to generate analytics" });
+    }
+  });
+
+  // Global emotion wall routes
+  app.get("/api/emotions/global", async (req, res) => {
+    try {
+      const limit = parseInt(req.query.limit as string) || 20;
+      const entries = await storage.getGlobalMoodEntries(limit);
+      res.json(entries);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch global emotions" });
+    }
+  });
+
+  // Emotion messages routes
+  app.post("/api/emotions/messages", async (req, res) => {
+    try {
+      const messageData = insertEmotionMessageSchema.parse(req.body);
+      const message = await storage.createEmotionMessage(messageData);
+      res.json(message);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid message data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create emotion message" });
+      }
+    }
+  });
+
+  app.get("/api/emotions/messages", async (req, res) => {
+    try {
+      const moodEntryId = req.query.moodEntryId as string;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const messages = await storage.getEmotionMessages(moodEntryId, limit);
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch emotion messages" });
+    }
+  });
+
+  app.post("/api/emotions/messages/:id/support", async (req, res) => {
+    try {
+      const success = await storage.supportEmotionMessage(req.params.id);
+      if (!success) {
+        res.status(404).json({ message: "Message not found" });
+        return;
+      }
+      res.json({ message: "Support added successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add support" });
+    }
+  });
+
+  // Music recommendation routes
+  app.get("/api/music/recommendations", async (req, res) => {
+    try {
+      const moodType = req.query.moodType as string || "happy";
+      const recommendations = await storage.getMusicRecommendations(moodType);
+      res.json(recommendations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch music recommendations" });
+    }
+  });
+
+  app.post("/api/music/recommendations", async (req, res) => {
+    try {
+      const recommendationData = insertMusicRecommendationSchema.parse(req.body);
+      const recommendation = await storage.createMusicRecommendation(recommendationData);
+      res.json(recommendation);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid recommendation data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create music recommendation" });
+      }
     }
   });
 

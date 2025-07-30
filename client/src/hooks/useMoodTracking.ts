@@ -57,7 +57,10 @@ export function useMoodTracking() {
         lightness: color.lightness,
         notes: notes || undefined,
         userId: undefined, // For MVP, not using user auth
-        quickMood: undefined,
+        quickMood: data.quickMood || undefined,
+        isAnonymous: data.isAnonymous || 0,
+        country: undefined,
+        city: undefined,
         ...data
       };
       
@@ -83,8 +86,8 @@ export function useMoodTracking() {
     }
   });
 
-  const saveMoodEntry = useCallback((quickMood?: string) => {
-    saveMoodMutation.mutate({ quickMood });
+  const saveMoodEntry = useCallback((quickMood?: string, isAnonymous = false) => {
+    saveMoodMutation.mutate({ quickMood, isAnonymous: isAnonymous ? 1 : 0 });
   }, [saveMoodMutation]);
 
   return {

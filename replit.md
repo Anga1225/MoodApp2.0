@@ -2,7 +2,7 @@
 
 ## Overview
 
-MoodTune is a modern mood tracking web application built with React frontend, Express backend, and PostgreSQL database. The application allows users to track their emotional states through interactive mood sliders and quick mood buttons, visualize their mood through dynamic color representations, and analyze their mood patterns over time.
+MoodTune 2.0 is a comprehensive mood tracking web application with social features, built with React frontend, Express backend, and PostgreSQL database. The application combines personal mood tracking with community interaction, offering dual-axis mood tracking, music recommendations, real-time global emotion sharing, anonymous messaging system, and community statistics. Users can track emotions, discover music based on mood, connect with others globally, and access mood analytics with color therapy visualization.
 
 ## User Preferences
 
@@ -38,15 +38,21 @@ Preferred communication style: Simple, everyday language.
 
 ### Frontend Components
 1. **MoodSlider**: Interactive sliders for happiness and calmness levels (0-100 scale)
-2. **QuickMoodButtons**: Preset mood buttons with emoji representations
+2. **QuickMoodButtons**: Preset mood buttons with emoji representations and anonymous sharing option
 3. **ColorDisplay**: Dynamic color visualization based on mood with breathing animation
 4. **MoodHistory**: Recent mood entries display with timestamps
 5. **Analytics**: Mood trend visualization and statistics
+6. **MusicRecommendations**: Mood-based music suggestions with Spotify/YouTube links
+7. **GlobalEmotionWall**: Real-time global mood sharing and community interaction
+8. **EmotionStatistics**: Community engagement metrics and connection statistics
 
 ### Backend Services
-1. **Storage Layer**: Abstracted storage interface supporting both in-memory and database persistence
-2. **Mood Entry Management**: CRUD operations for mood tracking data
-3. **API Routes**: RESTful endpoints for mood entry operations
+1. **Storage Layer**: PostgreSQL database with Drizzle ORM for persistent data storage
+2. **Mood Entry Management**: CRUD operations for mood tracking data with anonymous sharing
+3. **Music Recommendation System**: Mood-based song suggestions with external music platform links
+4. **Global Emotion Wall**: Community mood sharing and interaction features
+5. **Anonymous Messaging**: Support message system with engagement tracking
+6. **API Routes**: RESTful endpoints for all application operations
 
 ### Data Models
 - **User**: Basic user information with username/password
@@ -55,6 +61,16 @@ Preferred communication style: Simple, everyday language.
   - Color representation (hex, HSL, HSL components)
   - Optional quick mood selection
   - Notes and timestamps
+  - Anonymous sharing capability
+  - Geographic location (country/city)
+- **EmotionMessage**: Anonymous support messages with:
+  - Message content and timestamps
+  - Support/like count tracking
+  - Mood entry associations
+- **MusicRecommendation**: Music suggestions with:
+  - Track and artist information
+  - Genre and mood type classification
+  - External platform links (Spotify, YouTube)
 
 ## Data Flow
 
@@ -64,6 +80,9 @@ Preferred communication style: Simple, everyday language.
 4. **Data Persistence**: Mood entries saved to database with full color and mood metadata
 5. **History Display**: Recent entries retrieved and displayed with visual indicators
 6. **Analytics**: Aggregated mood data presented through charts and trends
+7. **Music Discovery**: Mood-based music recommendations with external links
+8. **Community Sharing**: Anonymous mood sharing to global emotion wall
+9. **Support System**: Anonymous messaging with community engagement tracking
 
 ### Color Algorithm
 The application uses a sophisticated mood-to-color mapping:

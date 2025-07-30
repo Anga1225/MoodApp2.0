@@ -36,6 +36,7 @@ interface QuickMoodButtonsProps {
   onNotesChange: (notes: string) => void;
   isSaving?: boolean;
   disabled?: boolean;
+  onSaveAnonymous?: () => void;
 }
 
 export function QuickMoodButtons({ 
@@ -44,7 +45,8 @@ export function QuickMoodButtons({
   notes, 
   onNotesChange, 
   isSaving = false,
-  disabled = false 
+  disabled = false,
+  onSaveAnonymous
 }: QuickMoodButtonsProps) {
   const moods = [
     { id: 'happy' as const, emoji: '😊', label: 'Happy', chinese: '快樂', gradient: 'bg-gradient-to-br from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300' },
@@ -89,25 +91,41 @@ export function QuickMoodButtons({
           />
         </div>
 
-        <Button
-          onClick={onSave}
-          disabled={disabled || isSaving}
-          className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02]"
-        >
-          {isSaving ? (
-            <>
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-              Saving...
-            </>
-          ) : (
-            <>
+        <div className="grid grid-cols-1 gap-3">
+          <Button
+            onClick={onSave}
+            disabled={disabled || isSaving}
+            className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02]"
+          >
+            {isSaving ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                儲存中...
+              </>
+            ) : (
+              <>
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                儲存心情記錄
+              </>
+            )}
+          </Button>
+          
+          {onSaveAnonymous && (
+            <Button
+              onClick={onSaveAnonymous}
+              disabled={disabled || isSaving}
+              variant="outline"
+              className="w-full border-2 border-pink-300 text-pink-600 hover:bg-pink-50 hover:border-pink-400 font-semibold py-4 px-6 rounded-xl transition-all duration-300"
+            >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Save Mood Entry
-            </>
+              匿名分享到全球情緒牆
+            </Button>
           )}
-        </Button>
+        </div>
       </div>
     </Card>
   );

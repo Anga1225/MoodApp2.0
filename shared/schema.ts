@@ -21,8 +21,31 @@ export const moodEntries = pgTable("mood_entries", {
   saturation: real("saturation").notNull(),
   lightness: real("lightness").notNull(),
   notes: text("notes"),
+  isAnonymous: integer("is_anonymous").default(0).notNull(), // 0 or 1
+  country: text("country"),
+  city: text("city"),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const emotionMessages = pgTable("emotion_messages", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  moodEntryId: varchar("mood_entry_id").references(() => moodEntries.id),
+  message: text("message").notNull(),
+  isAnonymous: integer("is_anonymous").default(1).notNull(),
+  supportCount: integer("support_count").default(0).notNull(),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const musicRecommendations = pgTable("music_recommendations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  artist: text("artist").notNull(),
+  genre: text("genre"),
+  moodType: text("mood_type").notNull(), // happy, sad, calm, etc.
+  spotifyUrl: text("spotify_url"),
+  youtubeUrl: text("youtube_url"),
+  isActive: integer("is_active").default(1).notNull(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -39,7 +62,21 @@ export const insertMoodEntrySchema = createInsertSchema(moodEntries).omit({
   calmness: z.number().min(0).max(100),
 });
 
+export const insertEmotionMessageSchema = createInsertSchema(emotionMessages).omit({
+  id: true,
+  timestamp: true,
+  supportCount: true,
+});
+
+export const insertMusicRecommendationSchema = createInsertSchema(musicRecommendations).omit({
+  id: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type MoodEntry = typeof moodEntries.$inferSelect;
 export type InsertMoodEntry = z.infer<typeof insertMoodEntrySchema>;
+export type EmotionMessage = typeof emotionMessages.$inferSelect;
+export type InsertEmotionMessage = z.infer<typeof insertEmotionMessageSchema>;
+export type MusicRecommendation = typeof musicRecommendations.$inferSelect;
+export type InsertMusicRecommendation = z.infer<typeof insertMusicRecommendationSchema>;

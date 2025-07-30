@@ -1,6 +1,11 @@
-import { users, moodEntries, type User, type InsertUser, type MoodEntry, type InsertMoodEntry } from "@shared/schema";
+import { 
+  users, moodEntries, emotionMessages, musicRecommendations,
+  type User, type InsertUser, type MoodEntry, type InsertMoodEntry,
+  type EmotionMessage, type InsertEmotionMessage,
+  type MusicRecommendation, type InsertMusicRecommendation
+} from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql, and } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -15,6 +20,16 @@ export interface IStorage {
   updateMoodEntry(id: string, entry: Partial<InsertMoodEntry>): Promise<MoodEntry | undefined>;
   deleteMoodEntry(id: string): Promise<boolean>;
   getRecentMoodEntries(userId?: string, limit?: number): Promise<MoodEntry[]>;
+  getGlobalMoodEntries(limit?: number): Promise<MoodEntry[]>;
+  
+  // Emotion messages operations
+  createEmotionMessage(message: InsertEmotionMessage): Promise<EmotionMessage>;
+  getEmotionMessages(moodEntryId?: string, limit?: number): Promise<EmotionMessage[]>;
+  supportEmotionMessage(id: string): Promise<boolean>;
+  
+  // Music recommendations operations
+  getMusicRecommendations(moodType: string): Promise<MusicRecommendation[]>;
+  createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation>;
 }
 
 export class MemStorage implements IStorage {
@@ -169,6 +184,73 @@ export class DatabaseStorage implements IStorage {
 
   async getRecentMoodEntries(userId?: string, limit = 10): Promise<MoodEntry[]> {
     return this.getMoodEntries(userId, limit, 0);
+  }
+
+  async getGlobalMoodEntries(limit = 50): Promise<MoodEntry[]> {
+    const entries = await db
+      .select()
+      .from(moodEntries)
+      .where(eq(moodEntries.isAnonymous, 1))
+      .orderBy(desc(moodEntries.timestamp))
+      .limit(limit);
+    return entries;
+  }
+
+  async createEmotionMessage(insertMessage: InsertEmotionMessage): Promise<EmotionMessage> {
+    const [message] = await db
+      .insert(emotionMessages)
+      .values(insertMessage)
+      .returning();
+    return message;
+  }
+
+  async getEmotionMessages(moodEntryId?: string, limit = 20): Promise<EmotionMessage[]> {
+    if (moodEntryId) {
+      const messages = await db
+        .select()
+        .from(emotionMessages)
+        .where(eq(emotionMessages.moodEntryId, moodEntryId))
+        .orderBy(desc(emotionMessages.timestamp))
+        .limit(limit);
+      return messages;
+    } else {
+      const messages = await db
+        .select()
+        .from(emotionMessages)
+        .orderBy(desc(emotionMessages.timestamp))
+        .limit(limit);
+      return messages;
+    }
+  }
+
+  async supportEmotionMessage(id: string): Promise<boolean> {
+    const result = await db
+      .update(emotionMessages)
+      .set({
+        supportCount: sql`${emotionMessages.supportCount} + 1`
+      })
+      .where(eq(emotionMessages.id, id));
+    return (result as any).rowCount > 0;
+  }
+
+  async getMusicRecommendations(moodType: string): Promise<MusicRecommendation[]> {
+    const recommendations = await db
+      .select()
+      .from(musicRecommendations)
+      .where(and(
+        eq(musicRecommendations.moodType, moodType),
+        eq(musicRecommendations.isActive, 1)
+      ))
+      .limit(10);
+    return recommendations;
+  }
+
+  async createMusicRecommendation(insertRecommendation: InsertMusicRecommendation): Promise<MusicRecommendation> {
+    const [recommendation] = await db
+      .insert(musicRecommendations)
+      .values(insertRecommendation)
+      .returning();
+    return recommendation;
   }
 }
 

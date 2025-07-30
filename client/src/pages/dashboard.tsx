@@ -5,6 +5,8 @@ import { QuickMoodButtons } from '@/components/QuickMoodButtons';
 import { ColorDisplay } from '@/components/ColorDisplay';
 import { MoodHistory } from '@/components/MoodHistory';
 import { Analytics } from '@/components/Analytics';
+import { MusicRecommendations } from '@/components/MusicRecommendations';
+import { GlobalEmotionWall, EmotionStatistics } from '@/components/GlobalEmotionWall';
 import { useMoodTracking } from '@/hooks/useMoodTracking';
 import { useToast } from '@/hooks/use-toast';
 
@@ -32,6 +34,19 @@ export default function Dashboard() {
 
   const handleQuickMoodEntry = () => {
     saveMoodEntry();
+  };
+
+  const handleAnonymousMoodEntry = () => {
+    saveMoodEntry(undefined, true);
+  };
+
+  const getCurrentMoodType = () => {
+    if (happiness >= 70 && calmness >= 70) return "peaceful";
+    if (happiness >= 70) return "happy";
+    if (happiness < 40 && calmness < 40) return "anxious";
+    if (happiness < 40) return "sad";
+    if (calmness >= 70) return "calm";
+    return "happy";
   };
 
   return (
@@ -89,6 +104,7 @@ export default function Dashboard() {
             <QuickMoodButtons
               onMoodSelect={selectQuickMood}
               onSave={() => saveMoodEntry()}
+              onSaveAnonymous={handleAnonymousMoodEntry}
               notes={notes}
               onNotesChange={setNotes}
               isSaving={isSaving}
@@ -104,12 +120,18 @@ export default function Dashboard() {
             />
             
             <MoodHistory />
+            
+            <MusicRecommendations moodType={getCurrentMoodType()} />
           </div>
         </div>
         
-        {/* Bottom Section: Analytics Dashboard */}
-        <div className="mt-8">
+        {/* Bottom Section: Analytics and Global Features */}
+        <div className="mt-8 space-y-8">
           <Analytics />
+          
+          <GlobalEmotionWall />
+          
+          <EmotionStatistics />
         </div>
       </main>
       
