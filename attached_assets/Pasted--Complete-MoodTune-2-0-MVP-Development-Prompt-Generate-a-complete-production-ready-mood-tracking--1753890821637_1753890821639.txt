@@ -1,0 +1,592 @@
+# Complete MoodTune 2.0 MVP Development Prompt
+
+Generate a complete, production-ready mood tracking web application using **React + FastAPI + MongoDB** stack. Focus on creating an exceptional user experience with interactive mood tracking and real-time visual feedback.
+
+## 🎯 Core MVP Features
+
+### Primary Focus: Interactive Mood Tracking System
+
+Create a sophisticated mood tracking interface that provides immediate visual feedback and emotional insights without changing the background color.
+
+## 🏗️ Technical Architecture
+
+### Frontend: React Application
+
+```javascript
+// Project Structure
+moodtune-frontend/
+├── src/
+│   ├── components/
+│   │   ├── MoodSlider/
+│   │   │   ├── MoodSlider.jsx
+│   │   │   ├── MoodSlider.css
+│   │   │   └── index.js
+│   │   ├── QuickMoodButtons/
+│   │   │   ├── QuickMoodButtons.jsx
+│   │   │   ├── MoodButton.jsx
+│   │   │   └── QuickMoodButtons.css
+│   │   ├── ColorDisplay/
+│   │   │   ├── ColorDisplay.jsx
+│   │   │   ├── ColorBreathing.jsx
+│   │   │   └── ColorDisplay.css
+│   │   ├── MoodHistory/
+│   │   │   ├── MoodHistory.jsx
+│   │   │   ├── MoodEntry.jsx
+│   │   │   └── MoodHistory.css
+│   │   ├── Analytics/
+│   │   │   ├── MoodChart.jsx
+│   │   │   ├── TrendAnalysis.jsx
+│   │   │   └── Analytics.css
+│   │   └── Layout/
+│   │       ├── Header.jsx
+│   │       ├── Navigation.jsx
+│   │       └── Layout.css
+│   ├── hooks/
+│   │   ├── useMoodTracking.js
+│   │   ├── useColorTherapy.js
+│   │   ├── useMoodHistory.js
+│   │   └── useAPI.js
+│   ├── contexts/
+│   │   ├── MoodContext.jsx
+│   │   └── UserContext.jsx
+│   ├── utils/
+│   │   ├── colorAlgorithms.js
+│   │   ├── moodCalculations.js
+│   │   ├── dateHelpers.js
+│   │   └── constants.js
+│   ├── services/
+│   │   ├── api.js
+│   │   └── moodService.js
+│   └── styles/
+│       ├── globals.css
+│       ├── variables.css
+│       └── animations.css
+```
+
+### Backend: FastAPI Application
+
+```python
+# Project Structure
+moodtune-backend/
+├── app/
+│   ├── main.py
+│   ├── database.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── mood.py
+│   │   ├── user.py
+│   │   └── analytics.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── mood.py
+│   │   ├── analytics.py
+│   │   └── auth.py
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── mood_service.py
+│   │   ├── analytics_service.py
+│   │   └── color_service.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── mood_calculations.py
+│       └── color_algorithms.py
+├── requirements.txt
+└── .env
+```
+
+
+### Responsive Design
+
+```css
+/* Mobile-first responsive breakpoints */
+@media (max-width: 768px) {
+  .main-grid { grid-template-columns: 1fr; }
+  .mood-buttons { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .main-grid { grid-template-columns: 1fr 1fr; }
+  .mood-buttons { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (min-width: 1025px) {
+  .main-grid { grid-template-columns: repeat(3, 1fr); }
+  .mood-buttons { grid-template-columns: repeat(4, 1fr); }
+}
+```
+
+## 🔧 Core Component Specifications
+
+### 1. Dual-Axis Mood Sliders
+
+```javascript
+// MoodSlider Component Requirements
+const MoodSlider = () => {
+  // Features to implement:
+  // - Smooth dragging with real-time updates
+  // - Custom thumb design with gradient
+  // - Hover effects with scale animation
+  // - Value display with descriptive text
+  // - Color-coded slider tracks
+  // - Accessibility support (keyboard navigation)
+  
+  const [happiness, setHappiness] = useState(50);
+  const [calmness, setCalmness] = useState(50);
+  
+  // Real-time mood calculation
+  const currentMood = useMemo(() => 
+    calculateMoodState(happiness, calmness), [happiness, calmness]
+  );
+  
+  // Smooth value updates with debouncing
+  const debouncedUpdate = useCallback(
+    debounce((happy, calm) => updateMoodColor(happy, calm), 100),
+    []
+  );
+  
+  return (
+    // Implement smooth, responsive sliders with animations
+  );
+};
+```
+
+### 2. Quick Mood Buttons
+
+```javascript
+// QuickMoodButtons Component Requirements
+const QuickMoodButtons = ({ onMoodSelect }) => {
+  const moods = [
+    { id: 'happy', emoji: '😊', label: '快樂', values: { happy: 80, calm: 70 } },
+    { id: 'sad', emoji: '😢', label: '悲傷', values: { happy: 20, calm: 40 } },
+    { id: 'anxious', emoji: '😰', label: '焦慮', values: { happy: 30, calm: 15 } },
+    { id: 'calm', emoji: '😌', label: '平靜', values: { happy: 60, calm: 85 } },
+    { id: 'excited', emoji: '🤩', label: '興奮', values: { happy: 90, calm: 60 } },
+    { id: 'tired', emoji: '😴', label: '疲憊', values: { happy: 30, calm: 80 } },
+    { id: 'angry', emoji: '😠', label: '憤怒', values: { happy: 25, calm: 20 } },
+    { id: 'peaceful', emoji: '🧘', label: '寧靜', values: { happy: 70, calm: 90 } }
+  ];
+  
+  // Features to implement:
+  // - Animated button interactions
+  // - Active state management
+  // - Shimmer effects on hover
+  // - Automatic slider adjustment
+  // - Ripple effect on click
+  
+  return (
+    // Grid layout with animated mood buttons
+  );
+};
+```
+
+
+### 3. Mood History & Analytics
+
+```javascript
+// MoodHistory Component Requirements
+const MoodHistory = () => {
+  // Features to implement:
+  // - Chronological mood entries display
+  // - Color-coded entries
+  // - Smooth animations for new entries
+  // - Delete/edit capabilities
+  // - Export functionality
+  // - Search and filter options
+  
+  const { moodHistory, isLoading } = useMoodHistory();
+  
+  return (
+    // Animated list of mood entries with colors
+  );
+};
+
+// Analytics Component Requirements
+const Analytics = () => {
+  // Features to implement:
+  // - Interactive mood trend charts
+  // - Color pattern analysis
+  // - Weekly/monthly view toggles
+  // - Mood distribution pie charts
+  // - Insights and recommendations
+  // - Progress tracking
+  
+  const { analytics, generateInsights } = useAnalytics();
+  
+  return (
+    // Rich analytics dashboard with charts
+  );
+};
+```
+
+
+
+## 🗄️ Database Schema (MongoDB)
+
+### Collections Structure
+
+```javascript
+// User Collection
+{
+  _id: ObjectId,
+  email: String,
+  username: String,
+  preferences: {
+    theme: String,
+    notifications: Boolean,
+    privacy: {
+      shareData: Boolean,
+      anonymousMode: Boolean
+    }
+  },
+  createdAt: Date,
+  updatedAt: Date
+}
+
+// MoodEntry Collection
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  happiness: Number, // 0-100
+  calmness: Number,  // 0-100
+  quickMood: String, // optional: 'happy', 'sad', etc.
+  color: {
+    hsl: String,
+    hex: String,
+    hue: Number,
+    saturation: Number,
+    lightness: Number
+  },
+  notes: String, // optional user notes
+  location: {
+    city: String,
+    country: String,
+    coordinates: [Number] // [longitude, latitude]
+  },
+  timestamp: Date,
+  createdAt: Date
+}
+
+// ColorHistory Collection
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  color: Object,
+  mood: Object,
+  therapySession: {
+    duration: Number,
+    completed: Boolean,
+    effectiveness: Number // 1-5 rating
+  },
+  createdAt: Date
+}
+
+// Analytics Collection (pre-computed aggregations)
+{
+  _id: ObjectId,
+  userId: ObjectId,
+  period: String, // 'daily', 'weekly', 'monthly'
+  data: {
+    averageHappiness: Number,
+    averageCalmness: Number,
+    moodFrequency: Object,
+    colorPatterns: Array,
+    trends: Object
+  },
+  computedAt: Date
+}
+```
+
+## 🚀 API Endpoints Specification
+
+### FastAPI Routes
+
+```python
+# app/routes/mood.py
+from fastapi import APIRouter, HTTPException, Depends
+from typing import List, Optional
+from datetime import datetime, timedelta
+
+router = APIRouter(prefix="/api/mood", tags=["mood"])
+
+@router.post("/entry")
+async def create_mood_entry(entry: MoodEntryCreate):
+    """Create a new mood entry with color generation"""
+    # Validate mood values (0-100)
+    # Generate color from mood values
+    # Save to database
+    # Return entry with generated color
+    pass
+
+@router.get("/entries")
+async def get_mood_entries(
+    limit: int = 50,
+    skip: int = 0,
+    start_date: Optional[datetime] = None,
+    end_date: Optional[datetime] = None
+):
+    """Get paginated mood entries with filtering"""
+    pass
+
+@router.get("/current")
+async def get_current_mood():
+    """Get the most recent mood entry"""
+    pass
+
+@router.put("/entry/{entry_id}")
+async def update_mood_entry(entry_id: str, entry: MoodEntryUpdate):
+    """Update an existing mood entry"""
+    pass
+
+@router.delete("/entry/{entry_id}")
+async def delete_mood_entry(entry_id: str):
+    """Delete a mood entry"""
+    pass
+
+# app/routes/analytics.py
+@router.get("/trends")
+async def get_mood_trends(period: str = "week"):
+    """Get mood trends analysis"""
+    # Calculate averages, patterns, insights
+    pass
+
+@router.get("/color-analysis")
+async def get_color_analysis():
+    """Get color pattern analysis"""
+    pass
+
+@router.get("/insights")
+async def generate_insights():
+    """Generate AI-powered mood insights"""
+    pass
+```
+
+## 🎭 Animation Specifications
+
+### Smooth Interactions
+
+```css
+/* Slider animations */
+.mood-slider {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mood-slider:hover {
+  transform: scaleY(1.2);
+}
+
+.mood-slider-thumb {
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.mood-slider-thumb:hover {
+  transform: scale(1.3);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+}
+
+/* Button animations */
+.mood-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mood-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.5s;
+}
+
+.mood-button:hover::before {
+  left: 100%;
+}
+
+.mood-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Color display animations */
+.mood-color-display {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.color-breathing {
+  animation: breathe 4s infinite ease-in-out;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Entry animations */
+.mood-entry {
+  animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+```
+
+## 📊 Performance Requirements
+
+### Frontend Performance
+
+```javascript
+// Performance optimization strategies
+1. Component memoization with React.memo()
+2. Callback memoization with useCallback()
+3. Value memoization with useMemo()
+4. Debounced slider updates (100ms)
+5. Virtual scrolling for mood history
+6. Lazy loading for analytics charts
+7. Image optimization and compression
+8. Code splitting for route-based components
+
+// Target metrics:
+- First Contentful Paint: < 1.5s
+- Largest Contentful Paint: < 2.5s
+- Time to Interactive: < 3s
+- Cumulative Layout Shift: < 0.1
+```
+
+### Backend Performance
+
+```python
+# Database optimization
+1. Proper indexing on userId and timestamp fields
+2. Aggregation pipelines for analytics
+3. Caching frequently accessed data
+4. Connection pooling
+5. Query optimization
+
+# API optimization
+1. Pagination for large datasets
+2. Field selection to reduce payload
+3. Response compression
+4. Rate limiting
+5. Background tasks for heavy computations
+```
+
+## 🧪 Testing Strategy
+
+### Frontend Testing
+
+```javascript
+// Test coverage requirements
+1. Unit tests for utility functions (100%)
+2. Component tests with React Testing Library (90%)
+3. Integration tests for API calls (80%)
+4. E2E tests with Cypress for critical paths
+5. Visual regression tests for UI components
+6. Accessibility tests with jest-axe
+7. Performance tests with Lighthouse CI
+```
+
+### Backend Testing
+
+```python
+# FastAPI testing with pytest
+1. Unit tests for service functions
+2. API endpoint tests with test client
+3. Database integration tests
+4. Mock external dependencies
+5. Load testing with locust
+6. Security testing for vulnerabilities
+```
+
+## 🚀 Deployment Configuration
+
+### Production Setup
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+  
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://mongo:27017/moodtune
+      - JWT_SECRET_KEY=your-secret-key
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+```
+
+## 📋 MVP Completion Checklist
+
+### Week 1 Deliverables
+
+```
+✅ Project setup (React + FastAPI + MongoDB)
+✅ Dual-axis mood sliders with smooth interactions
+✅ 8 quick mood buttons with animations
+✅ Real-time color generation and display
+✅ Color breathing animation
+✅ Basic mood entry storage
+✅ Mood history display
+✅ Responsive design (mobile + desktop)
+✅ Basic analytics (averages, trends)
+✅ Color-coded mood entries
+✅ Export mood data functionality
+✅ Error handling and loading states
+✅ Basic user authentication
+✅ Production deployment setup
+```
+
+### Success Metrics
+
+```
+User Experience:
+- Smooth 60fps animations
+- < 100ms response time for mood updates
+- Intuitive, self-explanatory interface
+- Zero crashes or errors
+
+Technical:
+- 95%+ uptime
+- < 500ms API response times
+- Mobile-responsive design
+- Cross-browser compatibility
+
+Business:
+- Immediate "wow factor" on first use
+- High user engagement with sliders
+- Beautiful, shareable color displays
+- Professional, polished appearance
+```
+
+-----
+
+**Final Deliverable:** A complete, production-ready mood tracking web application that showcases smooth interactions, beautiful real-time visual feedback, and robust data management. The MVP should demonstrate the core value proposition and create an exceptional user experience that makes users want to track their mood daily.​​​​​​​​​​​​​​​​
