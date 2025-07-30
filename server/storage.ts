@@ -1,4 +1,6 @@
-import { type User, type InsertUser, type MoodEntry, type InsertMoodEntry } from "@shared/schema";
+import { users, moodEntries, type User, type InsertUser, type MoodEntry, type InsertMoodEntry } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -97,4 +99,77 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Database Storage Implementation
+export class DatabaseStorage implements IStorage {
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async createMoodEntry(insertEntry: InsertMoodEntry): Promise<MoodEntry> {
+    const [entry] = await db
+      .insert(moodEntries)
+      .values(insertEntry)
+      .returning();
+    return entry;
+  }
+
+  async getMoodEntries(userId?: string, limit = 50, skip = 0): Promise<MoodEntry[]> {
+    if (userId) {
+      const entries = await db
+        .select()
+        .from(moodEntries)
+        .where(eq(moodEntries.userId, userId))
+        .orderBy(desc(moodEntries.timestamp))
+        .limit(limit)
+        .offset(skip);
+      return entries;
+    } else {
+      const entries = await db
+        .select()
+        .from(moodEntries)
+        .orderBy(desc(moodEntries.timestamp))
+        .limit(limit)
+        .offset(skip);
+      return entries;
+    }
+  }
+
+  async getMoodEntry(id: string): Promise<MoodEntry | undefined> {
+    const [entry] = await db.select().from(moodEntries).where(eq(moodEntries.id, id));
+    return entry || undefined;
+  }
+
+  async updateMoodEntry(id: string, updateData: Partial<InsertMoodEntry>): Promise<MoodEntry | undefined> {
+    const [entry] = await db
+      .update(moodEntries)
+      .set(updateData)
+      .where(eq(moodEntries.id, id))
+      .returning();
+    return entry || undefined;
+  }
+
+  async deleteMoodEntry(id: string): Promise<boolean> {
+    const result = await db.delete(moodEntries).where(eq(moodEntries.id, id));
+    return (result as any).rowCount > 0;
+  }
+
+  async getRecentMoodEntries(userId?: string, limit = 10): Promise<MoodEntry[]> {
+    return this.getMoodEntries(userId, limit, 0);
+  }
+}
+
+export const storage = new DatabaseStorage();
