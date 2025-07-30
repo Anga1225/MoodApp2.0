@@ -17,33 +17,33 @@ export const moodPresets = {
 };
 
 export function calculateMoodLabel(happiness: number, calmness: number): string {
-  if (happiness >= 70 && calmness >= 70) return "Joyful & Peaceful";
-  if (happiness >= 70 && calmness >= 40) return "Happy & Content";
-  if (happiness >= 70 && calmness < 40) return "Excited & Energetic";
-  if (happiness >= 40 && calmness >= 70) return "Calm & Balanced";
-  if (happiness >= 40 && calmness >= 40) return "Neutral & Stable";
-  if (happiness >= 40 && calmness < 40) return "Restless";
-  if (happiness < 40 && calmness >= 70) return "Sad but Peaceful";
-  if (happiness < 40 && calmness >= 40) return "Melancholy";
-  return "Anxious & Troubled";
+  if (happiness >= 70 && calmness >= 70) return "喜悅平靜";
+  if (happiness >= 70 && calmness >= 40) return "快樂滿足";
+  if (happiness >= 70 && calmness < 40) return "興奮活力";
+  if (happiness >= 40 && calmness >= 70) return "冷靜平衡";
+  if (happiness >= 40 && calmness >= 40) return "平和穩定";
+  if (happiness >= 40 && calmness < 40) return "不安躁動";
+  if (happiness < 40 && calmness >= 70) return "憂鬱寧靜";
+  if (happiness < 40 && calmness >= 40) return "低落沮喪";
+  return "焦慮煩躁";
 }
 
 export function calculateMoodDescription(happiness: number, calmness: number): string {
   const label = calculateMoodLabel(happiness, calmness);
   
   const descriptions: Record<string, string> = {
-    "Joyful & Peaceful": "You're in a wonderful state of happiness and tranquility",
-    "Happy & Content": "You're feeling positive and satisfied with life",
-    "Excited & Energetic": "You're buzzing with enthusiasm and energy",
-    "Calm & Balanced": "You're in a peaceful and centered state of mind",
-    "Neutral & Stable": "You're feeling balanced and steady",
-    "Restless": "You might be feeling a bit unsettled or eager for change",
-    "Sad but Peaceful": "You're experiencing sadness but with inner peace",
-    "Melancholy": "You're feeling a gentle sadness or pensiveness",
-    "Anxious & Troubled": "You might be feeling overwhelmed or worried"
+    "喜悅平靜": "您正處於幸福與寧靜的美好狀態",
+    "快樂滿足": "您感到積極正面，對生活很滿意",
+    "興奮活力": "您充滿熱情和活力",
+    "冷靜平衡": "您的心境平和且專注",
+    "平和穩定": "您感到平衡和穩定",
+    "不安躁動": "您可能感到有些不安或渴望改變",
+    "憂鬱寧靜": "您正經歷悲傷但內心平靜",
+    "低落沮喪": "您感到溫和的悲傷或憂鬱",
+    "焦慮煩躁": "您可能感到不知所措或擔憂"
   };
   
-  return descriptions[label] || "Your current emotional state";
+  return descriptions[label] || "您當前的情緒狀態";
 }
 
 export function validateMoodValues(happiness: number, calmness: number): boolean {

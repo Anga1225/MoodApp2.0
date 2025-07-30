@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useRecentMoods } from '@/hooks/useMoodTracking';
 import { formatDistanceToNow } from 'date-fns';
+import { calculateMoodLabel } from '@/utils/moodCalculations';
 import type { MoodEntry } from '@shared/schema';
 
 interface MoodEntryItemProps {
@@ -17,7 +18,7 @@ function MoodEntryItem({ entry }: MoodEntryItemProps) {
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-gray-900 truncate">
-          {entry.quickMood ? entry.quickMood.charAt(0).toUpperCase() + entry.quickMood.slice(1) : '自定義心情'}
+          {entry.quickMood ? entry.quickMood.charAt(0).toUpperCase() + entry.quickMood.slice(1) : calculateMoodLabel(entry.happiness, entry.calmness)}
         </p>
         <p className="text-xs text-gray-600">
           {formatDistanceToNow(new Date(entry.timestamp), { addSuffix: true })}

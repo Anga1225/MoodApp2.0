@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Calendar as CalendarIcon, Filter, Download } from 'lucide-react';
 import { useMoodHistory } from '@/hooks/useMoodTracking';
 import { formatDistanceToNow, format, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
+import { calculateMoodLabel } from '@/utils/moodCalculations';
 import type { MoodEntry } from '@shared/schema';
 
 interface HistoryPageProps {
@@ -55,7 +56,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
         format(new Date(mood.timestamp), 'HH:mm'),
         mood.happiness,
         mood.calmness,
-        mood.quickMood || '自定義',
+        mood.quickMood || calculateMoodLabel(mood.happiness, mood.calmness),
         `"${mood.notes || ''}"`,
         mood.colorHex
       ].join(','))
@@ -235,7 +236,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
                           <h4 className="font-semibold text-gray-900">
                             {mood.quickMood ? 
                               mood.quickMood.charAt(0).toUpperCase() + mood.quickMood.slice(1) : 
-                              '自定義心情'
+                              calculateMoodLabel(mood.happiness, mood.calmness)
                             }
                           </h4>
                           <Badge variant="outline" className="text-xs">
