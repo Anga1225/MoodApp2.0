@@ -117,12 +117,12 @@ export function QuickMoodButtons({
               onClick={onSaveAnonymous}
               disabled={disabled || isSaving}
               variant="outline"
-              className="w-full border-2 border-pink-300 text-pink-600 hover:bg-pink-50 hover:border-pink-400 font-semibold py-4 px-6 rounded-xl transition-all duration-300"
+              className="w-full border-2 border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 font-medium py-4 px-6 rounded-xl transition-all duration-300"
             >
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
               </svg>
-              匿名分享到全球情緒牆
+              悄悄分享，讓別人知道他們不孤單
             </Button>
           )}
         </div>

@@ -74,15 +74,15 @@ export function useMoodTracking() {
       });
       queryClient.invalidateQueries({ queryKey: ['/api/mood/analytics/trends'] });
       toast({
-        title: "Mood Saved!",
-        description: "Your mood entry has been saved successfully.",
+        title: "心情已記錄 ✨",
+        description: "您的感受已被溫柔地保存下來",
       });
       setNotes('');
     },
     onError: () => {
       toast({
-        title: "Error",
-        description: "Failed to save mood entry. Please try again.",
+        title: "稍後再試",
+        description: "現在有點忙碌，請稍後再記錄您的心情",
         variant: "destructive",
       });
     }

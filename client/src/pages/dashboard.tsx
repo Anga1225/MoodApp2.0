@@ -6,7 +6,7 @@ import { ColorDisplay } from '@/components/ColorDisplay';
 import { MoodHistory } from '@/components/MoodHistory';
 import { Analytics } from '@/components/Analytics';
 import { MusicRecommendations } from '@/components/MusicRecommendations';
-import { GlobalEmotionWall, EmotionStatistics } from '@/components/GlobalEmotionWall';
+import { HealingSpace, CommunityWarmth } from '@/components/GlobalEmotionWall';
 import { useMoodTracking } from '@/hooks/useMoodTracking';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
@@ -154,9 +154,9 @@ export default function Dashboard() {
         <div className="mt-8 space-y-8">
           <Analytics />
           
-          <GlobalEmotionWall />
+          <HealingSpace />
           
-          <EmotionStatistics />
+          <CommunityWarmth />
         </div>
       </main>
       
