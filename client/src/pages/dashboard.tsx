@@ -9,6 +9,7 @@ import { MusicRecommendations } from '@/components/MusicRecommendations';
 import { GlobalEmotionWall, EmotionStatistics } from '@/components/GlobalEmotionWall';
 import { useMoodTracking } from '@/hooks/useMoodTracking';
 import { useToast } from '@/hooks/use-toast';
+import { useLocation } from 'wouter';
 
 export default function Dashboard() {
   const {
@@ -24,12 +25,18 @@ export default function Dashboard() {
   } = useMoodTracking();
 
   const { toast } = useToast();
+  const [, navigate] = useLocation();
 
   const handleStartColorTherapy = () => {
-    toast({
-      title: "色彩療法",
-      description: "色彩療法功能即將推出！目前請享受呼吸動畫。",
-    });
+    navigate('/color-therapy');
+  };
+
+  const handleViewHistory = () => {
+    navigate('/history');
+  };
+
+  const handleViewAnalytics = () => {
+    navigate('/analytics');
   };
 
   const handleQuickMoodEntry = () => {
@@ -119,7 +126,7 @@ export default function Dashboard() {
               onStartTherapy={handleStartColorTherapy}
             />
             
-            <MoodHistory />
+            <MoodHistory onViewAll={handleViewHistory} />
             
             <MusicRecommendations moodType={getCurrentMoodType()} />
           </div>
@@ -160,21 +167,30 @@ export default function Dashboard() {
             <span className="text-xs font-medium">Home</span>
           </button>
           
-          <button className="flex flex-col items-center space-y-1 py-2 text-gray-600">
+          <button 
+            onClick={handleViewHistory}
+            className="flex flex-col items-center space-y-1 py-2 text-gray-600 hover:text-primary transition-colors"
+          >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span className="text-xs">History</span>
           </button>
           
-          <button className="flex flex-col items-center space-y-1 py-2 text-gray-600">
+          <button 
+            onClick={handleViewAnalytics}
+            className="flex flex-col items-center space-y-1 py-2 text-gray-600 hover:text-primary transition-colors"
+          >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
             <span className="text-xs">Analytics</span>
           </button>
           
-          <button className="flex flex-col items-center space-y-1 py-2 text-gray-600">
+          <button 
+            onClick={handleStartColorTherapy}
+            className="flex flex-col items-center space-y-1 py-2 text-gray-600 hover:text-primary transition-colors"
+          >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a4 4 0 004-4V5z" />
             </svg>

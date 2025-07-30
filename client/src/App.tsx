@@ -4,6 +4,9 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Dashboard from "./pages/dashboard";
+import { HistoryPage } from "./pages/history";
+import { AnalyticsPage } from "./pages/analytics";
+import { ColorTherapyPage } from "./pages/color-therapy";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -11,6 +14,15 @@ function Router() {
     <Switch>
       <Route path="/" component={Dashboard} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/history">
+        {() => <HistoryPage onBack={() => window.history.back()} />}
+      </Route>
+      <Route path="/analytics">
+        {() => <AnalyticsPage onBack={() => window.history.back()} />}
+      </Route>
+      <Route path="/color-therapy">
+        {() => <ColorTherapyPage onBack={() => window.history.back()} />}
+      </Route>
       <Route component={NotFound} />
     </Switch>
   );
