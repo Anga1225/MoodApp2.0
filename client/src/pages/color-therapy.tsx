@@ -69,7 +69,7 @@ const THERAPY_SESSIONS: TherapySession[] = [
     description: '提升靈性，增強直覺',
     duration: 420, // 7 minutes
     colors: ['#8A2BE2', '#9370DB', '#BA55D3', '#DA70D6', '#DDA0DD'],
-    musicType: 'calm',
+    musicType: 'sad',
     instructions: [
       '沉浸在紫色的神秘能量中',
       '打開心靈的智慧之門',

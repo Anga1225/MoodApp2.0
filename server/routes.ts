@@ -43,10 +43,35 @@ async function initializeSampleData() {
     ];
     
     const sampleMusic = [
-      { title: '安靜', artist: '周杰倫', genre: '流行', moodType: 'peaceful', youtubeUrl: 'https://youtube.com/watch?v=example1' },
-      { title: '聽見下雨的聲音', artist: '魏如昀', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://youtube.com/watch?v=example2' },
-      { title: '小幸運', artist: '田馥甄', genre: '流行', moodType: 'happy', youtubeUrl: 'https://youtube.com/watch?v=example3' },
-      { title: '夜空中最亮的星', artist: '逃跑計劃', genre: '民謠', moodType: 'calm', youtubeUrl: 'https://youtube.com/watch?v=example4' }
+      // Peaceful/療癒音樂
+      { title: '安靜', artist: '周杰倫', genre: '流行', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=OiNsgKOmFTQ', spotifyUrl: 'https://open.spotify.com/track/2KrxsD86ARO5beq7Q0Gsdd' },
+      { title: '夜空中最亮的星', artist: '逃跑計劃', genre: '民謠', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=qf8_tn7lBIc', spotifyUrl: 'https://open.spotify.com/track/0y6kdSRJVQlfnAQuen1mwj' },
+      { title: '慢慢', artist: '張學友', genre: '抒情', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=djV11Xbc914', spotifyUrl: 'https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC' },
+      
+      // Happy/快樂音樂
+      { title: '小幸運', artist: '田馥甄', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=rcjJqeUlps8', spotifyUrl: 'https://open.spotify.com/track/1K3ESzZIujmOJ7tQPPgm7O' },
+      { title: '晴天', artist: '周杰倫', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=lnCeZY6nxjQ', spotifyUrl: 'https://open.spotify.com/track/2PjlaxlMunGOUvcRzlTbtE' },
+      { title: '愛你', artist: '陳芳語', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=9AQByLgzPRc', spotifyUrl: 'https://open.spotify.com/track/6JmQbOaVSIHIVvE5VqkKST' },
+      
+      // Calm/平靜音樂
+      { title: '時光機', artist: '五月天', genre: '搖滾', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=lYOUQxCEHPw', spotifyUrl: 'https://open.spotify.com/track/4aLd4rqGrIaGuLhTNlhTPZ' },
+      { title: '寧夏', artist: '梁靜茹', genre: '抒情', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=5NyAEWOjlUE', spotifyUrl: 'https://open.spotify.com/track/2TxZOIWh2SWTEZyVGWQJRO' },
+      { title: 'Moon River', artist: '王菲', genre: '爵士', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=mNOJnSUEfM0', spotifyUrl: 'https://open.spotify.com/track/6rqhFgbbKwnb9MLmUQDjG6' },
+      
+      // Sad/憂鬱音樂
+      { title: '聽見下雨的聲音', artist: '魏如昀', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=DYQS_TQFVb0', spotifyUrl: 'https://open.spotify.com/track/5Uon3ZP0ufGVKmtWGX5N0F' },
+      { title: '成全', artist: '林宥嘉', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=9v8_aTOz_xM', spotifyUrl: 'https://open.spotify.com/track/6BOcmEOUvyI0LXJ8CQq0Nq' },
+      { title: '說謊', artist: '林宥嘉', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=YkH5YnHO_Bk', spotifyUrl: 'https://open.spotify.com/track/4P3yDxI5FlpNQz9yubLX9g' },
+      
+      // Anxious/焦慮音樂
+      { title: '海闊天空', artist: 'Beyond', genre: '搖滾', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=qu_FSptjRic', spotifyUrl: 'https://open.spotify.com/track/2xU1K5b3W91OJmM4Hnv4eM' },
+      { title: '最初的夢想', artist: '范瑋琪', genre: '流行', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=6Uo0NmOAJF8', spotifyUrl: 'https://open.spotify.com/track/1VpOGNOUz2MZzGo4dTGEPR' },
+      { title: '我不會喜歡你', artist: '陳柏霖', genre: '流行', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=bCuGF8XL3YQ', spotifyUrl: 'https://open.spotify.com/track/3dNpv8BgdGjGZJxZwgq2Oy' },
+      
+      // Energetic/活力音樂
+      { title: '好想你', artist: '朱主愛', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=H7bqjjNzmcI', spotifyUrl: 'https://open.spotify.com/track/4dNiEb3mAhRvdpkJVnfnX8' },
+      { title: '年少有為', artist: '李榮浩', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=TKmKaD7NP7A', spotifyUrl: 'https://open.spotify.com/track/2dFU5qTwm3kbFSX1MJI8zR' },
+      { title: '稻香', artist: '周杰倫', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=VjrYjxNTCNE', spotifyUrl: 'https://open.spotify.com/track/1L6A0aGwxD5fq8VgUdh8vr' }
     ];
     
     await Promise.all([
@@ -299,33 +324,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const happiness = parseFloat(req.query.happiness as string) || 50;
       const calmness = parseFloat(req.query.calmness as string) || 50;
+      const moodType = req.query.moodType as string;
       
-      // Smart mood type determination based on happiness and calmness levels
-      let moodType = "happy";
-      if (happiness >= 70 && calmness >= 70) {
-        moodType = "peaceful";
-      } else if (happiness >= 60) {
-        moodType = "happy";
-      } else if (happiness < 40 && calmness < 40) {
-        moodType = "anxious";
-      } else if (happiness < 40) {
-        moodType = "sad";
-      } else if (calmness >= 70) {
-        moodType = "calm";
+      let finalMoodType = moodType;
+      
+      // If no specific mood type provided, determine from happiness/calmness
+      if (!finalMoodType) {
+        if (happiness >= 70 && calmness >= 70) {
+          finalMoodType = "peaceful";
+        } else if (happiness >= 60) {
+          finalMoodType = "happy";
+        } else if (happiness < 40 && calmness < 40) {
+          finalMoodType = "anxious";
+        } else if (happiness < 40) {
+          finalMoodType = "sad";
+        } else if (calmness >= 70) {
+          finalMoodType = "calm";
+        } else {
+          finalMoodType = "happy";
+        }
       }
       
-      const recommendations = await storage.getMusicRecommendations(moodType);
+      const recommendations = await storage.getMusicRecommendations(finalMoodType);
       
       // If no specific recommendations found, get mixed recommendations
       if (recommendations.length === 0) {
-        const fallbackTypes = ["happy", "calm", "peaceful"];
+        const fallbackTypes = ["happy", "calm", "peaceful", "energetic"];
         const allRecommendations = await Promise.all(
           fallbackTypes.map(type => storage.getMusicRecommendations(type))
         );
-        const mixed = allRecommendations.flat().slice(0, 5);
+        const mixed = allRecommendations.flat().slice(0, 6);
         res.json(mixed);
       } else {
-        res.json(recommendations);
+        // Shuffle and limit results for variety
+        const shuffled = recommendations.sort(() => Math.random() - 0.5);
+        res.json(shuffled.slice(0, 6));
       }
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch music recommendations" });
