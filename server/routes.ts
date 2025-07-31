@@ -7,7 +7,63 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 
+// Initialize sample data
+async function initializeSampleData() {
+  try {
+    // Add sample mood entries
+    const sampleMoods = [
+      { 
+        happiness: 75, calmness: 80, quickMood: 'peaceful' as const, 
+        colorHex: '#87ceeb', colorHsl: 'hsl(197, 71%, 73%)', 
+        hue: 197, saturation: 71, lightness: 73, 
+        notes: '今天感覺很平靜，看了美麗的夕陽', isAnonymous: 1, 
+        country: 'Taiwan', city: 'Taipei' 
+      },
+      { 
+        happiness: 45, calmness: 30, quickMood: 'anxious' as const, 
+        colorHex: '#cd853f', colorHsl: 'hsl(30, 57%, 52%)', 
+        hue: 30, saturation: 57, lightness: 52, 
+        notes: '工作壓力有點大', isAnonymous: 1, 
+        country: 'Taiwan', city: 'Kaohsiung' 
+      },
+      { 
+        happiness: 85, calmness: 70, quickMood: 'happy' as const, 
+        colorHex: '#ffd700', colorHsl: 'hsl(51, 100%, 50%)', 
+        hue: 51, saturation: 100, lightness: 50, 
+        notes: '朋友們一起聚餐很開心', isAnonymous: 1, 
+        country: 'Taiwan', city: 'Taichung' 
+      }
+    ];
+    
+    const sampleMessages = [
+      { message: '今天記得要對自己溫柔一點 🌱', isAnonymous: 1 },
+      { message: '無論多困難，你都比想像中更堅強', isAnonymous: 1 },
+      { message: '深呼吸，這個感受會過去的', isAnonymous: 1 },
+      { message: '你的存在本身就很珍貴', isAnonymous: 1 }
+    ];
+    
+    const sampleMusic = [
+      { title: '安靜', artist: '周杰倫', genre: '流行', moodType: 'peaceful', youtubeUrl: 'https://youtube.com/watch?v=example1' },
+      { title: '聽見下雨的聲音', artist: '魏如昀', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://youtube.com/watch?v=example2' },
+      { title: '小幸運', artist: '田馥甄', genre: '流行', moodType: 'happy', youtubeUrl: 'https://youtube.com/watch?v=example3' },
+      { title: '夜空中最亮的星', artist: '逃跑計劃', genre: '民謠', moodType: 'calm', youtubeUrl: 'https://youtube.com/watch?v=example4' }
+    ];
+    
+    await Promise.all([
+      ...sampleMoods.map(mood => storage.createMoodEntry(mood)),
+      ...sampleMessages.map(msg => storage.createEmotionMessage(msg)),
+      ...sampleMusic.map(music => storage.createMusicRecommendation(music))
+    ]);
+    
+    console.log('Sample data initialized successfully');
+  } catch (error) {
+    console.log('Sample data may already exist or initialization failed:', error);
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize sample data on startup
+  initializeSampleData();
   // Mood entry routes
   app.post("/api/mood/entries", async (req, res) => {
     try {

@@ -73,29 +73,29 @@ export default function Dashboard() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">MoodTune</h1>
-                <p className="text-xs text-gray-500">v2.0</p>
+                <p className="text-xs text-gray-500">療癒空間 v2.0</p>
               </div>
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
-              <button className="text-primary font-medium border-b-2 border-primary pb-1">Dashboard</button>
+              <button className="text-primary font-medium border-b-2 border-primary pb-1">心情儀表板</button>
               <button 
                 onClick={handleViewHistory}
                 className="text-gray-600 hover:text-primary transition-colors"
               >
-                History
+                心情歷史
               </button>
               <button 
                 onClick={handleViewAnalytics}
                 className="text-gray-600 hover:text-primary transition-colors"
               >
-                Analytics
+                心情分析
               </button>
               <button 
                 onClick={handleStartColorTherapy}
                 className="text-gray-600 hover:text-primary transition-colors"
               >
-                Color Therapy
+                色彩療癒
               </button>
             </nav>
             

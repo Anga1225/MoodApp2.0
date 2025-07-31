@@ -30,6 +30,31 @@
   --mood-accent-blue: hsl(206, 100%, 65%);
   --mood-accent-cyan: hsl(181, 100%, 50%);
   --mood-accent-pink: hsl(315, 85%, 79%);
+  
+  /* Healing theme colors */
+  --sage-50: hsl(90, 20%, 97%);
+  --sage-100: hsl(90, 20%, 92%);
+  --sage-200: hsl(90, 20%, 85%);
+  --sage-300: hsl(90, 20%, 75%);
+  --sage-400: hsl(90, 20%, 65%);
+  --sage-500: hsl(90, 20%, 55%);
+  
+  --lavender-50: hsl(260, 30%, 97%);
+  --lavender-100: hsl(260, 30%, 92%);
+  --lavender-200: hsl(260, 30%, 85%);
+  --lavender-300: hsl(260, 30%, 75%);
+  --lavender-400: hsl(260, 30%, 65%);
+  --lavender-500: hsl(260, 30%, 55%);
+  
+  --beige-50: hsl(40, 20%, 97%);
+  --beige-100: hsl(40, 20%, 92%);
+  --beige-200: hsl(40, 20%, 85%);
+  
+  --dusty-rose-50: hsl(340, 20%, 97%);
+  --dusty-rose-100: hsl(340, 20%, 92%);
+  --dusty-rose-200: hsl(340, 20%, 85%);
+  --dusty-rose-300: hsl(340, 20%, 75%);
+  --dusty-rose-400: hsl(340, 20%, 65%);
 }
 
 .dark {
