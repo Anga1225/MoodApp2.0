@@ -123,7 +123,7 @@ export function HealingSpace() {
           <Textarea
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="想對某個陌生人說些溫暖的話嗎？你的話語可能會成為他們今天的光..."
+            placeholder="想要在今天送出一點溫暖嗎？"
             className="mb-3 border-none bg-white/80 resize-none"
             maxLength={200}
             rows={3}
@@ -154,7 +154,6 @@ export function HealingSpace() {
           </div>
         ) : !emotionMessages || emotionMessages.length === 0 ? (
           <div className="text-center py-8">
-            <div className="text-6xl mb-4">🕊️</div>
             <p className="text-gray-600 mb-2">這裡還很安靜</p>
             <p className="text-sm text-gray-500">也許你可以留下第一句溫暖的話</p>
           </div>
@@ -165,7 +164,7 @@ export function HealingSpace() {
                 <p className="text-gray-800 mb-2 leading-relaxed">"{message.message}"</p>
                 <div className="flex justify-between items-center text-xs text-gray-500">
                   <span className="text-xs text-gray-500">
-                    來自 {formatDistanceToNow(new Date(message.timestamp), { addSuffix: true })} 的溫暖
+                    來自 {message.city || '遠方'} 的溫暖
                   </span>
                   <span className="flex items-center space-x-1 text-pink-400">
                     <Heart className="w-3 h-3 fill-current" />

@@ -34,6 +34,16 @@ export const emotionMessages = pgTable("emotion_messages", {
   message: text("message").notNull(),
   isAnonymous: integer("is_anonymous").default(1).notNull(),
   supportCount: integer("support_count").default(0).notNull(),
+  city: text("city"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const moodTwins = pgTable("mood_twins", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  moodEntryId: varchar("mood_entry_id").references(() => moodEntries.id),
+  musicType: text("music_type").notNull(), // "lo-fi 雨聲", "古典音樂", etc.
+  twinCount: integer("twin_count").default(0).notNull(),
+  city: text("city"),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
 
@@ -68,6 +78,11 @@ export const insertEmotionMessageSchema = createInsertSchema(emotionMessages).om
   supportCount: true,
 });
 
+export const insertMoodTwinSchema = createInsertSchema(moodTwins).omit({
+  id: true,
+  timestamp: true,
+});
+
 export const insertMusicRecommendationSchema = createInsertSchema(musicRecommendations).omit({
   id: true,
 });
@@ -80,3 +95,5 @@ export type EmotionMessage = typeof emotionMessages.$inferSelect;
 export type InsertEmotionMessage = z.infer<typeof insertEmotionMessageSchema>;
 export type MusicRecommendation = typeof musicRecommendations.$inferSelect;
 export type InsertMusicRecommendation = z.infer<typeof insertMusicRecommendationSchema>;
+export type MoodTwin = typeof moodTwins.$inferSelect;
+export type InsertMoodTwin = z.infer<typeof insertMoodTwinSchema>;

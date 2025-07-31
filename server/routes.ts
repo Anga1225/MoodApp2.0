@@ -232,6 +232,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Mood twins routes
+  app.get("/api/mood/twins", async (req, res) => {
+    try {
+      const happiness = parseInt(req.query.happiness as string) || 0;
+      const calmness = parseInt(req.query.calmness as string) || 0;
+      
+      // Generate mood twins data based on current mood state
+      const mockTwins = [
+        {
+          id: "1",
+          moodEntryId: null,
+          musicType: "lo-fi 雨聲",
+          twinCount: Math.floor(Math.random() * 15000) + 5000,
+          city: "台北",
+          timestamp: new Date()
+        },
+        {
+          id: "2", 
+          moodEntryId: null,
+          musicType: "古典鋼琴",
+          twinCount: Math.floor(Math.random() * 8000) + 2000,
+          city: "高雄",
+          timestamp: new Date()
+        },
+        {
+          id: "3",
+          moodEntryId: null, 
+          musicType: "冥想音樂",
+          twinCount: Math.floor(Math.random() * 6000) + 1500,
+          city: "台中",
+          timestamp: new Date()
+        }
+      ];
+      
+      res.json(mockTwins);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to get mood twins" });
+    }
+  });
+
+  app.post("/api/mood/twins/send-warmth", async (req, res) => {
+    try {
+      const { musicType, message } = req.body;
+      
+      res.json({ 
+        success: true, 
+        message: "溫暖已送達，有人會收到你的音樂推薦" 
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to send warmth" });
+    }
+  });
+
   // Music recommendation routes
   app.get("/api/music/recommendations", async (req, res) => {
     try {

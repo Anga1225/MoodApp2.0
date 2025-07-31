@@ -56,7 +56,6 @@ export default function WelcomePage() {
               onClick={handleEnter}
               className="w-full p-6 rounded-2xl bg-gradient-to-r from-green-50 to-green-100 hover:from-green-100 hover:to-green-150 border border-green-200/50 transition-all duration-300 text-center group hover:shadow-lg"
             >
-              <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">🌱</div>
               <div className="text-base font-medium text-gray-800">我現在感覺如何？</div>
             </button>
             
@@ -64,7 +63,6 @@ export default function WelcomePage() {
               onClick={handleEnter}
               className="w-full p-6 rounded-2xl bg-gradient-to-r from-purple-50 to-purple-100 hover:from-purple-100 hover:to-purple-150 border border-purple-200/50 transition-all duration-300 text-center group hover:shadow-lg"
             >
-              <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">🤗</div>
               <div className="text-base font-medium text-gray-800">我需要一些慰藉</div>
             </button>
             
@@ -72,7 +70,6 @@ export default function WelcomePage() {
               onClick={handleEnter}
               className="w-full p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-150 border border-blue-200/50 transition-all duration-300 text-center group hover:shadow-lg"
             >
-              <div className="text-2xl mb-3 group-hover:scale-110 transition-transform">🎵</div>
               <div className="text-base font-medium text-gray-800">只想安靜聽聽</div>
             </button>
           </div>
