@@ -279,37 +279,41 @@ export function ColorTherapyPage({ onBack, initialColor }: ColorTherapyPageProps
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 overflow-hidden">
+      {/* Mountain Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-600/20 to-slate-900/40"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-slate-900 via-slate-800/60 to-transparent"></div>
+      
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="p-2 hover:bg-white/50 rounded-full"
+            className="p-2 hover:bg-white/10 rounded-full text-white"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">色彩療法</h1>
-            <p className="text-gray-600 mt-1">透過色彩冥想，平衡身心靈</p>
+            <h1 className="text-3xl font-bold text-white">色彩療法</h1>
+            <p className="text-slate-300 mt-1">透過色彩冥想，平衡身心靈</p>
           </div>
         </div>
 
         {/* Initial Color Display (if provided) */}
         {initialColor && (
-          <Card className="p-6 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">您當前的心情色彩</h3>
+          <Card className="p-6 mb-8 bg-slate-800/30 border-slate-600 backdrop-blur-sm">
+            <h3 className="text-xl font-bold text-white mb-4">您當前的心情色彩</h3>
             <div className="flex items-center gap-6">
               <div 
                 className="w-24 h-24 rounded-full shadow-lg"
                 style={{ background: initialColor }}
               />
               <div>
-                <p className="text-gray-600 mb-2">
+                <p className="text-slate-300 mb-2">
                   這是根據您當前心情生成的專屬色彩
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-slate-400">
                   選擇下方的療程來進一步調節和平衡您的情緒狀態
                 </p>
               </div>
@@ -319,54 +323,68 @@ export function ColorTherapyPage({ onBack, initialColor }: ColorTherapyPageProps
 
         {/* Therapy Sessions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {THERAPY_SESSIONS.map((session, index) => (
-            <Card key={index} className="p-6 hover:shadow-lg transition-shadow cursor-pointer">
-              <div className="mb-4">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{session.name}</h3>
-                <p className="text-gray-600 text-sm mb-4">{session.description}</p>
-                
-                {/* Color Preview */}
-                <div className="flex gap-2 mb-4">
-                  {session.colors.map((color, colorIndex) => (
-                    <div
-                      key={colorIndex}
-                      className="w-8 h-8 rounded-full shadow-sm"
-                      style={{ background: color }}
-                    />
-                  ))}
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">
-                    時長: {Math.floor(session.duration / 60)} 分鐘
-                  </span>
-                  <Button
-                    onClick={() => startSession(session)}
-                    className="bg-primary hover:bg-primary/90 text-white"
-                  >
-                    <Play className="w-4 h-4 mr-2" />
-                    開始療程
-                  </Button>
+          {THERAPY_SESSIONS.map((session, index) => {
+            const gradientColors = [
+              'from-blue-400 via-blue-500 to-blue-600',
+              'from-orange-400 via-orange-500 to-orange-600',
+              'from-emerald-400 via-emerald-500 to-emerald-600',
+              'from-purple-400 via-purple-500 to-purple-600'
+            ];
+            return (
+              <div key={index} className="group">
+                <div 
+                  className={`relative h-64 rounded-3xl bg-gradient-to-br ${gradientColors[index]} p-6 transition-transform hover:scale-105 cursor-pointer shadow-lg`} 
+                  onClick={() => startSession(session)}
+                >
+                  <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
+                    {session.name}
+                  </div>
+                  <div className="absolute top-4 right-4 text-white/60 text-xs">
+                    {Math.floor(session.duration / 60)} 分鐘
+                  </div>
+                  
+                  <div className="absolute bottom-20 left-4">
+                    <p className="text-white/90 text-sm mb-4">{session.description}</p>
+                    <div className="flex gap-2">
+                      {session.colors.slice(0, 3).map((color, colorIndex) => (
+                        <div
+                          key={colorIndex}
+                          className="w-6 h-6 rounded-full shadow-sm"
+                          style={{ background: color }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <Button
+                      className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                      variant="outline"
+                    >
+                      <Play className="w-4 h-4 mr-2" />
+                      開始療程
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </Card>
-          ))}
+            );
+          })}
         </div>
 
         {/* Info Section */}
-        <Card className="p-6 mt-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">什麼是色彩療法？</h3>
+        <Card className="p-6 mt-8 bg-slate-800/30 border-slate-600 backdrop-blur-sm">
+          <h3 className="text-xl font-bold text-white mb-4">什麼是色彩療法？</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">療法原理</h4>
-              <p className="text-sm text-gray-600 mb-4">
+              <h4 className="font-semibold text-white mb-2">療法原理</h4>
+              <p className="text-sm text-slate-300 mb-4">
                 色彩療法是一種利用不同顏色的振動頻率來影響身心狀態的自然療法。
                 每種顏色都有其獨特的能量和治療特性，能夠幫助調節情緒、平衡能量。
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">使用建議</h4>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <h4 className="font-semibold text-white mb-2">使用建議</h4>
+              <ul className="text-sm text-slate-300 space-y-1">
                 <li>• 在安靜的環境中進行療程</li>
                 <li>• 保持舒適的坐姿或躺姿</li>
                 <li>• 專注於呼吸和色彩冥想</li>

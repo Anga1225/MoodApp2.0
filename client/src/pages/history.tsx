@@ -70,27 +70,31 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 overflow-hidden">
+      {/* Mountain Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-600/20 to-slate-900/40"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-slate-900 via-slate-800/60 to-transparent"></div>
+      
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <Button
               variant="ghost"
               onClick={onBack}
-              className="p-2 hover:bg-white/50 rounded-full"
+              className="p-2 hover:bg-white/10 rounded-full text-white"
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">心情歷史記錄</h1>
-              <p className="text-gray-600 mt-1">瀏覽和分析您的心情變化</p>
+              <h1 className="text-3xl font-bold text-white">心情歷史</h1>
+              <p className="text-slate-300 mt-1">瀏覽和分析您的心情變化</p>
             </div>
           </div>
           
           <Button
             onClick={exportData}
-            className="bg-primary hover:bg-primary/90 text-white"
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6"
             disabled={filteredMoods.length === 0}
           >
             <Download className="w-4 h-4 mr-2" />
@@ -101,15 +105,15 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {/* Filters Sidebar */}
           <div className="xl:col-span-1 space-y-6">
-            <Card className="p-4 lg:p-6">
-              <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Card className="p-4 lg:p-6 bg-slate-800/30 border-slate-600 backdrop-blur-sm">
+              <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                 <Filter className="w-4 h-4" />
                 篩選條件
               </h3>
               
               {/* Date Filter */}
               <div className="space-y-3">
-                <label className="text-sm font-medium text-gray-700">選擇日期</label>
+                <label className="text-sm font-medium text-slate-300">選擇日期</label>
                 <div className="w-full overflow-hidden">
                   <Calendar
                     mode="single"

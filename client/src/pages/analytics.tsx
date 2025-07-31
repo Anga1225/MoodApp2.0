@@ -115,86 +115,100 @@ export function AnalyticsPage({ onBack }: AnalyticsPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 overflow-hidden">
+      {/* Mountain Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-600/20 to-slate-900/40"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-slate-900 via-slate-800/60 to-transparent"></div>
+      
+      <div className="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Button
             variant="ghost"
             onClick={onBack}
-            className="p-2 hover:bg-white/50 rounded-full"
+            className="p-2 hover:bg-white/10 rounded-full text-white"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">心情分析報告</h1>
-            <p className="text-gray-600 mt-1">深入了解您的心情變化模式</p>
+            <h1 className="text-3xl font-bold text-white">心情分析</h1>
+            <p className="text-slate-300 mt-1">深入了解您的心情變化模式</p>
           </div>
         </div>
 
-        {/* Summary Cards */}
+        {/* Gradient Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">平均快樂度</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {analytics && typeof analytics === 'object' && 'averageHappiness' in analytics ? (analytics as any).averageHappiness : 0}
-                </p>
+          <div className="group">
+            <div className="relative h-32 rounded-3xl bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 p-6 transition-transform hover:scale-105 cursor-pointer shadow-lg">
+              <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
+                平均快樂度
               </div>
-              <TrendingUp className="w-8 h-8 text-green-500" />
+              <div className="absolute bottom-4 left-4 text-white text-3xl font-bold">
+                {analytics && typeof analytics === 'object' && 'averageHappiness' in analytics ? (analytics as any).averageHappiness : 0}
+              </div>
+              <div className="absolute top-4 right-4 text-white/60 text-xs">
+                #4A90E2
+              </div>
             </div>
-          </Card>
+          </div>
           
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">平均平靜度</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {analytics && typeof analytics === 'object' && 'averageCalmness' in analytics ? (analytics as any).averageCalmness : 0}
-                </p>
+          <div className="group">
+            <div className="relative h-32 rounded-3xl bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 p-6 transition-transform hover:scale-105 cursor-pointer shadow-lg">
+              <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
+                平均平靜度
               </div>
-              <Calendar className="w-8 h-8 text-blue-500" />
+              <div className="absolute bottom-4 left-4 text-white text-3xl font-bold">
+                {analytics && typeof analytics === 'object' && 'averageCalmness' in analytics ? (analytics as any).averageCalmness : 0}
+              </div>
+              <div className="absolute top-4 right-4 text-white/60 text-xs">
+                #10B981
+              </div>
             </div>
-          </Card>
+          </div>
           
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">記錄總數</p>
-                <p className="text-2xl font-bold text-gray-900">{moodHistory.length}</p>
+          <div className="group">
+            <div className="relative h-32 rounded-3xl bg-gradient-to-br from-purple-400 via-purple-500 to-purple-600 p-6 transition-transform hover:scale-105 cursor-pointer shadow-lg">
+              <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
+                記錄總數
               </div>
-              <BarChart3 className="w-8 h-8 text-purple-500" />
+              <div className="absolute bottom-4 left-4 text-white text-3xl font-bold">
+                {moodHistory.length}
+              </div>
+              <div className="absolute top-4 right-4 text-white/60 text-xs">
+                #8B5CF6
+              </div>
             </div>
-          </Card>
+          </div>
           
-          <Card className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">本週記錄</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {moodHistory.filter(mood => 
-                    new Date(mood.timestamp) >= subDays(new Date(), 7)
-                  ).length}
-                </p>
+          <div className="group">
+            <div className="relative h-32 rounded-3xl bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 p-6 transition-transform hover:scale-105 cursor-pointer shadow-lg">
+              <div className="absolute top-4 left-4 text-white/80 text-sm font-medium">
+                本週記錄
               </div>
-              <PieChart className="w-8 h-8 text-orange-500" />
+              <div className="absolute bottom-4 left-4 text-white text-3xl font-bold">
+                {moodHistory.filter(mood => 
+                  new Date(mood.timestamp) >= subDays(new Date(), 7)
+                ).length}
+              </div>
+              <div className="absolute top-4 right-4 text-white/60 text-xs">
+                #F97316
+              </div>
             </div>
-          </Card>
+          </div>
         </div>
 
         {/* Charts */}
         <Tabs defaultValue="trends" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="trends">趨勢分析</TabsTrigger>
-            <TabsTrigger value="distribution">心情分佈</TabsTrigger>
-            <TabsTrigger value="weekly">週統計</TabsTrigger>
-            <TabsTrigger value="patterns">模式分析</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 border-slate-600">
+            <TabsTrigger value="trends" className="text-slate-300 data-[state=active]:text-white data-[state=active]:bg-slate-700">趨勢分析</TabsTrigger>
+            <TabsTrigger value="distribution" className="text-slate-300 data-[state=active]:text-white data-[state=active]:bg-slate-700">心情分佈</TabsTrigger>
+            <TabsTrigger value="weekly" className="text-slate-300 data-[state=active]:text-white data-[state=active]:bg-slate-700">週統計</TabsTrigger>
+            <TabsTrigger value="patterns" className="text-slate-300 data-[state=active]:text-white data-[state=active]:bg-slate-700">模式分析</TabsTrigger>
           </TabsList>
 
           <TabsContent value="trends">
-            <Card className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">心情趨勢分析</h3>
+            <Card className="p-6 bg-slate-800/30 border-slate-600 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-white mb-6">心情趨勢分析</h3>
               {trendData.length === 0 ? (
                 <div className="h-80 flex items-center justify-center bg-gray-50 rounded-lg">
                   <div className="text-center">
