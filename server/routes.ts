@@ -233,40 +233,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Mood twins routes
-  app.get("/api/mood/twins", async (req, res) => {
+  app.get("/api/mood/twins/:happiness/:calmness", async (req, res) => {
     try {
-      const happiness = parseInt(req.query.happiness as string) || 0;
-      const calmness = parseInt(req.query.calmness as string) || 0;
+      const happiness = parseInt(req.params.happiness) || 0;
+      const calmness = parseInt(req.params.calmness) || 0;
       
-      // Generate mood twins data based on current mood state
-      const mockTwins = [
+      // Calculate twins based on similar mood ranges
+      const twinRange = 10; // mood range for finding twins
+      const entries = await storage.getMoodEntries(undefined, 500);
+      
+      const twins = entries.filter(entry => 
+        Math.abs(entry.happiness - happiness) <= twinRange &&
+        Math.abs(entry.calmness - calmness) <= twinRange
+      );
+      
+      // Generate music types based on current mood
+      const moodTwins = [
         {
           id: "1",
           moodEntryId: null,
-          musicType: "lo-fi 雨聲",
-          twinCount: Math.floor(Math.random() * 15000) + 5000,
+          musicType: happiness >= 70 ? "愉快流行" : calmness >= 70 ? "療癒音樂" : "抒情音樂",
+          twinCount: twins.length + Math.floor(Math.random() * 1000) + 500,
           city: "台北",
           timestamp: new Date()
         },
         {
           id: "2", 
           moodEntryId: null,
-          musicType: "古典鋼琴",
-          twinCount: Math.floor(Math.random() * 8000) + 2000,
+          musicType: calmness >= 60 ? "冥想音樂" : happiness < 40 ? "溫暖抒情" : "古典鋼琴",
+          twinCount: Math.floor(twins.length * 0.7) + Math.floor(Math.random() * 800) + 300,
           city: "高雄",
           timestamp: new Date()
         },
         {
           id: "3",
           moodEntryId: null, 
-          musicType: "冥想音樂",
-          twinCount: Math.floor(Math.random() * 6000) + 1500,
+          musicType: happiness < 40 && calmness < 40 ? "療癒雨聲" : "lo-fi音樂",
+          twinCount: Math.floor(twins.length * 0.5) + Math.floor(Math.random() * 600) + 200,
           city: "台中",
           timestamp: new Date()
         }
       ];
       
-      res.json(mockTwins);
+      res.json(moodTwins);
     } catch (error) {
       res.status(500).json({ message: "Failed to get mood twins" });
     }

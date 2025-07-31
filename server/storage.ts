@@ -137,6 +137,7 @@ export class MemStorage implements IStorage {
       message: insertMessage.message,
       isAnonymous: insertMessage.isAnonymous || 1,
       supportCount: 0,
+      city: insertMessage.city || null,
       timestamp: now,
     };
     this.emotionMessages.set(id, message);
