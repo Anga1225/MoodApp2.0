@@ -47,31 +47,68 @@ async function initializeSampleData() {
       { title: '安靜', artist: '周杰倫', genre: '流行', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=OiNsgKOmFTQ', spotifyUrl: 'https://open.spotify.com/track/2KrxsD86ARO5beq7Q0Gsdd' },
       { title: '夜空中最亮的星', artist: '逃跑計劃', genre: '民謠', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=qf8_tn7lBIc', spotifyUrl: 'https://open.spotify.com/track/0y6kdSRJVQlfnAQuen1mwj' },
       { title: '慢慢', artist: '張學友', genre: '抒情', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=djV11Xbc914', spotifyUrl: 'https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC' },
+      { title: '擁抱', artist: '五月天', genre: '搖滾', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=Qx-PhGUeHxs', spotifyUrl: 'https://open.spotify.com/track/2Lq2qX3MZV3DYh8dPaXHrq' },
       
-      // Happy/快樂音樂
-      { title: '小幸運', artist: '田馥甄', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=rcjJqeUlps8', spotifyUrl: 'https://open.spotify.com/track/1K3ESzZIujmOJ7tQPPgm7O' },
+      // Happy/快樂音樂  
+      { title: '小幸運', artist: '田馥甄', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=YXXTWoDPGG0', spotifyUrl: 'https://open.spotify.com/track/1K3ESzZIujmOJ7tQPPgm7O' },
       { title: '晴天', artist: '周杰倫', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=lnCeZY6nxjQ', spotifyUrl: 'https://open.spotify.com/track/2PjlaxlMunGOUvcRzlTbtE' },
-      { title: '愛你', artist: '陳芳語', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=9AQByLgzPRc', spotifyUrl: 'https://open.spotify.com/track/6JmQbOaVSIHIVvE5VqkKST' },
+      { title: '愛你', artist: '王心凌', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=6dQjGJM3d0k', spotifyUrl: 'https://open.spotify.com/track/6JmQbOaVSIHIVvE5VqkKST' },
+      { title: '彩虹', artist: '周杰倫', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=E_aASHGOZ0s', spotifyUrl: 'https://open.spotify.com/track/4ZrQHK5lZKLZ8b8PvOgGQj' },
+      { title: '青春', artist: '毛不易', genre: '民謠', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=OjsfdGW0e5w', spotifyUrl: 'https://open.spotify.com/track/3KrLQWkdPN1YdK5bK0gZhE' },
       
       // Calm/平靜音樂
       { title: '時光機', artist: '五月天', genre: '搖滾', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=lYOUQxCEHPw', spotifyUrl: 'https://open.spotify.com/track/4aLd4rqGrIaGuLhTNlhTPZ' },
       { title: '寧夏', artist: '梁靜茹', genre: '抒情', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=5NyAEWOjlUE', spotifyUrl: 'https://open.spotify.com/track/2TxZOIWh2SWTEZyVGWQJRO' },
       { title: 'Moon River', artist: '王菲', genre: '爵士', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=mNOJnSUEfM0', spotifyUrl: 'https://open.spotify.com/track/6rqhFgbbKwnb9MLmUQDjG6' },
+      { title: '月亮代表我的心', artist: '鄧麗君', genre: '經典', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=xz6xHJxc8dE', spotifyUrl: 'https://open.spotify.com/track/0UjJqHr5lzXqNgxH0xTuQY' },
+      { title: '小城故事', artist: '鄧麗君', genre: '經典', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=vQKMxKqLfPE', spotifyUrl: 'https://open.spotify.com/track/7QVnEr8KWKEfmJWQJ2WaKF' },
       
       // Sad/憂鬱音樂
       { title: '聽見下雨的聲音', artist: '魏如昀', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=DYQS_TQFVb0', spotifyUrl: 'https://open.spotify.com/track/5Uon3ZP0ufGVKmtWGX5N0F' },
       { title: '成全', artist: '林宥嘉', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=9v8_aTOz_xM', spotifyUrl: 'https://open.spotify.com/track/6BOcmEOUvyI0LXJ8CQq0Nq' },
       { title: '說謊', artist: '林宥嘉', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=YkH5YnHO_Bk', spotifyUrl: 'https://open.spotify.com/track/4P3yDxI5FlpNQz9yubLX9g' },
+      { title: '演員', artist: '薛之謙', genre: '流行', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=hJ1_VbqXkWE', spotifyUrl: 'https://open.spotify.com/track/1QZMjwzlRcqJ4VfEr8qGjs' },
+      { title: '匆匆那年', artist: '王菲', genre: '抒情', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=y5gW2aJLhUk', spotifyUrl: 'https://open.spotify.com/track/2JKHzNqE8TfT7P9c1OMZNk' },
       
-      // Anxious/焦慮音樂
+      // Anxious/焦慮音樂 - 提供鎮定和希望的歌曲
       { title: '海闊天空', artist: 'Beyond', genre: '搖滾', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=qu_FSptjRic', spotifyUrl: 'https://open.spotify.com/track/2xU1K5b3W91OJmM4Hnv4eM' },
       { title: '最初的夢想', artist: '范瑋琪', genre: '流行', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=6Uo0NmOAJF8', spotifyUrl: 'https://open.spotify.com/track/1VpOGNOUz2MZzGo4dTGEPR' },
-      { title: '我不會喜歡你', artist: '陳柏霖', genre: '流行', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=bCuGF8XL3YQ', spotifyUrl: 'https://open.spotify.com/track/3dNpv8BgdGjGZJxZwgq2Oy' },
+      { title: '勇敢', artist: '楊培安', genre: '搖滾', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=bCuGF8XL3YQ', spotifyUrl: 'https://open.spotify.com/track/3dNpv8BgdGjGZJxZwgq2Oy' },
+      { title: '陽光總在風雨後', artist: '許美靜', genre: '流行', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=3n8KnYwajlI', spotifyUrl: 'https://open.spotify.com/track/4kD8Y3vU1E8OgU9kzQp5Gd' },
       
       // Energetic/活力音樂
-      { title: '好想你', artist: '朱主愛', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=H7bqjjNzmcI', spotifyUrl: 'https://open.spotify.com/track/4dNiEb3mAhRvdpkJVnfnX8' },
+      { title: '好想你', artist: '朱主愛', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=eCj2xG6vT8k', spotifyUrl: 'https://open.spotify.com/track/4dNiEb3mAhRvdpkJVnfnX8' },
       { title: '年少有為', artist: '李榮浩', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=TKmKaD7NP7A', spotifyUrl: 'https://open.spotify.com/track/2dFU5qTwm3kbFSX1MJI8zR' },
-      { title: '稻香', artist: '周杰倫', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=VjrYjxNTCNE', spotifyUrl: 'https://open.spotify.com/track/1L6A0aGwxD5fq8VgUdh8vr' }
+      { title: '稻香', artist: '周杰倫', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=VjrYjxNTCNE', spotifyUrl: 'https://open.spotify.com/track/1L6A0aGwxD5fq8VgUdh8vr' },
+      { title: '倔強', artist: '五月天', genre: '搖滾', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=xYXRh_NgkEM', spotifyUrl: 'https://open.spotify.com/track/6JiJKJr2xJb6zBnF1XgWFp' },
+      { title: '怒放的生命', artist: '汪峰', genre: '搖滾', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=F8FqB2L1aLU', spotifyUrl: 'https://open.spotify.com/track/5nGfXWfT9dHOVm8CkPgGPl' },
+      
+      // Excited/興奮音樂
+      { title: '大藝術家', artist: '蔡依林', genre: '流行', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=mV_AA8_S6po', spotifyUrl: 'https://open.spotify.com/track/0x5K3jQe7TgKrJzJqNhFHl' },
+      { title: '派對動物', artist: '蔡依林', genre: '電音', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=6XhS53L5JnU', spotifyUrl: 'https://open.spotify.com/track/1UYfJjQzgWcKdL7DgzKfOk' },
+      { title: '我的歌聲裡', artist: '曲婉婷', genre: '流行', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=9AZ0Y3Zj8kU', spotifyUrl: 'https://open.spotify.com/track/4J5k3QjGr8NtQoNJLnQYiK' },
+      
+      // Romantic/浪漫音樂
+      { title: '情非得已', artist: '庾澄慶', genre: '流行', moodType: 'romantic', youtubeUrl: 'https://www.youtube.com/watch?v=1qYz7rfgLWE', spotifyUrl: 'https://open.spotify.com/track/6Hm3jF8OWh9yEpUoWLVqnd' },
+      { title: '愛如潮水', artist: '張信哲', genre: '抒情', moodType: 'romantic', youtubeUrl: 'https://www.youtube.com/watch?v=vCjXKOJIKrI', spotifyUrl: 'https://open.spotify.com/track/3xK4nFhPVZ9Ky1LQ8WjGcQ' },
+      { title: '至少還有你', artist: '林憶蓮', genre: '抒情', moodType: 'romantic', youtubeUrl: 'https://www.youtube.com/watch?v=fVPIFLQ5x0Q', spotifyUrl: 'https://open.spotify.com/track/7BpZkXLK5eF1ZQzJqNyJWm' },
+      { title: '明明就', artist: '周杰倫', genre: '流行', moodType: 'romantic', youtubeUrl: 'https://www.youtube.com/watch?v=ZSkGwKGNGIM', spotifyUrl: 'https://open.spotify.com/track/1nJvVP3QxJ9wKrPQpHJgQe' },
+      
+      // Nostalgic/懷舊音樂
+      { title: '童年', artist: '羅大佑', genre: '民謠', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=DP2q8rnYsxs', spotifyUrl: 'https://open.spotify.com/track/5kM3NkF4Xl8xQj2jQrGvQJ' },
+      { title: '外婆的澎湖灣', artist: '潘安邦', genre: '民謠', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=jv8ELdPLYz4', spotifyUrl: 'https://open.spotify.com/track/2qHZ3jGr8cJ5FrPmHJlrRe' },
+      { title: '魯冰花', artist: '甄妮', genre: '經典', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=YFPI-5yDwAQ', spotifyUrl: 'https://open.spotify.com/track/3vLm2jF8xYpPfQkJvQnVGh' },
+      { title: '橄欖樹', artist: '齊豫', genre: '民謠', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=53_p13Ky0Js', spotifyUrl: 'https://open.spotify.com/track/6fNKhEr2JzVyF8GkNqPdOm' },
+      
+      // Melancholic/憂鬱沉思音樂
+      { title: '如果雲知道', artist: '許茹芸', genre: '抒情', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=xGNz3jP6C-4', spotifyUrl: 'https://open.spotify.com/track/2jPgL8QNr5mJnOkF1qWbKo' },
+      { title: '領悟', artist: '辛曉琪', genre: '抒情', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=PD_h5TrJYmY', spotifyUrl: 'https://open.spotify.com/track/4kW1nF7QzJ8VrYqTpKmVxG' },
+      { title: '心雨', artist: '楊培安', genre: '抒情', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=qm9R1xMZ2A8', spotifyUrl: 'https://open.spotify.com/track/1yV3mZ4JqP7rVGkQNLBFJo' },
+      
+      // Hopeful/希望音樂
+      { title: '真的愛你', artist: 'Beyond', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=WSFJdqJc-lg', spotifyUrl: 'https://open.spotify.com/track/5EhJKq3NgGJqvKPzWnVdRB' },
+      { title: '相信自己', artist: '零點樂隊', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=nEQL6vY9UGo', spotifyUrl: 'https://open.spotify.com/track/2mF3fKvY4QrJpKlGjLN8jl' },
+      { title: '光輝歲月', artist: 'Beyond', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=E1iBuw8wCFI', spotifyUrl: 'https://open.spotify.com/track/3nQp5hGFvJrLpK8YqJfTbA' }
     ];
     
     await Promise.all([
