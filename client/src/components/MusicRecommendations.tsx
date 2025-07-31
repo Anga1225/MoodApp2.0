@@ -86,21 +86,21 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
               </div>
               
               <div className="flex-1 min-w-0">
-                <h4 className="font-semibold text-gray-900 truncate">{song.title}</h4>
-                <p className="text-sm text-gray-600 truncate">{song.artist}</p>
+                <h4 className="font-semibold text-gray-900 text-sm">{song.title}</h4>
+                <p className="text-xs text-gray-600 mb-1">{song.artist}</p>
                 {song.genre && (
-                  <span className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs rounded-full mt-1">
+                  <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">
                     {song.genre}
                   </span>
                 )}
               </div>
               
-              <div className="flex space-x-2">
+              <div className="flex flex-col space-y-1">
                 {song.spotifyUrl && (
                   <Button
                     size="sm"
                     onClick={() => window.open(song.spotifyUrl!, '_blank')}
-                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-xs rounded-lg transition-colors"
+                    className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 text-xs rounded-md transition-colors flex items-center"
                   >
                     <Play className="w-3 h-3 mr-1" />
                     Spotify
@@ -110,9 +110,9 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
                   <Button
                     size="sm"
                     onClick={() => window.open(song.youtubeUrl!, '_blank')}
-                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded-lg transition-colors"
+                    className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-xs rounded-md transition-colors flex items-center"
                   >
-                    <ExternalLink className="w-3 h-3 mr-1" />
+                    <Play className="w-3 h-3 mr-1" />
                     YouTube
                   </Button>
                 )}

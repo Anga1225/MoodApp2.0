@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { ArrowLeft, Play, Pause, RotateCcw, Heart } from 'lucide-react';
+import { ArrowLeft, Play, Pause, RotateCcw, Heart, Music, ExternalLink } from 'lucide-react';
 import { calculateMoodColor } from '@/utils/colorAlgorithms';
+import { useQuery } from '@tanstack/react-query';
+import type { MusicRecommendation } from '@shared/schema';
 
 interface ColorTherapyPageProps {
   onBack: () => void;
@@ -16,6 +18,7 @@ interface TherapySession {
   duration: number; // in seconds
   colors: string[];
   instructions: string[];
+  musicType: string; // for music recommendations
 }
 
 const THERAPY_SESSIONS: TherapySession[] = [
@@ -24,6 +27,7 @@ const THERAPY_SESSIONS: TherapySession[] = [
     description: '緩解焦慮，帶來內心平靜',
     duration: 300, // 5 minutes
     colors: ['#4A90E2', '#5BA3F2', '#6CB6FF', '#7DC9FF', '#8EDCFF'],
+    musicType: 'calm',
     instructions: [
       '深呼吸，讓自己放鬆',
       '專注於藍色的平靜能量',
@@ -37,6 +41,7 @@ const THERAPY_SESSIONS: TherapySession[] = [
     description: '提升能量，激發創造力',
     duration: 240, // 4 minutes
     colors: ['#FF6B35', '#FF7F50', '#FF8C69', '#FFA07A', '#FFB347'],
+    musicType: 'energetic',
     instructions: [
       '感受橙色的溫暖與活力',
       '讓這份能量充滿全身',
@@ -50,6 +55,7 @@ const THERAPY_SESSIONS: TherapySession[] = [
     description: '平衡情緒，促進內在和諧',
     duration: 360, // 6 minutes
     colors: ['#50C878', '#66CDAA', '#7FFFD4', '#90EE90', '#98FB98'],
+    musicType: 'peaceful',
     instructions: [
       '讓綠色的療癒能量環繞你',
       '感受大自然的生命力',
@@ -63,6 +69,7 @@ const THERAPY_SESSIONS: TherapySession[] = [
     description: '提升靈性，增強直覺',
     duration: 420, // 7 minutes
     colors: ['#8A2BE2', '#9370DB', '#BA55D3', '#DA70D6', '#DDA0DD'],
+    musicType: 'calm',
     instructions: [
       '沉浸在紫色的神秘能量中',
       '打開心靈的智慧之門',
@@ -79,6 +86,17 @@ export function ColorTherapyPage({ onBack, initialColor }: ColorTherapyPageProps
   const [currentTime, setCurrentTime] = useState(0);
   const [currentColorIndex, setCurrentColorIndex] = useState(0);
   const [breathingPhase, setBreathingPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
+
+  // Fetch music recommendations for the selected session
+  const { data: sessionMusic } = useQuery<MusicRecommendation[]>({
+    queryKey: [`/api/music/recommendations`, selectedSession?.musicType],
+    enabled: !!selectedSession,
+    queryFn: async () => {
+      const response = await fetch(`/api/music/recommendations?moodType=${selectedSession?.musicType}`);
+      return response.json();
+    },
+    staleTime: 300000, // 5 minutes
+  });
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -233,6 +251,46 @@ export function ColorTherapyPage({ onBack, initialColor }: ColorTherapyPageProps
                   <p className="text-sm text-gray-600">
                     {getCurrentInstruction()}
                   </p>
+                </div>
+              )}
+
+              {/* Session Music */}
+              {sessionMusic && sessionMusic.length > 0 && (
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-medium text-gray-900 mb-3 flex items-center gap-2">
+                    <Music className="w-4 h-4" />
+                    推薦療癒音樂
+                  </h4>
+                  <div className="space-y-2">
+                    {sessionMusic.slice(0, 3).map((song) => (
+                      <div key={song.id} className="flex items-center justify-between p-2 bg-white rounded-lg">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm text-gray-900 truncate">{song.title}</p>
+                          <p className="text-xs text-gray-600">{song.artist}</p>
+                        </div>
+                        <div className="flex gap-1">
+                          {song.youtubeUrl && (
+                            <Button
+                              size="sm"
+                              onClick={() => window.open(song.youtubeUrl!, '_blank')}
+                              className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-xs rounded"
+                            >
+                              <Play className="w-3 h-3" />
+                            </Button>
+                          )}
+                          {song.spotifyUrl && (
+                            <Button
+                              size="sm"
+                              onClick={() => window.open(song.spotifyUrl!, '_blank')}
+                              className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 text-xs rounded"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
