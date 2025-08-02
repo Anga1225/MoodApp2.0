@@ -96,24 +96,55 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
               </div>
               
               <div className="flex flex-col space-y-1">
+                {song.youtubeUrl && (
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      try {
+                        window.open(song.youtubeUrl!, '_blank');
+                      } catch (error) {
+                        console.error('Failed to open YouTube link:', error);
+                        // Fallback to search if direct link fails
+                        const searchQuery = encodeURIComponent(`${song.title} ${song.artist}`);
+                        window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                      }
+                    }}
+                    className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-xs rounded-md transition-colors flex items-center"
+                  >
+                    <Play className="w-3 h-3 mr-1" />
+                    YouTube
+                  </Button>
+                )}
                 {song.spotifyUrl && (
                   <Button
                     size="sm"
-                    onClick={() => window.open(song.spotifyUrl!, '_blank')}
+                    onClick={() => {
+                      try {
+                        window.open(song.spotifyUrl!, '_blank');
+                      } catch (error) {
+                        console.error('Failed to open Spotify link:', error);
+                        // Fallback to search if direct link fails
+                        const searchQuery = encodeURIComponent(`${song.title} ${song.artist}`);
+                        window.open(`https://open.spotify.com/search/${searchQuery}`, '_blank');
+                      }
+                    }}
                     className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 text-xs rounded-md transition-colors flex items-center"
                   >
                     <Play className="w-3 h-3 mr-1" />
                     Spotify
                   </Button>
                 )}
-                {song.youtubeUrl && (
+                {!song.youtubeUrl && !song.spotifyUrl && (
                   <Button
                     size="sm"
-                    onClick={() => window.open(song.youtubeUrl!, '_blank')}
-                    className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-xs rounded-md transition-colors flex items-center"
+                    onClick={() => {
+                      const searchQuery = encodeURIComponent(`${song.title} ${song.artist}`);
+                      window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                    }}
+                    className="bg-gray-500 hover:bg-gray-600 text-white px-2 py-1 text-xs rounded-md transition-colors flex items-center"
                   >
-                    <Play className="w-3 h-3 mr-1" />
-                    YouTube
+                    <ExternalLink className="w-3 h-3 mr-1" />
+                    搜尋
                   </Button>
                 )}
               </div>

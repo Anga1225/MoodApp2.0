@@ -33,7 +33,12 @@ export function MoodSlider({
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <label className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <span className={`text-${color}-500`}>{icon}</span>
+          <span className={
+            color === 'yellow' ? 'text-yellow-500' : 
+            color === 'green' ? 'text-green-500' : 
+            color === 'blue' ? 'text-blue-500' : 
+            'text-primary'
+          }>{icon}</span>
           {label}
         </label>
         <span className="text-2xl font-bold text-primary">{value}</span>
