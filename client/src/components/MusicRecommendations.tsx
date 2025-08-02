@@ -11,8 +11,64 @@ interface MusicRecommendationsProps {
 }
 
 export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }: MusicRecommendationsProps) {
+  // Determine mood type from happiness/calmness values
+  const getCurrentMoodType = () => {
+    // Euphoric - very high happiness and energy
+    if (happiness >= 90 && calmness <= 30) return 'euphoric';
+    // Empowering - high happiness, moderate energy
+    else if (happiness >= 80 && calmness >= 40 && calmness <= 60) return 'empowering';
+    // Peaceful - high happiness and high calmness
+    else if (happiness >= 70 && calmness >= 80) return 'peaceful';
+    // Hopeful - moderately high happiness
+    else if (happiness >= 70 && calmness >= 50 && calmness <= 80) return 'hopeful';
+    // Energetic - high happiness, low calmness
+    else if (happiness >= 65 && calmness <= 40) return 'energetic';
+    // Excited - moderate to high happiness, very low calmness
+    else if (happiness >= 60 && calmness <= 30) return 'excited';
+    // Playful - moderate happiness, moderate energy
+    else if (happiness >= 60 && calmness >= 30 && calmness <= 50) return 'playful';
+    // Happy - general good mood
+    else if (happiness >= 60) return 'happy';
+    // Motivational - moderate happiness with determination
+    else if (happiness >= 50 && calmness <= 40) return 'motivational';
+    // Calm - high calmness, moderate happiness
+    else if (calmness >= 70 && happiness >= 40) return 'calm';
+    // Soothing - high calmness, lower happiness
+    else if (calmness >= 80 && happiness < 50) return 'soothing';
+    // Contemplative - moderate levels, introspective
+    else if (happiness >= 40 && happiness <= 60 && calmness >= 50 && calmness <= 70) return 'contemplative';
+    // Dreamy - moderate happiness, high calmness
+    else if (happiness >= 45 && happiness <= 65 && calmness >= 75) return 'dreamy';
+    // Gentle - lower happiness but not sad, higher calmness
+    else if (happiness >= 35 && happiness <= 50 && calmness >= 60) return 'gentle';
+    // Melancholic - low happiness, moderate calmness
+    else if (happiness < 40 && calmness >= 50 && calmness <= 70) return 'melancholic';
+    // Sad - low happiness, moderate to high calmness
+    else if (happiness < 40 && calmness >= 40) return 'sad';
+    // Anxious - low happiness, low calmness
+    else if (happiness < 45 && calmness < 40) return 'anxious';
+    // Mysterious - lower happiness, lower calmness but not anxious
+    else if (happiness < 50 && calmness >= 30 && calmness < 50) return 'mysterious';
+    // Spiritual - transcendent feelings
+    else if (happiness >= 45 && happiness <= 70 && calmness >= 80) return 'spiritual';
+    // Dramatic - intense emotions
+    else if ((happiness <= 30 || happiness >= 80) && calmness <= 50) return 'dramatic';
+    // Romantic - moderate to high happiness, moderate calmness
+    else if (happiness >= 55 && happiness <= 75 && calmness >= 45 && calmness <= 65) return 'romantic';
+    // Nostalgic - moderate happiness with reflection
+    else if (happiness >= 45 && happiness <= 65 && calmness >= 55 && calmness <= 75) return 'nostalgic';
+    // Default fallback
+    else return 'peaceful';
+  };
+
+  const currentMoodType = getCurrentMoodType();
+  
   const { data: recommendations, isLoading } = useQuery<MusicRecommendation[]>({
-    queryKey: [`/api/music/recommendations?happiness=${happiness}&calmness=${calmness}`],
+    queryKey: [`/api/music/recommendations`, { happiness, calmness, moodType: currentMoodType }],
+    queryFn: async () => {
+      const response = await fetch(`/api/music/recommendations?happiness=${happiness}&calmness=${calmness}&moodType=${moodType || currentMoodType}`);
+      return response.json();
+    },
     staleTime: 300000, // 5 minutes
   });
 
@@ -26,12 +82,35 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
   };
 
   const getMoodDescription = () => {
-    if (happiness < 40 && calmness < 40) return "也感到焦慮不安";
-    if (happiness < 40) return "也感到有些低落";
-    if (calmness > 70) return "也在尋找內心平靜";
-    if (happiness > 70) return "也想感受快樂能量";
-    return "也在尋找情緒共鳴";
+    const moodType = currentMoodType;
+    
+    switch (moodType) {
+      case 'euphoric': return '也感受著極度欣快';
+      case 'empowering': return '也想要感受力量與自信';
+      case 'peaceful': return '也在尋找內心平靜';
+      case 'hopeful': return '也對未來抱有希望';
+      case 'energetic': return '也想要充滿活力';
+      case 'excited': return '也感到興奮難耐';
+      case 'playful': return '也想要輕鬆玩樂';
+      case 'happy': return '也想感受快樂能量';
+      case 'motivational': return '也需要勵志的力量';
+      case 'calm': return '也在尋找平靜的空間';
+      case 'soothing': return '也需要溫柔的撫慰';
+      case 'contemplative': return '也在深思人生';
+      case 'dreamy': return '也沉浸在夢幻中';
+      case 'gentle': return '也需要溫柔的陪伴';
+      case 'melancholic': return '也感到淡淡的憂鬱';
+      case 'sad': return '也感到有些低落';
+      case 'anxious': return '也感到焦慮不安';
+      case 'mysterious': return '也感受著神秘氣息';
+      case 'spiritual': return '也在尋找靈性寄託';
+      case 'dramatic': return '也經歷著強烈情緒';
+      case 'romantic': return '也沉浸在浪漫情感中';
+      case 'nostalgic': return '也在回憶美好時光';
+      default: return '也在尋找情緒共鳴';
+    }
   };
+
   if (isLoading) {
     return (
       <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">

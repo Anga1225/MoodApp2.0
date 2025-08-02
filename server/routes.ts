@@ -55,6 +55,8 @@ async function initializeSampleData() {
       { title: 'Canon in D', artist: 'Pachelbel', genre: '古典', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=NlprozGcs80', spotifyUrl: null },
       { title: 'Clair de Lune', artist: 'Debussy', genre: '古典', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=CvFH_6DNRCY', spotifyUrl: null },
       { title: 'Weightless', artist: 'Marconi Union', genre: '環境音樂', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=UfcAVejslrU', spotifyUrl: null },
+      { title: 'Aquarium', artist: 'Camille Saint-Saëns', genre: '古典', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=YVll6VXwQKE', spotifyUrl: null },
+      { title: 'Samsara', artist: 'Audiomachine', genre: '電影配樂', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=EQqjKr9kO0s', spotifyUrl: null },
       
       // Happy/快樂音樂  
       { title: 'Happy', artist: 'Pharrell Williams', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=ZbZSe6N_BXs', spotifyUrl: null },
@@ -115,7 +117,78 @@ async function initializeSampleData() {
       // Hopeful/希望音樂
       { title: 'Here Comes the Sun', artist: 'The Beatles', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=KQetemT1sWc', spotifyUrl: null },
       { title: 'Three Little Birds', artist: 'Bob Marley & The Wailers', genre: '雷鬼', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=zaGUr6wzyT8', spotifyUrl: null },
-      { title: 'Don\'t Stop Believin\'', artist: 'Journey', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=1k8craCGpgs', spotifyUrl: null }
+      { title: 'Don\'t Stop Believin\'', artist: 'Journey', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=1k8craCGpgs', spotifyUrl: null },
+      { title: 'Brave', artist: 'Sara Bareilles', genre: '流行', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=QUQsqBqxoR4', spotifyUrl: null },
+      { title: 'Stronger', artist: 'Kelly Clarkson', genre: '流行', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=Xn676-fLq7I', spotifyUrl: null },
+      
+      // Dreamy/夢幻音樂
+      { title: 'Svefn-g-englar', artist: 'Sigur Rós', genre: '後搖滾', moodType: 'dreamy', youtubeUrl: 'https://www.youtube.com/watch?v=8LeQN249Jqw', spotifyUrl: null },
+      { title: 'Sleepyhead', artist: 'Passion Pit', genre: '獨立流行', moodType: 'dreamy', youtubeUrl: 'https://www.youtube.com/watch?v=DiEwJTOderQ', spotifyUrl: null },
+      { title: 'Space Song', artist: 'Beach House', genre: '夢幻流行', moodType: 'dreamy', youtubeUrl: 'https://www.youtube.com/watch?v=RalxdThFeoc', spotifyUrl: null },
+      { title: 'Holocene', artist: 'Bon Iver', genre: '獨立民謠', moodType: 'dreamy', youtubeUrl: 'https://www.youtube.com/watch?v=TWcyIpul8OE', spotifyUrl: null },
+      { title: 'Breathe Me', artist: 'Sia', genre: '流行', moodType: 'dreamy', youtubeUrl: 'https://www.youtube.com/watch?v=hSjIz8oQuko', spotifyUrl: null },
+      
+      // Motivational/勵志音樂
+      { title: 'Eye of the Tiger', artist: 'Survivor', genre: '搖滾', moodType: 'motivational', youtubeUrl: 'https://www.youtube.com/watch?v=btPJPFnesV4', spotifyUrl: null },
+      { title: 'Stronger', artist: 'Kanye West', genre: 'Hip-Hop', moodType: 'motivational', youtubeUrl: 'https://www.youtube.com/watch?v=PsO6ZnUZI0g', spotifyUrl: null },
+      { title: 'Fight Song', artist: 'Rachel Platten', genre: '流行', moodType: 'motivational', youtubeUrl: 'https://www.youtube.com/watch?v=xo1VInw-SKc', spotifyUrl: null },
+      { title: 'Hall of Fame', artist: 'The Script ft. will.i.am', genre: '流行', moodType: 'motivational', youtubeUrl: 'https://www.youtube.com/watch?v=mk48xRzuNvA', spotifyUrl: null },
+      { title: 'Can\'t Hold Us', artist: 'Macklemore & Ryan Lewis', genre: 'Hip-Hop', moodType: 'motivational', youtubeUrl: 'https://www.youtube.com/watch?v=2zNSgSzhBfM', spotifyUrl: null },
+      
+      // Spiritual/靈性音樂
+      { title: 'Ave Maria', artist: 'Franz Schubert', genre: '古典', moodType: 'spiritual', youtubeUrl: 'https://www.youtube.com/watch?v=2bosouX_d8Y', spotifyUrl: null },
+      { title: 'Amazing Grace', artist: 'Celtic Woman', genre: '傳統', moodType: 'spiritual', youtubeUrl: 'https://www.youtube.com/watch?v=ChcR2gKt5WM', spotifyUrl: null },
+      { title: 'Benedictus', artist: 'Karl Jenkins', genre: '現代古典', moodType: 'spiritual', youtubeUrl: 'https://www.youtube.com/watch?v=ux5O9dz2WjU', spotifyUrl: null },
+      { title: 'Om Namah Shivaya', artist: 'Krishna Das', genre: '冥想', moodType: 'spiritual', youtubeUrl: 'https://www.youtube.com/watch?v=YQhQZlyOPng', spotifyUrl: null },
+      
+      // Contemplative/沉思音樂
+      { title: 'On Earth as It Is in Heaven', artist: 'Angels & Airwaves', genre: '另類搖滾', moodType: 'contemplative', youtubeUrl: 'https://www.youtube.com/watch?v=HKuVXN-jOVw', spotifyUrl: null },
+      { title: 'Re: Stacks', artist: 'Bon Iver', genre: '獨立民謠', moodType: 'contemplative', youtubeUrl: 'https://www.youtube.com/watch?v=GhDnyPsQsB0', spotifyUrl: null },
+      { title: 'The Night We Met', artist: 'Lord Huron', genre: '獨立民謠', moodType: 'contemplative', youtubeUrl: 'https://www.youtube.com/watch?v=KtlgYxa6BMU', spotifyUrl: null },
+      { title: 'Falling Slowly', artist: 'Glen Hansard & Marketa Irglova', genre: '民謠', moodType: 'contemplative', youtubeUrl: 'https://www.youtube.com/watch?v=k8mtXwtapX4', spotifyUrl: null },
+      
+      // Playful/玩樂音樂
+      { title: 'I Got You (I Feel Good)', artist: 'James Brown', genre: '放克', moodType: 'playful', youtubeUrl: 'https://www.youtube.com/watch?v=U5TqIdff_DQ', spotifyUrl: null },
+      { title: 'September', artist: 'Earth Wind & Fire', genre: '放克', moodType: 'playful', youtubeUrl: 'https://www.youtube.com/watch?v=Gs069dndIYk', spotifyUrl: null },
+      { title: 'I Want It That Way', artist: 'Backstreet Boys', genre: '流行', moodType: 'playful', youtubeUrl: 'https://www.youtube.com/watch?v=4fndeDfaWCg', spotifyUrl: null },
+      { title: 'Mambo No. 5', artist: 'Lou Bega', genre: '拉丁', moodType: 'playful', youtubeUrl: 'https://www.youtube.com/watch?v=EK_LN3XEcnw', spotifyUrl: null },
+      { title: 'Hey Ya!', artist: 'OutKast', genre: 'Hip-Hop', moodType: 'playful', youtubeUrl: 'https://www.youtube.com/watch?v=PWgvGjAhvIw', spotifyUrl: null },
+      
+      // Dramatic/戲劇性音樂
+      { title: 'O Fortuna', artist: 'Carl Orff', genre: '古典', moodType: 'dramatic', youtubeUrl: 'https://www.youtube.com/watch?v=GXFSK0ogeg4', spotifyUrl: null },
+      { title: 'Lux Aeterna', artist: 'Clint Mansell', genre: '電影配樂', moodType: 'dramatic', youtubeUrl: 'https://www.youtube.com/watch?v=hKLpJtvzlEI', spotifyUrl: null },
+      { title: 'Time', artist: 'Hans Zimmer', genre: '電影配樂', moodType: 'dramatic', youtubeUrl: 'https://www.youtube.com/watch?v=RxabLA7UQ9k', spotifyUrl: null },
+      { title: 'The Imperial March', artist: 'John Williams', genre: '電影配樂', moodType: 'dramatic', youtubeUrl: 'https://www.youtube.com/watch?v=-bzWSJG93P8', spotifyUrl: null },
+      
+      // Soothing/撫慰音樂
+      { title: 'Moonlight Sonata', artist: 'Beethoven', genre: '古典', moodType: 'soothing', youtubeUrl: 'https://www.youtube.com/watch?v=4Tr0otuiQuU', spotifyUrl: null },
+      { title: 'Claire de Lune', artist: 'Claude Debussy', genre: '古典', moodType: 'soothing', youtubeUrl: 'https://www.youtube.com/watch?v=CvFH_6DNRCY', spotifyUrl: null },
+      { title: 'Mad About You', artist: 'Sting', genre: '流行', moodType: 'soothing', youtubeUrl: 'https://www.youtube.com/watch?v=YjLsFnQejP8', spotifyUrl: null },
+      { title: 'Tears in Heaven', artist: 'Eric Clapton', genre: '搖滾', moodType: 'soothing', youtubeUrl: 'https://www.youtube.com/watch?v=JxPj3GAYYZ0', spotifyUrl: null },
+      
+      // Empowering/賦權音樂
+      { title: 'Titanium', artist: 'David Guetta ft. Sia', genre: '電子', moodType: 'empowering', youtubeUrl: 'https://www.youtube.com/watch?v=JRfuAukYTKg', spotifyUrl: null },
+      { title: 'Roar', artist: 'Katy Perry', genre: '流行', moodType: 'empowering', youtubeUrl: 'https://www.youtube.com/watch?v=CevxZvSJLk8', spotifyUrl: null },
+      { title: 'Confident', artist: 'Demi Lovato', genre: '流行', moodType: 'empowering', youtubeUrl: 'https://www.youtube.com/watch?v=cwjjSmwlSjI', spotifyUrl: null },
+      { title: 'Formation', artist: 'Beyoncé', genre: 'R&B', moodType: 'empowering', youtubeUrl: 'https://www.youtube.com/watch?v=WDZJPJV__bQ', spotifyUrl: null },
+      
+      // Euphoric/欣快音樂
+      { title: 'Levels', artist: 'Avicii', genre: '電子', moodType: 'euphoric', youtubeUrl: 'https://www.youtube.com/watch?v=_ovdm2yX4MA', spotifyUrl: null },
+      { title: 'Clarity', artist: 'Zedd ft. Foxes', genre: '電子', moodType: 'euphoric', youtubeUrl: 'https://www.youtube.com/watch?v=IxxstCcJlsc', spotifyUrl: null },
+      { title: 'Midnight City', artist: 'M83', genre: '電子', moodType: 'euphoric', youtubeUrl: 'https://www.youtube.com/watch?v=dX3k_QDnzHE', spotifyUrl: null },
+      { title: 'One More Time', artist: 'Daft Punk', genre: '電子', moodType: 'euphoric', youtubeUrl: 'https://www.youtube.com/watch?v=FGBhQbmPwH8', spotifyUrl: null },
+      
+      // Gentle/溫柔音樂
+      { title: 'Mad World', artist: 'Gary Jules', genre: '另類', moodType: 'gentle', youtubeUrl: 'https://www.youtube.com/watch?v=4N3N1MlvVc4', spotifyUrl: null },
+      { title: 'Skinny Love', artist: 'Bon Iver', genre: '獨立民謠', moodType: 'gentle', youtubeUrl: 'https://www.youtube.com/watch?v=ssdgFoHLwnk', spotifyUrl: null },
+      { title: 'The Night We Met', artist: 'Lord Huron', genre: '獨立民謠', moodType: 'gentle', youtubeUrl: 'https://www.youtube.com/watch?v=KtlgYxa6BMU', spotifyUrl: null },
+      { title: 'Vienna', artist: 'Billy Joel', genre: '流行', moodType: 'gentle', youtubeUrl: 'https://www.youtube.com/watch?v=oZdiXvDU4P0', spotifyUrl: null },
+      
+      // Mysterious/神秘音樂
+      { title: 'Clubbed to Death', artist: 'Rob Dougan', genre: '電子', moodType: 'mysterious', youtubeUrl: 'https://www.youtube.com/watch?v=pFS4zYWxzNA', spotifyUrl: null },
+      { title: 'Bom Bom', artist: 'Sam and the Womp', genre: '電子', moodType: 'mysterious', youtubeUrl: 'https://www.youtube.com/watch?v=WtMlB-BEMso', spotifyUrl: null },
+      { title: 'Teardrop', artist: 'Massive Attack', genre: '電子', moodType: 'mysterious', youtubeUrl: 'https://www.youtube.com/watch?v=u7K72X4eo_s', spotifyUrl: null },
+      { title: 'Angel', artist: 'Massive Attack', genre: '電子', moodType: 'mysterious', youtubeUrl: 'https://www.youtube.com/watch?v=hbe3CQamF8k', spotifyUrl: null }
     ];
     
     await Promise.all([
@@ -372,20 +445,99 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       let finalMoodType = moodType;
       
-      // If no specific mood type provided, determine from happiness/calmness
+      // If no specific mood type provided, determine from happiness/calmness with expanded categories
       if (!finalMoodType) {
-        if (happiness >= 70 && calmness >= 70) {
+        // Euphoric - very high happiness and energy
+        if (happiness >= 90 && calmness <= 30) {
+          finalMoodType = "euphoric";
+        }
+        // Empowering - high happiness, moderate energy
+        else if (happiness >= 80 && calmness >= 40 && calmness <= 60) {
+          finalMoodType = "empowering";
+        }
+        // Peaceful - high happiness and high calmness
+        else if (happiness >= 70 && calmness >= 80) {
           finalMoodType = "peaceful";
-        } else if (happiness >= 60) {
+        }
+        // Hopeful - moderately high happiness
+        else if (happiness >= 70 && calmness >= 50 && calmness <= 80) {
+          finalMoodType = "hopeful";
+        }
+        // Energetic - high happiness, low calmness
+        else if (happiness >= 65 && calmness <= 40) {
+          finalMoodType = "energetic";
+        }
+        // Excited - moderate to high happiness, very low calmness
+        else if (happiness >= 60 && calmness <= 30) {
+          finalMoodType = "excited";
+        }
+        // Playful - moderate happiness, moderate energy
+        else if (happiness >= 60 && calmness >= 30 && calmness <= 50) {
+          finalMoodType = "playful";
+        }
+        // Happy - general good mood
+        else if (happiness >= 60) {
           finalMoodType = "happy";
-        } else if (happiness < 40 && calmness < 40) {
-          finalMoodType = "anxious";
-        } else if (happiness < 40) {
-          finalMoodType = "sad";
-        } else if (calmness >= 70) {
+        }
+        // Motivational - moderate happiness with determination
+        else if (happiness >= 50 && calmness <= 40) {
+          finalMoodType = "motivational";
+        }
+        // Calm - high calmness, moderate happiness
+        else if (calmness >= 70 && happiness >= 40) {
           finalMoodType = "calm";
-        } else {
-          finalMoodType = "happy";
+        }
+        // Soothing - high calmness, lower happiness
+        else if (calmness >= 80 && happiness < 50) {
+          finalMoodType = "soothing";
+        }
+        // Contemplative - moderate levels, introspective
+        else if (happiness >= 40 && happiness <= 60 && calmness >= 50 && calmness <= 70) {
+          finalMoodType = "contemplative";
+        }
+        // Dreamy - moderate happiness, high calmness
+        else if (happiness >= 45 && happiness <= 65 && calmness >= 75) {
+          finalMoodType = "dreamy";
+        }
+        // Gentle - lower happiness but not sad, higher calmness
+        else if (happiness >= 35 && happiness <= 50 && calmness >= 60) {
+          finalMoodType = "gentle";
+        }
+        // Melancholic - low happiness, moderate calmness
+        else if (happiness < 40 && calmness >= 50 && calmness <= 70) {
+          finalMoodType = "melancholic";
+        }
+        // Sad - low happiness, moderate to high calmness
+        else if (happiness < 40 && calmness >= 40) {
+          finalMoodType = "sad";
+        }
+        // Anxious - low happiness, low calmness
+        else if (happiness < 45 && calmness < 40) {
+          finalMoodType = "anxious";
+        }
+        // Mysterious - lower happiness, lower calmness but not anxious
+        else if (happiness < 50 && calmness >= 30 && calmness < 50) {
+          finalMoodType = "mysterious";
+        }
+        // Spiritual - transcendent feelings
+        else if (happiness >= 45 && happiness <= 70 && calmness >= 80) {
+          finalMoodType = "spiritual";
+        }
+        // Dramatic - intense emotions
+        else if ((happiness <= 30 || happiness >= 80) && calmness <= 50) {
+          finalMoodType = "dramatic";
+        }
+        // Romantic - moderate to high happiness, moderate calmness
+        else if (happiness >= 55 && happiness <= 75 && calmness >= 45 && calmness <= 65) {
+          finalMoodType = "romantic";
+        }
+        // Nostalgic - moderate happiness with reflection
+        else if (happiness >= 45 && happiness <= 65 && calmness >= 55 && calmness <= 75) {
+          finalMoodType = "nostalgic";
+        }
+        // Default fallback
+        else {
+          finalMoodType = "peaceful";
         }
       }
       
