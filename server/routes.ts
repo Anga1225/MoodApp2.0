@@ -10,6 +10,13 @@ import { z } from "zod";
 // Initialize sample data
 async function initializeSampleData() {
   try {
+    // Check if data already exists to avoid duplicates
+    const existingMusic = await storage.getMusicRecommendations('happy');
+    if (existingMusic.length > 0) {
+      console.log('Sample data already exists, skipping initialization');
+      return;
+    }
+    
     // Add sample mood entries
     const sampleMoods = [
       { 
@@ -44,49 +51,49 @@ async function initializeSampleData() {
     
     const sampleMusic = [
       // Peaceful/療癒音樂
-      { title: '安靜', artist: '周杰倫', genre: '流行', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=wySA_XVUqOw', spotifyUrl: null },
-      { title: '夜空中最亮的星', artist: '逃跑計劃', genre: '民謠', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=FeNCzr4_j-s', spotifyUrl: null },
-      { title: 'Canon in D', artist: 'Pachelbel', genre: '古典', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=NlprozGcs80', spotifyUrl: null },
       { title: 'River Flows in You', artist: 'Yiruma', genre: '鋼琴', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=7maJOI3QMu0', spotifyUrl: null },
+      { title: 'Canon in D', artist: 'Pachelbel', genre: '古典', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=NlprozGcs80', spotifyUrl: null },
+      { title: 'Clair de Lune', artist: 'Debussy', genre: '古典', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=CvFH_6DNRCY', spotifyUrl: null },
+      { title: 'Weightless', artist: 'Marconi Union', genre: '環境音樂', moodType: 'peaceful', youtubeUrl: 'https://www.youtube.com/watch?v=UfcAVejslrU', spotifyUrl: null },
       
       // Happy/快樂音樂  
-      { title: '小幸運', artist: '田馥甄', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=YXXTWoDPGG0', spotifyUrl: null },
-      { title: '晴天', artist: '周杰倫', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=lnCeZY6nxjQ', spotifyUrl: null },
       { title: 'Happy', artist: 'Pharrell Williams', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=ZbZSe6N_BXs', spotifyUrl: null },
       { title: 'Count on Me', artist: 'Bruno Mars', genre: '流行', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=CRt2nk7owyE', spotifyUrl: null },
       { title: 'What a Wonderful World', artist: 'Louis Armstrong', genre: '爵士', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=VqhCQZaH4Vs', spotifyUrl: null },
+      { title: 'Three Little Birds', artist: 'Bob Marley', genre: '雷鬼', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=zaGUr6wzyT8', spotifyUrl: null },
+      { title: 'Here Comes the Sun', artist: 'The Beatles', genre: '搖滾', moodType: 'happy', youtubeUrl: 'https://www.youtube.com/watch?v=KQetemT1sWc', spotifyUrl: null },
       
       // Calm/平靜音樂
-      { title: 'Weightless', artist: 'Marconi Union', genre: '環境音樂', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=UfcAVejslrU', spotifyUrl: null },
-      { title: 'Claire de Lune', artist: 'Debussy', genre: '古典', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=CvFH_6DNRCY', spotifyUrl: null },
-      { title: 'Mad World', artist: 'Gary Jules', genre: '抒情', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=4N3N1MlvVc4', spotifyUrl: null },
-      { title: '月亮代表我的心', artist: '鄧麗君', genre: '經典', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=xz6xHJxc8dE', spotifyUrl: null },
       { title: 'Gymnopédie No.1', artist: 'Erik Satie', genre: '古典', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=S-Xm7s9eGxU', spotifyUrl: null },
+      { title: 'Mad World', artist: 'Gary Jules', genre: '抒情', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=4N3N1MlvVc4', spotifyUrl: null },
+      { title: 'The Sound of Silence', artist: 'Disturbed', genre: '搖滾', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=u9Dg-g7t2l4', spotifyUrl: null },
+      { title: 'Spiegel im Spiegel', artist: 'Arvo Pärt', genre: '現代古典', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=TJ6Mzvh3XCc', spotifyUrl: null },
+      { title: 'Porcelain', artist: 'Moby', genre: '電子', moodType: 'calm', youtubeUrl: 'https://www.youtube.com/watch?v=13EifDb4GYs', spotifyUrl: null },
       
       // Sad/憂鬱音樂
       { title: 'Hurt', artist: 'Johnny Cash', genre: '鄉村', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=vt1Pwfnh5pc', spotifyUrl: null },
-      { title: 'The Sound of Silence', artist: 'Simon & Garfunkel', genre: '民謠', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=4fWyzwo1xg0', spotifyUrl: null },
-      { title: 'Adagio for Strings', artist: 'Samuel Barber', genre: '古典', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=izQsgE0L450', spotifyUrl: null },
       { title: 'Black', artist: 'Pearl Jam', genre: '搖滾', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=5ChbxMVgGV4', spotifyUrl: null },
-      { title: 'Breathe Me', artist: 'Sia', genre: '電子', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=hSjIz8oQuko', spotifyUrl: null },
+      { title: 'Everybody Hurts', artist: 'R.E.M.', genre: '另類搖滾', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=5rOiW_xY-kc', spotifyUrl: null },
+      { title: 'Breathe Me', artist: 'Sia', genre: '流行', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=hSjIz8oQuko', spotifyUrl: null },
+      { title: 'Hallelujah', artist: 'Jeff Buckley', genre: '另類搖滾', moodType: 'sad', youtubeUrl: 'https://www.youtube.com/watch?v=y8AWFf7EAc4', spotifyUrl: null },
       
       // Anxious/焦慮音樂 - 提供鎮定和希望的歌曲
       { title: 'Breathe', artist: 'Telepopmusik', genre: '電子', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=vyut3GyQtn0', spotifyUrl: null },
       { title: 'Aqueous Transmission', artist: 'Incubus', genre: '另類搖滾', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=3k0-sGqxIiQ', spotifyUrl: null },
-      { title: '海闊天空', artist: 'Beyond', genre: '搖滾', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=qu_FSptjRic', spotifyUrl: null },
-      { title: 'Porcelain', artist: 'Moby', genre: '電子', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=13EifDb4GYs', spotifyUrl: null },
+      { title: 'The Way You Look Tonight', artist: 'Tony Bennett', genre: '爵士', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=h9ZGKALMMuc', spotifyUrl: null },
+      { title: 'Teardrop', artist: 'Massive Attack', genre: '電子', moodType: 'anxious', youtubeUrl: 'https://www.youtube.com/watch?v=u7K72X4eo_s', spotifyUrl: null },
       
       // Energetic/活力音樂
-      { title: 'Uptown Funk', artist: 'Bruno Mars', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=OPf0YbXqDm0', spotifyUrl: null },
-      { title: 'Can\'t Stop the Feeling', artist: 'Justin Timberlake', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=ru0K8uYEZWw', spotifyUrl: null },
-      { title: '稻香', artist: '周杰倫', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=VjrYjxNTCNE', spotifyUrl: null },
-      { title: 'Walking on Sunshine', artist: 'Katrina & The Waves', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=iPUmE-tne5U', spotifyUrl: null },
-      { title: 'Mr. Blue Sky', artist: 'ELO', genre: '搖滾', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=wuJIqmha2Hc', spotifyUrl: null },
+      { title: 'Uptown Funk', artist: 'Mark Ronson ft. Bruno Mars', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=OPf0YbXqDm0', spotifyUrl: null },
+      { title: 'Can\'t Stop the Feeling!', artist: 'Justin Timberlake', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=ru0K8uYEZWw', spotifyUrl: null },
+      { title: 'Walking on Sunshine', artist: 'Katrina and the Waves', genre: '流行', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=iPUmE-tne5U', spotifyUrl: null },
+      { title: 'Mr. Blue Sky', artist: 'Electric Light Orchestra', genre: '搖滾', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=wuJIqmha2Hc', spotifyUrl: null },
+      { title: 'Don\'t Stop Me Now', artist: 'Queen', genre: '搖滾', moodType: 'energetic', youtubeUrl: 'https://www.youtube.com/watch?v=HgzGwKwLmgM', spotifyUrl: null },
       
       // Excited/興奮音樂
-      { title: 'Good 4 U', artist: 'Olivia Rodrigo', genre: '流行', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=gNi_6U5Pm_o', spotifyUrl: null },
+      { title: 'good 4 u', artist: 'Olivia Rodrigo', genre: '流行', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=gNi_6U5Pm_o', spotifyUrl: null },
       { title: 'Levitating', artist: 'Dua Lipa', genre: '流行', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=TUVcZfQe-Kw', spotifyUrl: null },
-      { title: 'Shut Up and Dance', artist: 'Walk the Moon', genre: '獨立搖滾', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=6JCLY0Rlx6Q', spotifyUrl: null },
+      { title: 'Shut Up and Dance', artist: 'WALK THE MOON', genre: '獨立搖滾', moodType: 'excited', youtubeUrl: 'https://www.youtube.com/watch?v=6JCLY0Rlx6Q', spotifyUrl: null },
       
       // Romantic/浪漫音樂
       { title: 'Perfect', artist: 'Ed Sheeran', genre: '流行', moodType: 'romantic', youtubeUrl: 'https://www.youtube.com/watch?v=2Vv-BfVoq4g', spotifyUrl: null },
@@ -97,17 +104,17 @@ async function initializeSampleData() {
       // Nostalgic/懷舊音樂
       { title: 'Yesterday', artist: 'The Beatles', genre: '搖滾', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=NrgmdOz227I', spotifyUrl: null },
       { title: 'The Way You Look Tonight', artist: 'Frank Sinatra', genre: '爵士', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=h9ZGKALMMuc', spotifyUrl: null },
-      { title: '童年', artist: '羅大佑', genre: '民謠', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=DP2q8rnYsxs', spotifyUrl: null },
       { title: 'Stand by Me', artist: 'Ben E. King', genre: '靈魂樂', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=hwZNL7QVJjE', spotifyUrl: null },
+      { title: 'Fly Me to the Moon', artist: 'Frank Sinatra', genre: '爵士', moodType: 'nostalgic', youtubeUrl: 'https://www.youtube.com/watch?v=5hxibHJOE5E', spotifyUrl: null },
       
       // Melancholic/憂鬱沉思音樂
-      { title: 'Mad World', artist: 'Donnie Darko Soundtrack', genre: '另類', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=4N3N1MlvVc4', spotifyUrl: null },
-      { title: 'Everybody Hurts', artist: 'R.E.M.', genre: '另類搖滾', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=5rOiW_xY-kc', spotifyUrl: null },
-      { title: 'Hallelujah', artist: 'Jeff Buckley', genre: '另類搖滾', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=y8AWFf7EAc4', spotifyUrl: null },
+      { title: 'Mad World', artist: 'Gary Jules', genre: '另類', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=4N3N1MlvVc4', spotifyUrl: null },
+      { title: 'The Sound of Silence', artist: 'Simon & Garfunkel', genre: '民謠', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=4fWyzwo1xg0', spotifyUrl: null },
+      { title: 'Hurt', artist: 'Nine Inch Nails', genre: '工業搖滾', moodType: 'melancholic', youtubeUrl: 'https://www.youtube.com/watch?v=kPz21cDK7dg', spotifyUrl: null },
       
       // Hopeful/希望音樂
       { title: 'Here Comes the Sun', artist: 'The Beatles', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=KQetemT1sWc', spotifyUrl: null },
-      { title: 'Three Little Birds', artist: 'Bob Marley', genre: '雷鬼', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=zaGUr6wzyT8', spotifyUrl: null },
+      { title: 'Three Little Birds', artist: 'Bob Marley & The Wailers', genre: '雷鬼', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=zaGUr6wzyT8', spotifyUrl: null },
       { title: 'Don\'t Stop Believin\'', artist: 'Journey', genre: '搖滾', moodType: 'hopeful', youtubeUrl: 'https://www.youtube.com/watch?v=1k8craCGpgs', spotifyUrl: null }
     ];
     

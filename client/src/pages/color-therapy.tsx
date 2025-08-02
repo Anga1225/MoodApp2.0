@@ -272,7 +272,16 @@ export function ColorTherapyPage({ onBack, initialColor }: ColorTherapyPageProps
                           {song.youtubeUrl && (
                             <Button
                               size="sm"
-                              onClick={() => window.open(song.youtubeUrl!, '_blank')}
+                              onClick={() => {
+                                try {
+                                  window.open(song.youtubeUrl!, '_blank');
+                                } catch (error) {
+                                  console.error('Failed to open YouTube link:', error);
+                                  // Fallback to search if direct link fails
+                                  const searchQuery = encodeURIComponent(`${song.title} ${song.artist}`);
+                                  window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                                }
+                              }}
                               className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-xs rounded"
                             >
                               <Play className="w-3 h-3" />
@@ -281,8 +290,29 @@ export function ColorTherapyPage({ onBack, initialColor }: ColorTherapyPageProps
                           {song.spotifyUrl && (
                             <Button
                               size="sm"
-                              onClick={() => window.open(song.spotifyUrl!, '_blank')}
+                              onClick={() => {
+                                try {
+                                  window.open(song.spotifyUrl!, '_blank');
+                                } catch (error) {
+                                  console.error('Failed to open Spotify link:', error);
+                                  // Fallback to search if direct link fails
+                                  const searchQuery = encodeURIComponent(`${song.title} ${song.artist}`);
+                                  window.open(`https://open.spotify.com/search/${searchQuery}`, '_blank');
+                                }
+                              }}
                               className="bg-green-500 hover:bg-green-600 text-white px-2 py-1 text-xs rounded"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </Button>
+                          )}
+                          {!song.youtubeUrl && !song.spotifyUrl && (
+                            <Button
+                              size="sm"
+                              onClick={() => {
+                                const searchQuery = encodeURIComponent(`${song.title} ${song.artist}`);
+                                window.open(`https://www.youtube.com/results?search_query=${searchQuery}`, '_blank');
+                              }}
+                              className="bg-gray-500 hover:bg-gray-600 text-white px-2 py-1 text-xs rounded"
                             >
                               <ExternalLink className="w-3 h-3" />
                             </Button>
