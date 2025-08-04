@@ -119,7 +119,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
           {/* Filters Sidebar */}
           <div className="xl:col-span-1 space-y-6">
-            <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-6">
+            <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-6 min-w-[380px]">
               <h3 className="font-light text-white text-xl mb-6 flex items-center gap-3">
                 <Filter className="w-5 h-5 text-cyan-400" />
                 篩選條件
@@ -128,13 +128,13 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
               {/* Date Filter */}
               <div className="space-y-4">
                 <label className="text-sm font-light text-white/80 block">選擇日期</label>
-                <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-4 border border-white/10 w-full max-w-full overflow-hidden">
-                  <div className="w-full max-w-[300px] mx-auto">
+                <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6 border border-white/10 w-full overflow-visible">
+                  <div className="w-full min-w-[340px] mx-auto">
                     <Calendar
                       mode="single"
                       selected={selectedDate}
                       onSelect={setSelectedDate}
-                      className="w-full [&_*]:text-white [&_.rdp-caption_label]:text-white/90 [&_.rdp-head_cell]:text-white/70 [&_.rdp-day]:text-white/80 [&_.rdp-day:hover]:text-white [&_.rdp-day_selected]:text-primary-foreground [&_.rdp-day_today]:text-white [&_.rdp-nav_button]:text-white/70 [&_.rdp-nav_button:hover]:text-white"
+                      className="w-full text-white [&_.rdp-table]:w-full [&_.rdp-head_row]:justify-between [&_.rdp-row]:justify-between [&_.rdp-head_cell]:text-white/80 [&_.rdp-head_cell]:w-[48px] [&_.rdp-head_cell]:text-center [&_.rdp-head_cell]:text-xs [&_.rdp-cell]:w-[48px] [&_.rdp-cell]:h-[48px] [&_.rdp-day]:text-white/90 [&_.rdp-day]:w-[44px] [&_.rdp-day]:h-[44px] [&_.rdp-day]:text-sm [&_.rdp-day:hover]:text-white [&_.rdp-day_selected]:bg-primary [&_.rdp-day_selected]:text-primary-foreground [&_.rdp-day_today]:text-white [&_.rdp-day_today]:font-bold [&_.rdp-nav_button]:text-white/80 [&_.rdp-nav_button:hover]:text-white [&_.rdp-caption_label]:text-white/90 [&_.rdp-caption_label]:font-medium"
                     />
                   </div>
                 </div>
