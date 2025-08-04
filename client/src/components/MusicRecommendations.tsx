@@ -74,6 +74,16 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
     staleTime: 300000, // 5 minutes
   });
 
+  // Get personalized recommendations status
+  const { data: personalizedData, isLoading: isPersonalizedLoading } = useQuery({
+    queryKey: [`/api/music/recommendations/personalized`, { happiness, calmness, moodType: currentMoodType }],
+    queryFn: async () => {
+      const response = await fetch(`/api/music/recommendations/personalized?happiness=${happiness}&calmness=${calmness}&moodType=${moodType || currentMoodType}`);
+      return response.json();
+    },
+    staleTime: 300000,
+  });
+
   // Count similar listeners
   const getSimilarListenersCount = () => {
     // Simulate count based on mood ranges
@@ -151,23 +161,54 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
         </Link>
       </div>
       
-      {/* Personalization Banner */}
-      <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm text-primary">升級您的音樂體驗</span>
+      {/* Personalization Status */}
+      {personalizedData && (
+        <div className={`mb-4 p-3 rounded-lg border ${
+          personalizedData.isPersonalized 
+            ? 'bg-green-50 border-green-200' 
+            : 'bg-amber-50 border-amber-200'
+        }`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              {personalizedData.isPersonalized ? (
+                <>
+                  <Sparkles className="w-4 h-4 text-green-600" />
+                  <span className="text-sm text-green-700 font-medium">
+                    智能推薦已啟用
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Settings className="w-4 h-4 text-amber-600" />
+                  <span className="text-sm text-amber-700 font-medium">
+                    升級您的音樂體驗
+                  </span>
+                </>
+              )}
+            </div>
+            {!personalizedData.isPersonalized && (
+              <Link href="/music-platforms">
+                <Button variant="outline" size="sm" className="text-xs border-amber-300 text-amber-700 hover:bg-amber-100">
+                  連接 Spotify
+                </Button>
+              </Link>
+            )}
           </div>
-          <Link href="/music-platforms">
-            <Button variant="outline" size="sm" className="text-xs">
-              連接音樂平台
-            </Button>
-          </Link>
+          <p className="text-xs mt-1 text-gray-600">
+            {personalizedData.isPersonalized 
+              ? personalizedData.message
+              : '連接 Spotify 來分析您的音樂喜好，享受真正個人化的療癒推薦'
+            }
+          </p>
+          {personalizedData.userInsight && (
+            <div className="mt-2 text-xs text-green-600">
+              偏好風格: {personalizedData.userInsight.topGenres?.slice(0, 3).join(', ')} | 
+              能量水平: {personalizedData.userInsight.energyLevel}% | 
+              正面性: {personalizedData.userInsight.valence}%
+            </div>
+          )}
         </div>
-        <p className="text-xs text-muted-foreground mt-1">
-          連接 Spotify 來分析您的音樂喜好，享受真正個人化的療癒推薦
-        </p>
-      </div>
+      )}
       
       {recommendations && recommendations.length > 0 && (
         <div className="mb-4 p-3 bg-blue-50 rounded-lg">
@@ -186,24 +227,37 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
         </div>
       ) : (
         <div className="space-y-4">
-          {recommendations.map((song) => (
-            <div key={song.id} className="flex items-center space-x-4 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl hover:shadow-md transition-all duration-300">
-              <div className="w-12 h-12 bg-gradient-to-r from-primary to-purple-600 rounded-lg flex items-center justify-center">
-                <Music className="w-6 h-6 text-white" />
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <h4 className="font-semibold text-gray-900 text-sm">{song.title}</h4>
-                <p className="text-xs text-gray-600 mb-1">{song.artist}</p>
-                {song.genre && (
-                  <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">
-                    {song.genre}
-                  </span>
-                )}
-              </div>
-              
-              <div className="flex flex-col space-y-1">
-                {song.youtubeUrl && (
+          {(personalizedData?.recommendations || recommendations).map((song) => {
+            const isPersonalized = personalizedData?.isPersonalized && personalizedData.recommendations;
+            const confidence = (song as any).confidence;
+            const reason = (song as any).reason;
+            const spotifyMatch = (song as any).spotifyMatch;
+            
+            return (
+              <div key={song.id} className={`flex items-center space-x-4 p-4 rounded-xl hover:shadow-md transition-all duration-300 ${
+                isPersonalized 
+                  ? 'bg-gradient-to-r from-green-50 to-emerald-50 border border-green-100' 
+                  : 'bg-gradient-to-r from-purple-50 to-pink-50'
+              }`}>
+                <div className="w-12 h-12 bg-gradient-to-r from-primary to-purple-600 rounded-lg flex items-center justify-center">
+                  <Music className="w-6 h-6 text-white" />
+                </div>
+                
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-gray-900 text-sm">{song.title}</h4>
+                  <p className="text-xs text-gray-600 mb-1">{song.artist}</p>
+                  {song.genre && (
+                    <span className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-xs rounded-full">
+                      {song.genre}
+                    </span>
+                  )}
+                  {reason && (
+                    <p className="text-xs text-green-600 mt-1">{reason}</p>
+                  )}
+                </div>
+                
+                <div className="flex flex-col space-y-1">
+                  {song.youtubeUrl && (
                   <Button
                     size="sm"
                     onClick={() => {
@@ -253,10 +307,11 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
                     <ExternalLink className="w-3 h-3 mr-1" />
                     搜尋
                   </Button>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </Card>

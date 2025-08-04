@@ -668,8 +668,90 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const userData = await userResponse.json();
       
-      // Store successful connection (simplified approach)
+      // Store successful connection and analyze music preferences
       console.log('Spotify OAuth successful for user:', userData?.display_name || 'Unknown');
+      
+      // Analyze user's Spotify listening history and preferences
+      try {
+        const [topTracksRes, topArtistsRes] = await Promise.all([
+          fetch('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=50', {
+            headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+          }),
+          fetch('https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=50', {
+            headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+          })
+        ]);
+
+        const [topTracks, topArtists] = await Promise.all([
+          topTracksRes.json(),
+          topArtistsRes.json()
+        ]);
+
+        // Store user's music platform connection and preferences
+        const musicPlatform = {
+          userId: 'demo_user', // In a real app, this would be the authenticated user ID
+          platform: 'spotify',
+          accessToken: tokenData.access_token,
+          refreshToken: tokenData.refresh_token,
+          expiresAt: new Date(Date.now() + tokenData.expires_in * 1000)
+        };
+
+        // Analyze genres and create preferences
+        const genres = new Set();
+        const artists = topArtists.items?.map(artist => artist.name) || [];
+        
+        topArtists.items?.forEach(artist => {
+          artist.genres?.forEach(genre => genres.add(genre));
+        });
+
+        // Calculate average valence and energy from top tracks
+        let totalValence = 0;
+        let totalEnergy = 0;
+        let trackCount = 0;
+
+        if (topTracks.items) {
+          const audioFeaturesPromises = topTracks.items.map(track => 
+            fetch(`https://api.spotify.com/v1/audio-features/${track.id}`, {
+              headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+            }).then(res => res.ok ? res.json() : null)
+          );
+
+          const audioFeatures = await Promise.all(audioFeaturesPromises);
+          
+          audioFeatures.forEach(features => {
+            if (features) {
+              totalValence += features.valence;
+              totalEnergy += features.energy;
+              trackCount++;
+            }
+          });
+        }
+
+        const preferences = {
+          userId: 'demo_user',
+          topGenres: Array.from(genres).slice(0, 10),
+          topArtists: artists.slice(0, 20),
+          preferredMoodTypes: ['happy', 'energetic', 'calm'], // Will be refined based on analysis
+          energyLevel: trackCount > 0 ? totalEnergy / trackCount : 0.5,
+          valence: trackCount > 0 ? totalValence / trackCount : 0.5
+        };
+
+        // Store in global variable for demo (in production, this would be in database)
+        global.spotifyUserData = {
+          platform: musicPlatform,
+          preferences,
+          tracks: topTracks.items || [],
+          artists: topArtists.items || [],
+          connected: true,
+          lastAnalyzed: new Date()
+        };
+
+        console.log(`Analyzed ${trackCount} tracks, ${artists.length} artists, ${genres.size} genres`);
+        
+      } catch (analysisError) {
+        console.error('Error analyzing Spotify data:', analysisError);
+        // Continue with basic connection even if analysis fails
+      }
       
       // Return success with close window script
       res.send(`
@@ -722,14 +804,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/music/platforms/status", async (req, res) => {
     try {
-      // Check if Spotify credentials are configured
+      // Check if Spotify credentials are configured and user has connected
       const spotifyConfigured = !!(process.env.SPOTIFY_CLIENT_ID && process.env.SPOTIFY_CLIENT_SECRET);
+      const spotifyUserConnected = !!(global.spotifyUserData?.connected);
       
       res.json({
         spotify: { 
-          connected: spotifyConfigured, 
+          connected: spotifyUserConnected,
+          configured: spotifyConfigured,
           authUrl: "/api/music/platforms/auth/spotify",
-          description: spotifyConfigured ? "Spotify 已連接，享受個人化音樂推薦" : "連接 Spotify 來獲得個人化音樂推薦"
+          description: spotifyUserConnected 
+            ? `Spotify 已連接並分析完成 - 發現 ${global.spotifyUserData?.preferences?.topGenres?.length || 0} 種音樂風格` 
+            : spotifyConfigured 
+              ? "點擊連接 Spotify 來獲得個人化智能推薦" 
+              : "需要 Spotify API 金鑰配置",
+          hasPreferences: spotifyUserConnected,
+          lastAnalyzed: global.spotifyUserData?.lastAnalyzed
         },
         appleMusic: { 
           connected: false, 
@@ -752,6 +842,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const happiness = parseFloat(req.query.happiness as string) || 50;
       const calmness = parseFloat(req.query.calmness as string) || 50;
       const userId = req.query.userId as string;
+      const spotifyUserData = (global as any).spotifyUserData;
 
       // Get base recommendations
       const moodType = happiness >= 70 && calmness >= 70 ? 'peaceful' :
@@ -763,29 +854,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const recommendations = await storage.getMusicRecommendations(moodType);
 
-      // Simulate personalization based on user preferences
-      const personalizedRecs = recommendations.map(rec => ({
-        ...rec,
-        confidence: Math.random() * 0.4 + 0.6, // 0.6 to 1.0
-        reason: `根據您的心情 (${moodType}) 和音樂喜好推薦`,
-        isPersonalized: true
-      }));
-
-      // Sort by confidence
-      personalizedRecs.sort((a, b) => b.confidence - a.confidence);
-
-      res.json({
-        recommendations: personalizedRecs,
-        isPersonalized: false, // Will be true when platforms are connected
-        message: "連接 Spotify 等音樂平台來獲得更精準的個人化推薦",
-        suggestedActions: [
-          {
-            text: "連接 Spotify",
-            action: "connect_spotify",
-            url: "/api/music/platforms/auth/spotify"
+      if (spotifyUserData?.connected && spotifyUserData.preferences) {
+        // Use real Spotify data for personalization
+        const personalizedRecs = recommendations.map(rec => {
+          // Calculate confidence based on genre match and mood alignment
+          let confidence = 0.5;
+          
+          // Boost confidence if genre matches user's top genres
+          if (rec.genre && spotifyUserData.preferences.topGenres.includes(rec.genre)) {
+            confidence += 0.3;
           }
-        ]
-      });
+          
+          // Adjust confidence based on valence/energy match
+          const userValence = spotifyUserData.preferences.valence;
+          const userEnergy = spotifyUserData.preferences.energyLevel;
+          
+          if (moodType === 'happy' && userValence > 0.6) confidence += 0.2;
+          if (moodType === 'energetic' && userEnergy > 0.6) confidence += 0.2;
+          if (moodType === 'calm' && userEnergy < 0.4) confidence += 0.2;
+          if (moodType === 'peaceful' && userValence > 0.5 && userEnergy < 0.5) confidence += 0.2;
+          
+          confidence = Math.min(confidence, 1.0);
+          
+          const genreMatch = rec.genre && spotifyUserData.preferences.topGenres.includes(rec.genre);
+          
+          return {
+            ...rec,
+            confidence,
+            reason: genreMatch 
+              ? `根據您常聽的 ${rec.genre} 風格和當前 ${moodType} 心情推薦`
+              : `根據您的音樂偏好和當前 ${moodType} 心情推薦`,
+            isPersonalized: true,
+            spotifyMatch: genreMatch
+          };
+        });
+
+        // Sort by confidence
+        personalizedRecs.sort((a, b) => (b as any).confidence - (a as any).confidence);
+
+        res.json({
+          recommendations: personalizedRecs,
+          isPersonalized: true,
+          message: `基於您的 ${spotifyUserData.preferences.topGenres.length} 種音樂風格偏好提供智能推薦`,
+          userInsight: {
+            topGenres: spotifyUserData.preferences.topGenres.slice(0, 3),
+            energyLevel: Math.round(spotifyUserData.preferences.energyLevel * 100),
+            valence: Math.round(spotifyUserData.preferences.valence * 100),
+            message: spotifyUserData.preferences.valence > 0.6 
+              ? "根據您積極正面的音樂喜好" 
+              : "根據您深沉內省的音樂品味"
+          }
+        });
+      } else {
+        // Fallback to basic recommendations
+        const personalizedRecs = recommendations.map(rec => ({
+          ...rec,
+          confidence: Math.random() * 0.4 + 0.6,
+          reason: `根據您的心情 (${moodType}) 推薦`,
+          isPersonalized: false
+        }));
+
+        personalizedRecs.sort((a, b) => (b as any).confidence - (a as any).confidence);
+
+        res.json({
+          recommendations: personalizedRecs,
+          isPersonalized: false,
+          message: "連接 Spotify 來獲得更精準的個人化推薦",
+          suggestedActions: [
+            {
+              text: "連接 Spotify",
+              action: "connect_spotify",
+              url: "/api/music/platforms/auth/spotify"
+            }
+          ]
+        });
+      }
     } catch (error) {
       res.status(500).json({ message: "無法獲取個人化推薦" });
     }
@@ -808,29 +951,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/music/analytics/preferences", async (req, res) => {
     try {
       const userId = req.query.userId as string;
+      const spotifyUserData = global.spotifyUserData;
 
-      // Mock user music preferences analysis
-      res.json({
-        hasPreferences: false,
-        analysis: {
-          message: "尚未分析音樂偏好",
-          suggestion: "連接音樂平台來分析您的音樂喜好",
-          benefits: [
-            "根據您常聽的音樂類型推薦",
-            "考慮您喜愛的藝人風格",
-            "配合您的能量水平偏好",
-            "提升推薦準確度"
-          ]
-        },
-        connectOptions: [
-          {
-            platform: "spotify",
-            name: "Spotify",
-            description: "連接 Spotify 來分析您的音樂品味",
-            authUrl: "/api/music/platforms/auth/spotify"
+      if (spotifyUserData?.connected && spotifyUserData.preferences) {
+        res.json({
+          hasPreferences: true,
+          analysis: {
+            message: "Spotify 音樂偏好分析完成",
+            topGenres: spotifyUserData.preferences.topGenres.slice(0, 5),
+            topArtists: spotifyUserData.preferences.topArtists.slice(0, 5),
+            energyLevel: Math.round(spotifyUserData.preferences.energyLevel * 100),
+            valence: Math.round(spotifyUserData.preferences.valence * 100),
+            totalTracks: spotifyUserData.tracks.length,
+            insight: spotifyUserData.preferences.valence > 0.6 
+              ? "您傾向於聆聽積極正面的音樂" 
+              : spotifyUserData.preferences.valence < 0.4 
+                ? "您偏好較為內省深沉的音樂" 
+                : "您的音樂品味平衡多元",
+            lastAnalyzed: spotifyUserData.lastAnalyzed
+          },
+          recommendations: {
+            enabled: true,
+            message: "已啟用基於您 Spotify 聆聽習慣的智能推薦"
           }
-        ]
-      });
+        });
+      } else {
+        res.json({
+          hasPreferences: false,
+          analysis: {
+            message: "尚未分析音樂偏好",
+            suggestion: "連接音樂平台來分析您的音樂喜好",
+            benefits: [
+              "根據您常聽的音樂類型推薦",
+              "考慮您喜愛的藝人風格",
+              "配合您的能量水平偏好",
+              "提升推薦準確度"
+            ]
+          },
+          connectOptions: [
+            {
+              platform: "spotify",
+              name: "Spotify",
+              description: "連接 Spotify 來分析您的音樂品味",
+              authUrl: "/api/music/platforms/auth/spotify"
+            }
+          ]
+        });
+      }
     } catch (error) {
       res.status(500).json({ message: "無法獲取音樂偏好分析" });
     }
