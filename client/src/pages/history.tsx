@@ -116,7 +116,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-12">
           {/* Filters Sidebar */}
           <div className="xl:col-span-1 space-y-6">
             <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-6 min-w-[380px]">
@@ -221,7 +221,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
           </div>
 
           {/* Mood History List */}
-          <div className="xl:col-span-3">
+          <div className="xl:col-span-3 xl:ml-8">
             <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-3xl p-8">
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-2xl font-thin text-white">心情記錄</h3>
