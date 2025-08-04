@@ -134,7 +134,7 @@ export function HistoryPage({ onBack }: HistoryPageProps) {
                       mode="single"
                       selected={selectedDate}
                       onSelect={setSelectedDate}
-                      className="w-full"
+                      className="w-full [&_*]:text-white [&_.rdp-caption_label]:text-white/90 [&_.rdp-head_cell]:text-white/70 [&_.rdp-day]:text-white/80 [&_.rdp-day:hover]:text-white [&_.rdp-day_selected]:text-primary-foreground [&_.rdp-day_today]:text-white [&_.rdp-nav_button]:text-white/70 [&_.rdp-nav_button:hover]:text-white"
                     />
                   </div>
                 </div>
