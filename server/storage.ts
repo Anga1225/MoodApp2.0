@@ -36,9 +36,12 @@ export interface IStorage {
   getMusicRecommendations(moodType: string): Promise<MusicRecommendation[]>;
   createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation>;
   
-  // Music platform integration operations (simplified for initial implementation)
-  getMusicPlatformIntegration?(userId: string): Promise<any>;
-  createMusicPlatformIntegration?(userId: string, data: any): Promise<any>;
+  // Music platform integration operations
+  createUserMusicPlatform(platform: InsertUserMusicPlatform): Promise<UserMusicPlatform>;
+  getUserMusicPlatform(userId: string, platform: string): Promise<UserMusicPlatform | undefined>;
+  createOrUpdateUserMusicPreference(preference: InsertUserMusicPreference): Promise<UserMusicPreference>;
+  getUserMusicPreferences(userId: string): Promise<UserMusicPreference | undefined>;
+  createPersonalizedRecommendation(recommendation: InsertPersonalizedRecommendation): Promise<PersonalizedRecommendation>;
 }
 
 export class MemStorage implements IStorage {
@@ -338,15 +341,60 @@ export class DatabaseStorage implements IStorage {
     return recommendation;
   }
 
-  // Simplified music platform integration for now
-  async getMusicPlatformIntegration(userId: string): Promise<any> {
-    // This will be implemented when we have proper authentication system
-    return { connected: false, platforms: [] };
+  async createUserMusicPlatform(insertPlatform: InsertUserMusicPlatform): Promise<UserMusicPlatform> {
+    const [platform] = await db
+      .insert(userMusicPlatforms)
+      .values(insertPlatform)
+      .returning();
+    return platform;
   }
 
-  async createMusicPlatformIntegration(userId: string, data: any): Promise<any> {
-    // This will be implemented when we have proper authentication system
-    return { success: true, message: "Integration will be available soon" };
+  async getUserMusicPlatform(userId: string, platform: string): Promise<UserMusicPlatform | undefined> {
+    const [userPlatform] = await db
+      .select()
+      .from(userMusicPlatforms)
+      .where(and(
+        eq(userMusicPlatforms.userId, userId),
+        eq(userMusicPlatforms.platform, platform)
+      ))
+      .limit(1);
+    return userPlatform;
+  }
+
+  async createOrUpdateUserMusicPreference(insertPreference: InsertUserMusicPreference): Promise<UserMusicPreference> {
+    const [preference] = await db
+      .insert(userMusicPreferences)
+      .values(insertPreference)
+      .onConflictDoUpdate({
+        target: userMusicPreferences.userId,
+        set: {
+          topGenres: insertPreference.topGenres,
+          topArtists: insertPreference.topArtists,
+          preferredMoodTypes: insertPreference.preferredMoodTypes,
+          energyLevel: insertPreference.energyLevel,
+          valence: insertPreference.valence,
+          updatedAt: sql`now()`
+        }
+      })
+      .returning();
+    return preference;
+  }
+
+  async getUserMusicPreferences(userId: string): Promise<UserMusicPreference | undefined> {
+    const [preference] = await db
+      .select()
+      .from(userMusicPreferences)
+      .where(eq(userMusicPreferences.userId, userId))
+      .limit(1);
+    return preference;
+  }
+
+  async createPersonalizedRecommendation(insertRecommendation: InsertPersonalizedRecommendation): Promise<PersonalizedRecommendation> {
+    const [recommendation] = await db
+      .insert(personalizedRecommendations)
+      .values(insertRecommendation)
+      .returning();
+    return recommendation;
   }
 }
 

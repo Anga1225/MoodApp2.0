@@ -4,7 +4,7 @@ import { useLocation } from 'wouter';
 
 export default function WelcomePage() {
   const [, setLocation] = useLocation();
-  const [showContent, setShowContent] = useState(false);
+  const [showContent, setShowContent] = useState(true); // Change to true to show content immediately for debugging
 
   useEffect(() => {
     const timer = setTimeout(() => {

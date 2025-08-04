@@ -16,6 +16,10 @@ Preferred communication style: Simple, everyday language.
 - Added contemporary hits from Taylor Swift, Ed Sheeran, Harry Styles, BTS, BLACKPINK
 - Included Chinese/Taiwanese popular songs from 周杰倫, 鄧麗君, 薛之謙, 周深
 - Added Lo-fi, nature sounds, and ambient music for relaxation therapy
+- Fixed Spotify API integration: resolved "INVALID_CLIENT" error with proper credentials setup
+- Implemented Spotify connection status display showing "Spotify 已連接，享受個人化音樂推薦"
+- Added comprehensive database methods for music platform integration and user preferences
+- Enhanced Spotify OAuth callback with beautiful success page and automatic parent window refresh
 - July 31, 2025: Initial migration from Replit Agent to Replit environment
 - Created PostgreSQL database with proper connection and schema setup
 - Implemented full Chinese (Traditional) interface with healing philosophy

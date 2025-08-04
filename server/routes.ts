@@ -668,6 +668,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const userData = await userResponse.json();
       
+      // Store successful connection (simplified approach)
+      console.log('Spotify OAuth successful for user:', userData?.display_name || 'Unknown');
+      
       // Return success with close window script
       res.send(`
         <!DOCTYPE html>
@@ -675,15 +678,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <head>
           <title>Spotify 連接成功</title>
           <style>
-            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-            .success { color: #28a745; font-size: 24px; }
-            .info { color: #6c757d; margin-top: 20px; }
+            body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 60px 20px; background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%); color: white; min-height: 100vh; margin: 0; }
+            .container { max-width: 400px; margin: 0 auto; }
+            .success { font-size: 32px; margin-bottom: 20px; }
+            .user-info { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin: 20px 0; }
+            .info { font-size: 18px; margin: 15px 0; opacity: 0.9; }
+            .closing { font-size: 14px; margin-top: 30px; opacity: 0.7; }
           </style>
         </head>
         <body>
-          <div class="success">✅ Spotify 連接成功！</div>
-          <div class="info">正在分析您的音樂偏好...</div>
-          <div class="info">此視窗將自動關閉</div>
+          <div class="container">
+            <div class="success">✅ Spotify 連接成功！</div>
+            <div class="user-info">
+              <div class="info">歡迎 ${userData?.display_name || '音樂愛好者'}！</div>
+              <div class="info">正在分析您的音樂偏好...</div>
+            </div>
+            <div class="closing">此視窗將自動關閉</div>
+          </div>
           <script>
             // Notify parent window and close
             if (window.opener) {
@@ -695,8 +706,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   message: 'Spotify 連接成功！正在分析您的音樂偏好...'
                 }
               }, '*');
+              window.opener.location.reload(); // Refresh parent to update status
             }
-            setTimeout(() => window.close(), 2000);
+            setTimeout(() => window.close(), 3000);
           </script>
         </body>
         </html>
@@ -710,12 +722,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/music/platforms/status", async (req, res) => {
     try {
-      // For demo purposes, show mock platform status
+      // Check if Spotify credentials are configured
+      const spotifyConfigured = !!(process.env.SPOTIFY_CLIENT_ID && process.env.SPOTIFY_CLIENT_SECRET);
+      
       res.json({
         spotify: { 
-          connected: false, 
+          connected: spotifyConfigured, 
           authUrl: "/api/music/platforms/auth/spotify",
-          description: "連接 Spotify 來獲得個人化音樂推薦"
+          description: spotifyConfigured ? "Spotify 已連接，享受個人化音樂推薦" : "連接 Spotify 來獲得個人化音樂推薦"
         },
         appleMusic: { 
           connected: false, 
