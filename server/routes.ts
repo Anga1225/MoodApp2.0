@@ -578,16 +578,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Music platform integration routes
   app.get("/api/music/platforms/auth/spotify", async (req, res) => {
     try {
-      // Generate Spotify authorization URL
+      // Get the current domain from the request or environment
+      const domain = process.env.REPLIT_DEV_DOMAIN || req.get('host');
+      const protocol = 'https'; // Always use HTTPS in production
+      const baseUrl = `${protocol}://${domain}`;
+      
+      // Generate Spotify authorization URL with secure redirect URI
+      const redirectUri = process.env.SPOTIFY_REDIRECT_URI || `${baseUrl}/api/music/platforms/callback/spotify`;
+      
       const authUrl = "https://accounts.spotify.com/authorize?" + new URLSearchParams({
         response_type: 'code',
         client_id: process.env.SPOTIFY_CLIENT_ID || 'demo_client_id',
         scope: 'user-read-recently-played user-top-read user-read-playback-state user-library-read playlist-read-private',
-        redirect_uri: process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:5000/api/music/platforms/callback/spotify',
+        redirect_uri: redirectUri,
         state: 'moodtune_auth'
       }).toString();
 
-      res.json({ authUrl, message: "請點擊連結登入 Spotify 授權" });
+      res.json({ 
+        authUrl, 
+        message: "請點擊連結登入 Spotify 授權"
+      });
     } catch (error) {
       res.status(500).json({ message: "無法生成 Spotify 授權連結" });
     }
@@ -595,28 +605,106 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/music/platforms/callback/spotify", async (req, res) => {
     try {
-      const { code, state } = req.query;
+      const { code, state, error: authError } = req.query;
+      
+      // Handle authorization errors
+      if (authError) {
+        const errorMessage = authError === 'access_denied' ? 
+          '用戶拒絕了授權' : `授權失敗: ${authError}`;
+        res.status(400).json({ message: errorMessage });
+        return;
+      }
       
       if (state !== 'moodtune_auth') {
         res.status(400).json({ message: "授權狀態無效" });
         return;
       }
+      
+      if (!code) {
+        res.status(400).json({ message: "缺少授權碼" });
+        return;
+      }
 
-      // This would normally exchange the code for access token
-      // For demo purposes, we'll simulate success
-      res.json({ 
-        success: true, 
-        message: "Spotify 連接成功！正在分析您的音樂偏好...",
-        analysisComplete: true,
-        preferences: {
-          topGenres: ["流行", "搖滾", "電子"],
-          topArtists: ["Taylor Swift", "Ed Sheeran", "周杰倫"],
-          energyLevel: 0.7,
-          valence: 0.6
-        }
+      // Exchange code for access token
+      const domain = process.env.REPLIT_DEV_DOMAIN || req.get('host');
+      const protocol = req.get('x-forwarded-proto') || (req.secure ? 'https' : 'http');
+      const redirectUri = process.env.SPOTIFY_REDIRECT_URI || 
+        `${protocol}://${domain}/api/music/platforms/callback/spotify`;
+
+      const clientId = process.env.SPOTIFY_CLIENT_ID;
+      const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+      
+      if (!clientId || !clientSecret) {
+        res.status(500).json({ message: "Spotify API 配置缺失" });
+        return;
+      }
+
+      const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          code: code as string,
+          redirect_uri: redirectUri
+        })
       });
+
+      if (!tokenResponse.ok) {
+        const errorData = await tokenResponse.text();
+        console.error('Spotify token exchange failed:', errorData);
+        res.status(400).json({ message: "Spotify 授權失敗，請重試" });
+        return;
+      }
+
+      const tokenData = await tokenResponse.json();
+      
+      // Get user profile and preferences
+      const userResponse = await fetch('https://api.spotify.com/v1/me', {
+        headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+      });
+      
+      const userData = await userResponse.json();
+      
+      // Return success with close window script
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Spotify 連接成功</title>
+          <style>
+            body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+            .success { color: #28a745; font-size: 24px; }
+            .info { color: #6c757d; margin-top: 20px; }
+          </style>
+        </head>
+        <body>
+          <div class="success">✅ Spotify 連接成功！</div>
+          <div class="info">正在分析您的音樂偏好...</div>
+          <div class="info">此視窗將自動關閉</div>
+          <script>
+            // Notify parent window and close
+            if (window.opener) {
+              window.opener.postMessage({
+                type: 'SPOTIFY_AUTH_SUCCESS',
+                data: {
+                  success: true,
+                  user: ${JSON.stringify(userData)},
+                  message: 'Spotify 連接成功！正在分析您的音樂偏好...'
+                }
+              }, '*');
+            }
+            setTimeout(() => window.close(), 2000);
+          </script>
+        </body>
+        </html>
+      `);
+      
     } catch (error) {
-      res.status(500).json({ message: "Spotify 授權失敗" });
+      console.error('Spotify callback error:', error);
+      res.status(500).json({ message: "Spotify 授權過程發生錯誤" });
     }
   });
 

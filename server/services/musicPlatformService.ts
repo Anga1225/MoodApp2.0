@@ -16,7 +16,10 @@ export class SpotifyService {
   constructor() {
     this.clientId = process.env.SPOTIFY_CLIENT_ID || '';
     this.clientSecret = process.env.SPOTIFY_CLIENT_SECRET || '';
-    this.redirectUri = process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:5000/api/auth/spotify/callback';
+    // Use HTTPS URL for Replit environment
+    const domain = process.env.REPLIT_DEV_DOMAIN;
+    this.redirectUri = process.env.SPOTIFY_REDIRECT_URI || 
+      (domain ? `https://${domain}/api/music/platforms/callback/spotify` : 'https://localhost:5000/api/music/platforms/callback/spotify');
   }
 
   // 獲取 Spotify 授權 URL
