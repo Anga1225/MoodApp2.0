@@ -194,27 +194,83 @@ export function MusicPlatformIntegration({ userId, currentMood }: MusicPlatformI
           <CardContent>
             <div className="space-y-4">
               <div className="p-4 bg-muted/50 rounded-lg">
-                <h4 className="font-medium mb-2">{preferences.analysis.message}</h4>
-                <p className="text-sm text-muted-foreground mb-3">
-                  {preferences.analysis.suggestion}
-                </p>
-                <div className="space-y-2">
-                  <h5 className="text-sm font-medium">連接音樂平台的好處：</h5>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    {preferences.analysis.benefits.map((benefit, index) => (
-                      <li key={index} className="flex items-start space-x-2">
-                        <span className="text-primary">•</span>
-                        <span>{benefit}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <h4 className="font-medium mb-2">{preferences.analysis?.message}</h4>
+                
+                {preferences.hasPreferences ? (
+                  // Show analysis results when user has preferences
+                  <div className="space-y-4">
+                    <p className="text-sm text-green-600 font-medium">
+                      {preferences.analysis?.insight}
+                    </p>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <h5 className="text-sm font-medium mb-2">偏好音樂風格：</h5>
+                        <div className="flex flex-wrap gap-1">
+                          {preferences.analysis?.topGenres?.slice(0, 5).map((genre, index) => (
+                            <span key={index} className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
+                              {genre}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <h5 className="text-sm font-medium mb-2">常聽藝人：</h5>
+                        <div className="text-sm text-muted-foreground">
+                          {preferences.analysis?.topArtists?.slice(0, 3).join(', ')}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-3 gap-4 pt-3 border-t">
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-primary">{preferences.analysis?.energyLevel}%</div>
+                        <div className="text-xs text-muted-foreground">能量水平</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-primary">{preferences.analysis?.valence}%</div>
+                        <div className="text-xs text-muted-foreground">正面性</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-lg font-bold text-primary">{preferences.analysis?.totalTracks}</div>
+                        <div className="text-xs text-muted-foreground">分析歌曲</div>
+                      </div>
+                    </div>
+                    
+                    {preferences.recommendations && (
+                      <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                        <p className="text-sm text-green-700 font-medium">
+                          ✅ {preferences.recommendations.message}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Show connection benefits when user doesn't have preferences
+                  <div className="space-y-4">
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {preferences.analysis?.suggestion}
+                    </p>
+                    <div className="space-y-2">
+                      <h5 className="text-sm font-medium">連接音樂平台的好處：</h5>
+                      <ul className="text-sm text-muted-foreground space-y-1">
+                        {preferences.analysis?.benefits?.map((benefit, index) => (
+                          <li key={index} className="flex items-start space-x-2">
+                            <span className="text-primary">•</span>
+                            <span>{benefit}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {preferences.connectOptions.length > 0 && (
+              {preferences.connectOptions?.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="font-medium">推薦連接：</h4>
-                  {preferences.connectOptions.map((option) => (
+                  {preferences.connectOptions?.map((option) => (
                     <Button
                       key={option.platform}
                       onClick={option.platform === 'spotify' ? connectSpotify : undefined}
