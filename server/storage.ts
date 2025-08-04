@@ -1,8 +1,13 @@
 import { 
   users, moodEntries, emotionMessages, musicRecommendations,
+  userMusicPlatforms, userMusicPreferences, personalizedRecommendations, userListeningHistory,
   type User, type InsertUser, type MoodEntry, type InsertMoodEntry,
   type EmotionMessage, type InsertEmotionMessage,
-  type MusicRecommendation, type InsertMusicRecommendation
+  type MusicRecommendation, type InsertMusicRecommendation,
+  type UserMusicPlatform, type InsertUserMusicPlatform,
+  type UserMusicPreference, type InsertUserMusicPreference,
+  type PersonalizedRecommendation, type InsertPersonalizedRecommendation,
+  type UserListeningHistory, type InsertUserListeningHistory
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql, and } from "drizzle-orm";
@@ -30,6 +35,10 @@ export interface IStorage {
   // Music recommendations operations
   getMusicRecommendations(moodType: string): Promise<MusicRecommendation[]>;
   createMusicRecommendation(recommendation: InsertMusicRecommendation): Promise<MusicRecommendation>;
+  
+  // Music platform integration operations (simplified for initial implementation)
+  getMusicPlatformIntegration?(userId: string): Promise<any>;
+  createMusicPlatformIntegration?(userId: string, data: any): Promise<any>;
 }
 
 export class MemStorage implements IStorage {
@@ -181,6 +190,8 @@ export class MemStorage implements IStorage {
       moodType: insertRecommendation.moodType,
       spotifyUrl: insertRecommendation.spotifyUrl || null,
       youtubeUrl: insertRecommendation.youtubeUrl || null,
+      appleMusicUrl: insertRecommendation.appleMusicUrl || null,
+      youtubeMusicUrl: insertRecommendation.youtubeMusicUrl || null,
       isActive: insertRecommendation.isActive || 1,
     };
     this.musicRecommendations.set(id, recommendation);
@@ -325,6 +336,17 @@ export class DatabaseStorage implements IStorage {
       .values(insertRecommendation)
       .returning();
     return recommendation;
+  }
+
+  // Simplified music platform integration for now
+  async getMusicPlatformIntegration(userId: string): Promise<any> {
+    // This will be implemented when we have proper authentication system
+    return { connected: false, platforms: [] };
+  }
+
+  async createMusicPlatformIntegration(userId: string, data: any): Promise<any> {
+    // This will be implemented when we have proper authentication system
+    return { success: true, message: "Integration will be available soon" };
   }
 }
 

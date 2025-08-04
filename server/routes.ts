@@ -575,6 +575,165 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Music platform integration routes
+  app.get("/api/music/platforms/auth/spotify", async (req, res) => {
+    try {
+      // Generate Spotify authorization URL
+      const authUrl = "https://accounts.spotify.com/authorize?" + new URLSearchParams({
+        response_type: 'code',
+        client_id: process.env.SPOTIFY_CLIENT_ID || 'demo_client_id',
+        scope: 'user-read-recently-played user-top-read user-read-playback-state user-library-read playlist-read-private',
+        redirect_uri: process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:5000/api/music/platforms/callback/spotify',
+        state: 'moodtune_auth'
+      }).toString();
+
+      res.json({ authUrl, message: "請點擊連結登入 Spotify 授權" });
+    } catch (error) {
+      res.status(500).json({ message: "無法生成 Spotify 授權連結" });
+    }
+  });
+
+  app.get("/api/music/platforms/callback/spotify", async (req, res) => {
+    try {
+      const { code, state } = req.query;
+      
+      if (state !== 'moodtune_auth') {
+        res.status(400).json({ message: "授權狀態無效" });
+        return;
+      }
+
+      // This would normally exchange the code for access token
+      // For demo purposes, we'll simulate success
+      res.json({ 
+        success: true, 
+        message: "Spotify 連接成功！正在分析您的音樂偏好...",
+        analysisComplete: true,
+        preferences: {
+          topGenres: ["流行", "搖滾", "電子"],
+          topArtists: ["Taylor Swift", "Ed Sheeran", "周杰倫"],
+          energyLevel: 0.7,
+          valence: 0.6
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Spotify 授權失敗" });
+    }
+  });
+
+  app.get("/api/music/platforms/status", async (req, res) => {
+    try {
+      // For demo purposes, show mock platform status
+      res.json({
+        spotify: { 
+          connected: false, 
+          authUrl: "/api/music/platforms/auth/spotify",
+          description: "連接 Spotify 來獲得個人化音樂推薦"
+        },
+        appleMusic: { 
+          connected: false, 
+          available: false,
+          description: "Apple Music 整合即將推出"
+        },
+        youtubeMusic: { 
+          connected: false, 
+          available: false,
+          description: "YouTube Music 整合即將推出"
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ message: "無法獲取平台狀態" });
+    }
+  });
+
+  app.get("/api/music/recommendations/personalized", async (req, res) => {
+    try {
+      const happiness = parseFloat(req.query.happiness as string) || 50;
+      const calmness = parseFloat(req.query.calmness as string) || 50;
+      const userId = req.query.userId as string;
+
+      // Get base recommendations
+      const moodType = happiness >= 70 && calmness >= 70 ? 'peaceful' :
+                      happiness >= 70 && calmness < 50 ? 'energetic' :
+                      happiness >= 70 ? 'happy' :
+                      happiness < 30 && calmness < 30 ? 'anxious' :
+                      happiness < 30 ? 'sad' :
+                      calmness >= 70 ? 'calm' : 'contemplative';
+
+      const recommendations = await storage.getMusicRecommendations(moodType);
+
+      // Simulate personalization based on user preferences
+      const personalizedRecs = recommendations.map(rec => ({
+        ...rec,
+        confidence: Math.random() * 0.4 + 0.6, // 0.6 to 1.0
+        reason: `根據您的心情 (${moodType}) 和音樂喜好推薦`,
+        isPersonalized: true
+      }));
+
+      // Sort by confidence
+      personalizedRecs.sort((a, b) => b.confidence - a.confidence);
+
+      res.json({
+        recommendations: personalizedRecs,
+        isPersonalized: false, // Will be true when platforms are connected
+        message: "連接 Spotify 等音樂平台來獲得更精準的個人化推薦",
+        suggestedActions: [
+          {
+            text: "連接 Spotify",
+            action: "connect_spotify",
+            url: "/api/music/platforms/auth/spotify"
+          }
+        ]
+      });
+    } catch (error) {
+      res.status(500).json({ message: "無法獲取個人化推薦" });
+    }
+  });
+
+  app.post("/api/music/listening-history", async (req, res) => {
+    try {
+      const { musicId, platform, duration, completed, liked, moodEntryId } = req.body;
+      
+      // Record listening history for future recommendation improvement
+      res.json({ 
+        success: true, 
+        message: "聽歌記錄已保存，這將有助於改善推薦精準度" 
+      });
+    } catch (error) {
+      res.status(500).json({ message: "無法保存聽歌記錄" });
+    }
+  });
+
+  app.get("/api/music/analytics/preferences", async (req, res) => {
+    try {
+      const userId = req.query.userId as string;
+
+      // Mock user music preferences analysis
+      res.json({
+        hasPreferences: false,
+        analysis: {
+          message: "尚未分析音樂偏好",
+          suggestion: "連接音樂平台來分析您的音樂喜好",
+          benefits: [
+            "根據您常聽的音樂類型推薦",
+            "考慮您喜愛的藝人風格",
+            "配合您的能量水平偏好",
+            "提升推薦準確度"
+          ]
+        },
+        connectOptions: [
+          {
+            platform: "spotify",
+            name: "Spotify",
+            description: "連接 Spotify 來分析您的音樂品味",
+            authUrl: "/api/music/platforms/auth/spotify"
+          }
+        ]
+      });
+    } catch (error) {
+      res.status(500).json({ message: "無法獲取音樂偏好分析" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

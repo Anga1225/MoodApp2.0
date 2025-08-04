@@ -9,6 +9,7 @@ import { HistoryPage } from "./pages/history";
 import { AnalyticsPage } from "./pages/analytics";
 import { ColorTherapyPage } from "./pages/color-therapy";
 import { TestPage } from "./pages/test";
+import { MusicPlatformsPage } from "./pages/music-platforms";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -25,6 +26,9 @@ function Router() {
       </Route>
       <Route path="/color-therapy">
         {() => <ColorTherapyPage onBack={() => window.history.back()} />}
+      </Route>
+      <Route path="/music-platforms">
+        {() => <MusicPlatformsPage />}
       </Route>
       <Route path="/test" component={TestPage} />
       <Route component={NotFound} />

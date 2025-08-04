@@ -1,7 +1,9 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { useQuery } from '@tanstack/react-query';
-import { Play, ExternalLink, Music } from 'lucide-react';
+import { Play, ExternalLink, Music, Sparkles, Settings } from 'lucide-react';
+import { Link } from 'wouter';
 import type { MusicRecommendation } from '@shared/schema';
 
 interface MusicRecommendationsProps {
@@ -136,10 +138,36 @@ export function MusicRecommendations({ happiness = 50, calmness = 50, moodType }
 
   return (
     <Card className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-      <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-        <Music className="w-5 h-5 text-primary" />
-        療癒音樂
-      </h3>
+      <div className="flex justify-between items-center mb-6">
+        <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+          <Music className="w-5 h-5 text-primary" />
+          療癒音樂
+        </h3>
+        <Link href="/music-platforms">
+          <Button variant="ghost" size="sm" className="text-xs">
+            <Settings className="w-3 h-3 mr-1" />
+            個人化設定
+          </Button>
+        </Link>
+      </div>
+      
+      {/* Personalization Banner */}
+      <div className="mb-4 p-3 bg-primary/5 border border-primary/20 rounded-lg">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm text-primary">升級您的音樂體驗</span>
+          </div>
+          <Link href="/music-platforms">
+            <Button variant="outline" size="sm" className="text-xs">
+              連接音樂平台
+            </Button>
+          </Link>
+        </div>
+        <p className="text-xs text-muted-foreground mt-1">
+          連接 Spotify 來分析您的音樂喜好，享受真正個人化的療癒推薦
+        </p>
+      </div>
       
       {recommendations && recommendations.length > 0 && (
         <div className="mb-4 p-3 bg-blue-50 rounded-lg">
